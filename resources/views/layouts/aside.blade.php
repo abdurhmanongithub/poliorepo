@@ -5,7 +5,7 @@
         <a href="" class="brand-logo">
             <img height="55" width="50" alt="Logo" src="{{ asset('assets/ju_logo.png') }}" />
         </a>
-        <span class="font-size-h6">Data Repository</span>
+        <span class="font-size-h6"></span>
         <!--end::Logo-->
         <!--begin::Toggle-->
         <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
