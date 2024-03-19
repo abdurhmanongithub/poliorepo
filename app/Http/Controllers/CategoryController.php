@@ -13,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $items = Category::paginate(100);
+        return view('category.index', compact('items'));
     }
 
     /**
@@ -21,7 +22,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $category = new Category();
+        return view('category.create', compact('category'));
     }
 
     /**
@@ -29,7 +31,16 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        Category::updateOrCreate(
+            [
+                'name' => $request->get('name'),
+            ],
+            [
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+            ]
+        );
+        return redirect()->route('category.index')->with('success', 'Data category created successfully');
     }
 
     /**
@@ -45,7 +56,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('category.edit', compact('category'));
     }
 
     /**
@@ -61,6 +72,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if ($category->dataSchemas()->count() == 0) {
+            $category->delete();
+            return response()->json(['message' => 'Item deleted successfully.'], 200);
+        }else{
+            return response()->json(['message' => 'Item is used by other resources'], 403);
+
+        }
     }
 }

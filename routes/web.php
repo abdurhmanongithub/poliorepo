@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UtilController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('base');
+});
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/dashboard',[UtilController::class,'dashboard'])->name('dashboard');
+    Route::resource('category', CategoryController::class);
 });

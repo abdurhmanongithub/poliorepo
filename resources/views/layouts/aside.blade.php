@@ -41,14 +41,19 @@
                 <li class="menu-item" aria-haspopup="true">
                     <a href="/" class="menu-link">
                         <span class="menu-icon">
-                            <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
                             <i class="fa fa-chart-bar"></i>
-                            <!--end::Svg Icon-->
                         </span>
                         <span class="menu-text">Dashboard</span>
                     </a>
                 </li>
-
+                <li class="menu-item {{ strpos(Route::currentRouteName(), 'category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                    <a href="{{ route('category.index') }}" class="menu-link">
+                        <span class="menu-icon">
+                            <i class="fa fa-clock"></i>
+                        </span>
+                        <span class="menu-text">Data Category</span>
+                    </a>
+                </li>
                 {{-- START MENU --}}
 
 
