@@ -151,6 +151,15 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'sub_category') === 0 ? 'menu-item-active' : '' }}"
+                                aria-haspopup="true">
+                                <a href="{{ route('sub_category.index', []) }}" class="menu-link">
+                                    <i class="menu-icon flaticon-dashboard"></i>
+                                    <span class="menu-text">
+                                        Sub Category
+                                    </span>
+                                </a>
+                            </li>
 
                             </ul>
                         </div>
