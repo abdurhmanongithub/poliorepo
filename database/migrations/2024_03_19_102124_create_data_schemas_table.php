@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('data_schemas', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(SubCategory::class);
+            $table->string('name');
             $table->json('structure');
             $table->json('validation')->nullable();
             $table->boolean('force_validation')->default(false);
-            $table->boolean('force_validation_import')->default(false);
             $table->timestamps();
         });
     }

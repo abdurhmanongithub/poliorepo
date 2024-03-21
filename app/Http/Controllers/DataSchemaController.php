@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\DataSchema;
 use App\Http\Requests\StoreDataSchemaRequest;
 use App\Http\Requests\UpdateDataSchemaRequest;
+use App\Models\Category;
+use App\Models\SubCategory;
 
 class DataSchemaController extends Controller
 {
@@ -13,7 +15,8 @@ class DataSchemaController extends Controller
      */
     public function index()
     {
-        //
+        $items = DataSchema::paginate(10);
+        return view('data_schema.index',compact('items'));
     }
 
     /**
@@ -21,7 +24,9 @@ class DataSchemaController extends Controller
      */
     public function create()
     {
-        //
+        $dataSchema = new DataSchema();
+        $subCategories = SubCategory::all();
+        return view('data_schema.create', compact('subCategories','dataSchema'));
     }
 
     /**

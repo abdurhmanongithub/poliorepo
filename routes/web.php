@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DataManagementController;
+use App\Http\Controllers\DataSchemaController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UtilController;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +23,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/dashboard',[UtilController::class,'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [UtilController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', CategoryController::class);
     Route::resource('sub_category', SubCategoryController::class);
+    Route::resource('data_schema',DataSchemaController::class);
 });
