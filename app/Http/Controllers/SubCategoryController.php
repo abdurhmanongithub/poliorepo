@@ -23,9 +23,9 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        $sub_category = new SubCategory();
+        $subCategory = new SubCategory();
         $categories = Category::all();
-        return view('sub_category.create', compact('sub_category','categories'));
+        return view('sub_category.create', compact('subCategory','categories'));
     }
 
     /**
@@ -60,7 +60,8 @@ class SubCategoryController extends Controller
      */
     public function edit(SubCategory $subCategory)
     {
-        //
+        $categories = Category::all();
+        return view('sub_category.edit', compact('subCategory','categories'));
     }
 
     /**
@@ -68,7 +69,15 @@ class SubCategoryController extends Controller
      */
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory)
     {
-        //
+
+        $subCategory->update(
+            [
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+                'category_id' => $request->get('category_id'),
+            ]
+        );
+        return redirect()->route('sub_category.index')->with('success', 'Data sub category updated successfully');
     }
 
     /**
@@ -76,6 +85,11 @@ class SubCategoryController extends Controller
      */
     public function destroy(SubCategory $subCategory)
     {
-        //
-    }
+        if ($subCategory->dataSchemas()->count() == 0) {
+            // $subCategory->delete();
+            return response()->json(['message' => 'Item deleted successfully.'], 200);
+        }else{
+            return response()->json(['message' => 'Item is used by other resources'], 403);
+
+        }    }
 }

@@ -88,11 +88,11 @@
                                 <td>{{ $item?->category?->name }}</td>
                                 <td></td>
                                 <td class="d-flex justify-content-around">
-                                    <a href="{{ route('category.edit', ['category' => $item->id]) }}" class="">
+                                    <a href="{{ route('sub_category.edit', ['sub_category' => $item->id]) }}" class="">
                                         <i class="fa fa-pen"></i>
                                     </a>
                                     <a href="#"
-                                        onclick="event.preventDefault();deleteItem('{{ route('category.destroy', ['category' => $item->id]) }}',$(this))"
+                                        onclick="event.preventDefault();deleteItem('{{ route('sub_category.destroy', ['sub_category' => $item->id]) }}',$(this))"
                                         class="">
                                         <i class="fa fa-trash text-danger"></i>
                                     </a>

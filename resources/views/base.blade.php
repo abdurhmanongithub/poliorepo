@@ -388,11 +388,15 @@
             };
         </script>
         <!--end::Global Config-->
+        <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+
         <!--begin::Global Theme Bundle(used by all pages)-->
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></>
         <script src="{{ asset('assets/js/scripts.bundle.js') }}"></>
         <!--end::Global Theme Bundle-->
+        <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+
 
         @stack('js')
         <script>

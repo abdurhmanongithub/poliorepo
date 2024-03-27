@@ -7,6 +7,8 @@ use App\Http\Requests\StoreDataSchemaRequest;
 use App\Http\Requests\UpdateDataSchemaRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class DataSchemaController extends Controller
 {
@@ -16,7 +18,7 @@ class DataSchemaController extends Controller
     public function index()
     {
         $items = DataSchema::paginate(10);
-        return view('data_schema.index',compact('items'));
+        return view('data_schema.index', compact('items'));
     }
 
     /**
@@ -26,7 +28,7 @@ class DataSchemaController extends Controller
     {
         $dataSchema = new DataSchema();
         $subCategories = SubCategory::all();
-        return view('data_schema.create', compact('subCategories','dataSchema'));
+        return view('data_schema.create', compact('subCategories', 'dataSchema'));
     }
 
     /**
@@ -35,6 +37,19 @@ class DataSchemaController extends Controller
     public function store(StoreDataSchemaRequest $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'sub_category_id' => 'required',
+            // 'attribute.*.type' => 'required',
+            // 'attribute.*.name' => 'required',
+            // 'attribute.*.is_required' => 'required',
+            'force_validation.*' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+        dd('sdd');
     }
 
     /**

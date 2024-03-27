@@ -11,7 +11,7 @@ class UpdateSubCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateSubCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|unique:sub_categories,name,'.request('sub_category')->id,
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable',
         ];
     }
 }

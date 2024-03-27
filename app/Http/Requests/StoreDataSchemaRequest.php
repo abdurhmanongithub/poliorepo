@@ -11,7 +11,7 @@ class StoreDataSchemaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreDataSchemaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // 'name' => 'required',
+            // 'sub_category_id' => 'required',
+            // 'attribute_type[]' => 'required',
+            // 'attribute_name[]' => 'required',
+            // 'force_validation' => 'nullable'
         ];
     }
 }
