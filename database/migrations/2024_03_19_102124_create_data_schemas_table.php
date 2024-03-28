@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(SubCategory::class);
             $table->string('name');
-            $table->json('structure');
+            $table->json('structure')->nullable();
             $table->json('validation')->nullable();
             $table->boolean('force_validation')->default(false);
             $table->timestamps();

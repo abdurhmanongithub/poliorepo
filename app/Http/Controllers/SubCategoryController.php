@@ -15,7 +15,8 @@ class SubCategoryController extends Controller
     public function index()
     {
         $items = SubCategory::paginate(100);
-        return view('sub_category.index', compact('items'));
+        $categories = Category::all();
+        return view('sub_category.index', compact('items','categories'));
     }
 
     /**
@@ -86,7 +87,7 @@ class SubCategoryController extends Controller
     public function destroy(SubCategory $subCategory)
     {
         if ($subCategory->dataSchemas()->count() == 0) {
-            // $subCategory->delete();
+            $subCategory->delete();
             return response()->json(['message' => 'Item deleted successfully.'], 200);
         }else{
             return response()->json(['message' => 'Item is used by other resources'], 403);

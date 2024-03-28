@@ -2,7 +2,7 @@
 @section('title', 'Data Categories')
 @push('js')
     <script>
-        function deleteItem(route,parent) {
+        function deleteItem(route, parent) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure to delete?",
@@ -37,9 +37,42 @@
                 }
             });
         }
+        function openEditModal(id, name, categoryId,description, route) {
+            $('#editCategoryModal #edit_id').val(id);
+            $('#editCategoryModal #edit_name').val(name);
+            $('#editCategoryModal #edit_category').val(categoryId);
+            $('#editCategoryModal #edit_description').val(description);
+            $('#editCategoryModal #editCategoryForm').attr('action',route);
+            $('#editCategoryModal').modal('show');
+
+        }
+
+        $(document).ready(function() {
+            $('#editForm').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                var categoryId = $('#edit_id').val(); // Retrieve category ID
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ url('category') }}" + '/' + categoryId, // Include category ID in URL
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#editModal').modal('hide');
+                        // Handle success, maybe update table row or reload page
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        // Handle error
+                    }
+                });
+            });
+        });
     </script>
 @endpush
 @section('content')
+    @include('sub_category.modal')
+
     <div class="card card-custom">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -63,8 +96,13 @@
                 </h3>
             </div>
             <div class="card-tools">
-                <a href="{{ route('sub_category.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add Sub
-                    Category</a>
+                {{--  <a href="{{ route('sub_category.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add
+                    Sub
+                    Category</a>  --}}
+
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal"><i
+                        class="fa fa-plus mr-2"></i>Add Data
+                    Category</button>
             </div>
         </div>
         <div class="card-body">
@@ -88,7 +126,8 @@
                                 <td>{{ $item?->category?->name }}</td>
                                 <td></td>
                                 <td class="d-flex justify-content-around">
-                                    <a href="{{ route('sub_category.edit', ['sub_category' => $item->id]) }}" class="">
+                                    <a href="#" onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}',{{ $item->category_id }} ,'{{ $item->description }}','{{ route('sub_category.update',['sub_category'=>$item->id]) }}')"
+                                        class="">
                                         <i class="fa fa-pen"></i>
                                     </a>
                                     <a href="#"

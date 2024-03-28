@@ -2,7 +2,7 @@
 @section('title', 'Schema Management')
 @push('js')
     <script>
-        function deleteItem(route,parent) {
+        function deleteItem(route, parent) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure to delete?",
@@ -37,10 +37,44 @@
                 }
             });
         }
+
+        function openEditModal(id, name, forceValidation, subCategoryId, route) {
+            $('#editCategoryModal #edit_id').val(id);
+            $('#editCategoryModal #edit_name').val(name);
+            $('#editCategoryModal #forceValidation').prop('checked', forceValidation==1? true : false);
+            $('#editCategoryModal #edit_sub_category').val(subCategoryId);
+            $('#editCategoryModal #editCategoryForm').attr('action', route);
+            $('#editCategoryModal').modal('show');
+
+        }
+
+        $(document).ready(function() {
+            $('#editForm').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                var categoryId = $('#edit_id').val(); // Retrieve category ID
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ url('category') }}" + '/' + categoryId, // Include category ID in URL
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#editModal').modal('hide');
+                        // Handle success, maybe update table row or reload page
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        // Handle error
+                    }
+                });
+            });
+        });
     </script>
 @endpush
 @section('content')
     <div class="card card-custom">
+        @include('data_schema.modal')
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <p><strong>Oops Something went wrong</strong></p>
@@ -63,7 +97,9 @@
                 </h3>
             </div>
             <div class="card-tools">
-                <a href="{{ route('data_schema.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add data schema</a>
+                <a href="#" data-toggle="modal" data-target="#addModal" class="btn btn-primary"><i
+                        class="fa fa-plus mr-2"></i>Add
+                    data schema</a>
             </div>
         </div>
         <div class="card-body">
@@ -74,7 +110,7 @@
                             <th>No.</th>
                             <th>Schema Name</th>
                             <th>Sub Category Name</th>
-                            <th>Total Data</th>
+                            <th>Force Validation</th>
                             <th> Actions</th>
                         </tr>
                     </thead>
@@ -83,14 +119,18 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item?->name }}</td>
-                                <td>{{ $item?->category?->name }}</td>
-                                <td></td>
+                                <td>{{ $item?->subCategory?->name }}</td>
+                                <td><span
+                                        class="badge badge-info badge-sm">{{ $item?->force_validation ? 'True' : 'False' }}</span>
+                                </td>
                                 <td class="d-flex justify-content-around">
-                                    <a href="{{ route('category.edit', ['category' => $item->id]) }}" class="">
+                                    <a href="#"
+                                        onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}','{{ $item->force_validation }}',{{ $item->sub_category_id }},'{{ route('data_schema.update', ['data_schema' => $item->id]) }}')"
+                                        class="">
                                         <i class="fa fa-pen"></i>
                                     </a>
                                     <a href="#"
-                                        onclick="event.preventDefault();deleteItem('{{ route('category.destroy', ['category' => $item->id]) }}',$(this))"
+                                        onclick="event.preventDefault();deleteItem('{{ route('data_schema.destroy', ['data_schema' => $item->id]) }}',$(this))"
                                         class="">
                                         <i class="fa fa-trash text-danger"></i>
                                     </a>
