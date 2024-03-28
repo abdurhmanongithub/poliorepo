@@ -41,7 +41,7 @@
         function openEditModal(id, name, forceValidation, subCategoryId, route) {
             $('#editCategoryModal #edit_id').val(id);
             $('#editCategoryModal #edit_name').val(name);
-            $('#editCategoryModal #forceValidation').prop('checked', forceValidation==1? true : false);
+            $('#editCategoryModal #forceValidation').prop('checked', forceValidation == 1 ? true : false);
             $('#editCategoryModal #edit_sub_category').val(subCategoryId);
             $('#editCategoryModal #editCategoryForm').attr('action', route);
             $('#editCategoryModal').modal('show');
@@ -124,6 +124,9 @@
                                         class="badge badge-info badge-sm">{{ $item?->force_validation ? 'True' : 'False' }}</span>
                                 </td>
                                 <td class="d-flex justify-content-around">
+                                    <a href="{{ route('data_schema.show', ['data_schema' => $item->id]) }}" class="">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
                                     <a href="#"
                                         onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}','{{ $item->force_validation }}',{{ $item->sub_category_id }},'{{ route('data_schema.update', ['data_schema' => $item->id]) }}')"
                                         class="">

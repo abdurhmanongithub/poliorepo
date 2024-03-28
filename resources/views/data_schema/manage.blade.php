@@ -13,7 +13,7 @@
         </div>
         <div class="card-body">
             <div id="kt_repeater_11">
-                <form action="{{ route('data_schema.attribute.add', ['data_schema' => $dataSchema->id]) }}" method="POST">
+                <form action="{{ route('data_schema.attribute.store', ['data_schema' => $dataSchema->id]) }}" method="POST">
                     @csrf
                     @include('data_schema.attribute_manager')
                     <div class="form-group row">

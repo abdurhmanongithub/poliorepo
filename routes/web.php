@@ -32,6 +32,7 @@ Route::middleware(['guest'])->group(function () {
     });
     Route::prefix('data_schema/{data_schema}')->name('data_schema.')->group(function () {
         Route::get('/manage', [DataSchemaController::class,'manage'])->name('manage');
-        Route::post('/manage/attribute/add', [DataSchemaController::class,'addAttribute'])->name('attribute.add');
+        Route::get('/data', [DataSchemaController::class,'dataIndex'])->name('data.index');
+        Route::post('/data/attribute', [DataSchemaController::class,'storeAttribute'])->name('attribute.store');
     });
 });

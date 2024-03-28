@@ -70,13 +70,11 @@ class DataSchemaController extends Controller
      */
     public function show(DataSchema $dataSchema)
     {
-        return view('dataschema.show', compact('dataSchema'));
+        $miniSide = true;
+        return view('data_schema.show', compact('dataSchema', 'miniSide'));
     }
 
-    public function manage(DataSchema $dataSchema)
-    {
-        return view('dataschema.manage', compact('dataSchema'));
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -126,7 +124,12 @@ class DataSchemaController extends Controller
             return response()->json(['message' => 'Item is used by other resources'], 403);
         }
     }
-    public function addAttribute(Request $request, DataSchema $dataSchema)
+    public function manage(DataSchema $dataSchema)
+    {
+        $miniSide = true;
+        return view('data_schema.manage', compact('dataSchema', 'miniSide'));
+    }
+    public function storeAttribute(Request $request, DataSchema $dataSchema)
     {
         $request->validate([
             'attribute.*.type' => 'required',
@@ -149,5 +152,9 @@ class DataSchemaController extends Controller
         $dataSchema->update(['structure' => $newAttributes]);
         return redirect()->back()->with('success', 'Data schema attribute saved successfully');
 
+    }
+    public function dataIndex(DataSchema $dataSchema){
+        $miniSide = true;
+        return view('data_schema.data.index',compact('dataSchema','miniSide'));
     }
 }

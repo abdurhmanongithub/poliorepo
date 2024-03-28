@@ -138,7 +138,8 @@
                             </a>
                         </div>
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.manage', ['data_schema'=>$dataSchema->id]) }}" class="navi-link  {{ strpos(Route::currentRouteName(), 'data_schema.manage') === 0 ? 'active' : '' }} py-4">
+                            <a href="{{ route('data_schema.manage', ['data_schema' => $dataSchema->id]) }}"
+                                class="navi-link  {{ strpos(Route::currentRouteName(), 'data_schema.manage') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
@@ -147,7 +148,8 @@
                         </div>
 
                         <div class="navi-item mb-2">
-                            <a href="#" class="navi-link py-4">
+                            <a href="{{ route('data_schema.data.index', ['data_schema'=>$dataSchema->id]) }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.index') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
