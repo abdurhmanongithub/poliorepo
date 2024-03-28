@@ -31,4 +31,9 @@ class DataSchema extends Model
     {
         return $this->hasMany(Data::class);
     }
+
+    public function getListOfAttributes(){
+        $array = json_decode($this->structure, true);
+        return $array??[];
+    }
 }

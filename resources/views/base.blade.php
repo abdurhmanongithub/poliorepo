@@ -190,7 +190,16 @@
                     <div class="p-5 flex-column-fluid">
                         <!--begin::Container-->
                         <div class="container mt-6">
-
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <p><strong>Oops Something went wrong</strong></p>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             @yield('content')
 
                         </div>
@@ -207,8 +216,8 @@
                     <!--begin::Copyright-->
                     <div class="order-2 text-dark order-md-1">
                         <span class="mr-2 text-muted font-weight-bold">2022 &copy;</span>
-                        <a href="#" target="_blank" class="text-dark-75 text-hover-primary">Ministry of
-                            Peace</a>
+                        <a href="#" target="_blank" class="text-dark-75 text-hover-primary">Jimma
+                            University</a>
                     </div>
                     <!--end::Copyright-->
                     <!--begin::Nav-->
@@ -392,16 +401,19 @@
 
         <!--begin::Global Theme Bundle(used by all pages)-->
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-        <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></>
-        <script src="{{ asset('assets/js/scripts.bundle.js') }}"></>
-        <!--end::Global Theme Bundle-->
-        <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+        <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}">
+            < /> <
+            script src = "{{ asset('assets/js/scripts.bundle.js') }}" > < /> <
+                !--end::Global Theme Bundle-- >
+                <
+                script src = "{{ asset('assets/js/pages/widgets.js') }}" >
+        </>
 
 
         @stack('js')
         <script>
             @if (Session::has('message') && !Session::has('error'))
-            $(function() {
+                $(function() {
                     toastr.success('{{ Session::get('message') }}');
                 })
             @endif

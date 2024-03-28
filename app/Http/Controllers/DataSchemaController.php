@@ -7,6 +7,7 @@ use App\Http\Requests\StoreDataSchemaRequest;
 use App\Http\Requests\UpdateDataSchemaRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -69,7 +70,12 @@ class DataSchemaController extends Controller
      */
     public function show(DataSchema $dataSchema)
     {
-        return view('dataschema.show',compact('dataSchema'));
+        return view('dataschema.show', compact('dataSchema'));
+    }
+
+    public function manage(DataSchema $dataSchema)
+    {
+        return view('dataschema.manage', compact('dataSchema'));
     }
 
     /**
@@ -119,5 +125,29 @@ class DataSchemaController extends Controller
         } else {
             return response()->json(['message' => 'Item is used by other resources'], 403);
         }
+    }
+    public function addAttribute(Request $request, DataSchema $dataSchema)
+    {
+        $request->validate([
+            'attribute.*.type' => 'required',
+            'attribute.*.name' => [
+                'required'
+            ],
+            'attribute.*.is_required' => 'nullable',
+        ]);
+        $newAttributes = [];
+        foreach ($request->get('attribute') as $attribute) {
+            $isRequired = isset($attribute['is_required']) ? $attribute['is_required'] : null;
+            $newAttributes[] = [
+                'type' => $attribute['type'],
+                'name' => $attribute['name'],
+                'is_required' => $isRequired ? true : false,
+            ];
+        }
+        $dataSchema->update(['structure' => null]);
+
+        $dataSchema->update(['structure' => $newAttributes]);
+        return redirect()->back()->with('success', 'Data schema attribute saved successfully');
+
     }
 }

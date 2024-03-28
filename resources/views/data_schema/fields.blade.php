@@ -21,15 +21,6 @@
         @enderror
     </div>
 </div>
-{{--  <div id="kt_repeater_1">
-    @include('data_schema.attribute_manager')
-    <div class="form-group row">
-        <div class="col-lg-4">
-            <a href="javascript:;" data-repeater-create="" class="btn btn-sm font-weight-bolder btn-light-primary">
-                <i class="la la-plus"></i>Add Attribute</a>
-        </div>
-    </div>
-</div>  --}}
 <div class="form-group row">
     <div class="col-lg-9 col-xl-6">
         <div class="checkbox-list">
@@ -41,42 +32,3 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-
-<script>
-    var KTFormRepeater = function() {
-
-        // Private functions
-        var demo1 = function() {
-            $('#kt_repeater_1').repeater({
-                initEmpty: false,
-                defaultValues: {},
-
-                hide: function(remove) {
-                    Swal.fire({
-                        title: "Are you sure to remove?",
-                        text: "You won't be able to revert this!",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes, Delete it!"
-                    }).then(function(result) {
-                        if (result.value) {
-                            $(this).slideUp(remove);
-
-                        }
-                    });
-                }
-            });
-        }
-        return {
-            // public functions
-            init: function() {
-                demo1();
-            }
-        };
-    }();
-
-    jQuery(document).ready(function() {
-        KTFormRepeater.init();
-    });
-</script>
