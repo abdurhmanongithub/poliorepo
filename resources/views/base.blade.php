@@ -34,7 +34,7 @@
     <!--begin::Body-->
 
     <body id="kt_body"
-        class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading @if (isset($miniSide) ) aside-minimize @endif">
+        class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading @if (isset($miniSide)) aside-minimize @endif">
 
         <!--begin::Main-->
         <!--begin::Header Mobile-->
@@ -401,23 +401,16 @@
 
         <!--begin::Global Theme Bundle(used by all pages)-->
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-        <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}">
-            < /> <
-            script src = "{{ asset('assets/js/scripts.bundle.js') }}" > < /> <!--end::Global Theme Bundle-- >
-                <
-                script src = "{{ asset('assets/js/pages/widgets.js') }}" >
-                <
-                />
-
-
-            @stack('js')
-                <
-                script >
-                @if (Session::has('message') && !Session::has('error'))
-                    $(function() {
-                        toastr.success('{{ Session::get('message') }}');
-                    })
-                @endif
+        <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
+        <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+        @stack('js')
+        <script>
+            @if (Session::has('message') && !Session::has('error'))
+                $(function() {
+                    toastr.success('{{ Session::get('message') }}');
+                })
+            @endif
 
 
             @if (Session::has('success') && !Session::has('error'))
