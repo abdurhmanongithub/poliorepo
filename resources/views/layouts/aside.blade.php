@@ -54,6 +54,14 @@
                         <span class="menu-text">Data Category</span>
                     </a>
                 </li>
+                <li class="menu-item {{ strpos(Route::currentRouteName(), 'sub_category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                    <a href="{{ route('category.index') }}" class="menu-link">
+                        <span class="menu-icon">
+                            <i class="fa fa-clock"></i>
+                        </span>
+                        <span class="menu-text">Sub Category</span>
+                    </a>
+                </li>
                 {{-- START MENU --}}
 
 

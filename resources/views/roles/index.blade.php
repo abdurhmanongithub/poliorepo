@@ -92,7 +92,12 @@
                             <a href="#" onclick="event.preventDefault();deleteItem('{{ route('roles.destroy', ['role' => $item->id]) }}',$(this))" class="">
                                 <i class="fa fa-trash text-danger"></i>
                             </a>
+                            <a href="{{ route('roles.show', ['role'=>$item]) }}"> <i class="fa fa-eye text-info"></i>
+
+</a>
+
                         </td>
+
                     </tr>
                     @endforeach
 
@@ -108,4 +113,3 @@
     </div>
 </div>
 @endsection
-

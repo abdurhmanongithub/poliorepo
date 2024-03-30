@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(DataSchema::class);
             $table->json('values');
             $table->integer('import_batch')->default(0);
+            $table->string('is_from_api')->nullable();
+            $table->string('api_link')->nullable();
             $table->timestamps();
         });
     }

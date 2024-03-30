@@ -151,6 +151,25 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'sub_category') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('sub_category.index', []) }}" class="menu-link">
+                                        <i class="menu-icon flaticon-dashboard"></i>
+                                        <span class="menu-text">
+                                            Sub Category
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
+                                    aria-haspopup="true">
+                                    <a href="{{ route('data_schema.index', []) }}" class="menu-link">
+                                        <i class="menu-icon flaticon-dashboard"></i>
+                                        <span class="menu-text">
+                                            Data Management
+                                        </span>
+                                    </a>
+                                </li>
 
                             </ul>
                         </div>
@@ -278,7 +297,7 @@
                     </a>
                     <!--end:Item-->
                     <!--begin::Item-->
-                    <form action="{{ ('logout') }}" id="logoutForm" method="POST">@csrf</form>
+                    <form action="{{ 'logout' }}" id="logoutForm" method="POST">@csrf</form>
                     <a href="#" onclick="event.preventDefault();$('#logoutForm').submit()" class="navi-item">
                         <div class="navi-link">
                             <div class="mr-3 symbol symbol-40 bg-light">
@@ -371,22 +390,17 @@
         <!--end::Global Config-->
         <!--begin::Global Theme Bundle(used by all pages)-->
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-        <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
-        <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-        <!--end::Global Theme Bundle-->
-        <!--begin::Page Vendors(used by this page)-->
-        <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-        <script src="https://maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM"></script>
-        <script src="{{ asset('assets/plugins/custom/gmaps/gmaps.js') }}"></script>
-        <!--end::Page Vendors-->
-        <!--begin::Page Scripts(used by this page)-->
-        <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
-        @stack('js')
-        <!--end::Page Scripts-->
-        <script>
+        <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></>
+        <script src="{{ asset('assets/js/scripts.bundle.js') }}"></>
+                    <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
 
+
+        <!--end::Global Theme Bundle-->
+
+        @stack('js')
+        <script>
             @if (Session::has('message') && !Session::has('error'))
-                $(function() {
+            $(function() {
                     toastr.success('{{ Session::get('message') }}');
                 })
             @endif
