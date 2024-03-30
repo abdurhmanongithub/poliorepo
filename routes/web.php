@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DataManagementController;
-use App\Http\Controllers\DataSchemaController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RoleController;
+// use App\Http\Controllers\DataSchemaController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UtilController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DataSchemaController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +43,13 @@ Route::middleware(['guest'])->group(function () {
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
     Route::post('role/{role}/giveAllPermission', [RoleController::class, 'giveAllPermission'])->name('role.giveAllPermission');
     Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
-
-
-
+    Route::group(['prefix' => 'data_schema/{data_schema}', 'as' => 'data_schema.'], function () {
+    });
+    Route::prefix('data_schema/{data_schema}')->name('data_schema.')->group(function () {
+        Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
+        Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
+        Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');
+    });
 });
 
 

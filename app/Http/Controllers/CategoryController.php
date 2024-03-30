@@ -64,7 +64,14 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        
+        $category->update(
+            [
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+            ]
+        );
+        return redirect()->route('category.index')->with('success', 'Data category updated successfully');
     }
 
     /**
@@ -72,12 +79,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if ($category->dataSchemas()->count() == 0) {
-            $category->delete();
+        if ($category->subCategories()->count() == 0) {
+            // $category->delete();
             return response()->json(['message' => 'Item deleted successfully.'], 200);
         }else{
             return response()->json(['message' => 'Item is used by other resources'], 403);
-
         }
     }
 }
