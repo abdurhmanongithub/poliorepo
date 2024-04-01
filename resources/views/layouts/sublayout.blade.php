@@ -1,16 +1,11 @@
 @extends('base')
 @section('content')
+    @php
+        $miniSide = true;
+    @endphp
     <div class="card card-custom gutter-b">
         <div class="card-body">
             <div class="d-flex">
-                {{--  <div class="flex-shrink-0 mt-3 mr-7 mt-lg-0">
-                    <div class="symbol symbol-50 symbol-lg-120">
-                        <img alt="Pic" src="/storage/training center logos//1675630768_ju.png">
-                    </div>
-                    <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
-                        <span class="font-size-h3 symbol-label font-weight-boldest">JU</span>
-                    </div>
-                </div>  --}}
                 <!--begin: Info-->
                 <div class="flex-grow-1">
                     <!--begin: Title-->
@@ -42,13 +37,11 @@
                                         <li class="navi-item">
                                             <a href="#" class="navi-link">
                                                 <span class="navi-icon">
-                                                    <i class="flaticon2-shopping-cart-1"></i>
+                                                    <i class="fal fa-download"></i>
                                                 </span>
-                                                <span class="navi-text">Export Data</span>
+                                                <span class="navi-text">Download Import Form</span>
                                             </a>
                                         </li>
-
-
                                     </ul>
                                     <!--end::Navigation-->
                                 </div>
@@ -148,12 +141,31 @@
                         </div>
 
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.data.index', ['data_schema'=>$dataSchema->id]) }}"
+                            <a href="{{ route('data_schema.data.index', ['data_schema' => $dataSchema->id]) }}"
                                 class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.index') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
                                 <span class="navi-text font-size-lg">Data Management</span>
+                            </a>
+                        </div>
+
+                        <div class="navi-item mb-2">
+                            <a href="{{ route('data_schema.data.import.view', ['data_schema' => $dataSchema->id]) }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.import.view') === 0 ? 'active' : '' }} py-4">
+                                <span class="navi-icon mr-2">
+                                    <i class="fa fa-circle"></i>
+                                </span>
+                                <span class="navi-text font-size-lg">Import Data</span>
+                            </a>
+                        </div>
+                        <div class="navi-item mb-2">
+                            <a href="{{ route('data_schema.data.source', ['data_schema' => $dataSchema->id]) }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.source') === 0 ? 'active' : '' }} py-4">
+                                <span class="navi-icon mr-2">
+                                    <i class="fa fa-circle"></i>
+                                </span>
+                                <span class="navi-text font-size-lg">Source Management</span>
                             </a>
                         </div>
                     </div>

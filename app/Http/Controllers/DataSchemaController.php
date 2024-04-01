@@ -157,4 +157,8 @@ class DataSchemaController extends Controller
         $miniSide = true;
         return view('data_schema.data.index',compact('dataSchema','miniSide'));
     }
+
+    public function dataSource(DataSchema $dataSchema){
+        return view('data_schema.data.source',compact('dataSchema'));
+    }
 }
