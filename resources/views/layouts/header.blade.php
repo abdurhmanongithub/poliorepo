@@ -666,15 +666,7 @@
                     <!--begin::Nav-->
                     <ul class="navi navi-hover py-4">
 
-                        <li class="navi-item">
-
-                            <a target="_blank" class="navi-link" href="{{ asset('/manual/User_Manaual_YVMS.pdf') }}">
-                                <span class="symbol symbol-20 mr-3">
-                                    <i class="fa fa-download"></i>
-                                </span>
-                                User Manual Download
-                            </a>
-                        </li>
+                        
                         <!--begin::Item-->
                         <li class="navi-item">
 
