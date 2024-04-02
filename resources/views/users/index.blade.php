@@ -59,14 +59,14 @@
         <div class="card-title">
             <h3 class="card-label">
                 <span>Total: {{ $items->total() }}</span>
-                roles
-                <span class="d-block text-muted pt-2 font-size-sm">Allroles</span>
+                users
+                <span class="d-block text-muted pt-2 font-size-sm">All users</span>
                 <div class="">
                 </div>
             </h3>
         </div>
         <div class="card-tools">
-            <a href="{{ route('roles.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add Role</a>
+            <a href="{{ route('users.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add user</a>
         </div>
     </div>
     <div class="card-body">
@@ -79,8 +79,6 @@
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Roles</th>
-
-
                         <th> Actions</th>
                     </tr>
                 </thead>

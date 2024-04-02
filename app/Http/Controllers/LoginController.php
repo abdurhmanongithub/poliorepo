@@ -20,13 +20,15 @@ class LoginController extends Controller
     function store(Request $request)
     {
 
+        // dd($request);
         $credential = $request->only('email', 'password');
         // dd($credential);
+        return redirect()->intended(RouteServiceProvider::HOME);
+
         if (!Auth::attempt($credential, )) {
-            throw ValidationException::withMessages([
-                'email' => 'Incorrect Email or password',
-            ]);
+            return redirect()->back()->with('error', 'Invalid Credentials');
         }
+
         $request->session()->regenerate();
         // dd(auth()->user());
         return redirect()->intended(RouteServiceProvider::HOME);

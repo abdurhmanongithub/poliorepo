@@ -1,44 +1,33 @@
-<!--
-Template Name: Metronic - Bootstrap 4 HTML, React, Angular 9 & VueJS Admin Dashboard Theme
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: https://1.envato.market/EA4JP
-Renew Support: https://1.envato.market/EA4JP
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <html lang="en">
 <!--begin::Head-->
 <head>
-    <base href="../../../">
     <meta charset="utf-8" />
-    <title>{{env('APP_NAME')}}</title>
+    <title> {{env('APP_NAME')}}| Login</title>
     <meta name="description" content="Login page example" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Page Custom Styles(used by this page)-->
-    <link href="{{ asset('assets/css/pages/users/login-2.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/pages/login/login-6.min.css') }}" rel="stylesheet" type="text/css" />
 
 
-
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <link href="{{ asset('assets/css/themes/layout/header/base/light.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/brand/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/aside/light.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('assets/js/pages/custom/login/login.js') }}"></script>
 
-
+    <link href="assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
 </head>
@@ -48,48 +37,131 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--begin::Main-->
     <div class="d-flex flex-column flex-root">
         <!--begin::Login-->
-        <div class="login login-signin-on login-2 d-flex flex-row-fluid" id="kt_login">
-            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(assets/media/bg/bg-1.jpg);">
-                <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
-                    <!--begin::Login Header-->
-                    <div class="d-flex flex-center mb-15">
-                        <a href="#">
-                            <img src="assets/media/logos/logo-letter-9.png" class="max-h-100px" alt="" />
+        <div class="login login-6 login-signin-on d-flex flex-column flex-lg-row flex-row-fluid bg-white" id="kt_login">
+            <!--begin::Aside-->
+            <div class="login-aside order-2 order-lg-1 d-flex flex-column-fluid flex-lg-row-auto bgi-size-cover bgi-no-repeat p-7 p-lg-10">
+                <!--begin: Aside Container-->
+                <div class="d-flex flex-row-fluid flex-column justify-content-between">
+                    <!--begin::Aside body-->
+                    <div class="d-flex flex-column-fluid flex-column flex-center mt-5 mt-lg-0">
+                        <a href="#" class="mb-15 text-center">
+                            <img src="{{ asset('assets/ju_logo.png') }}" class="max-h-80px" alt="" />
                         </a>
-                    </div>
-                    <!--end::Login Header-->
-                    <!--begin::Login Sign in form-->
-                    <div class="login-signin">
-                        <div class="mb-20">
-                            <h3>Sign In </h3>
-                            <p class="opacity-60 font-weight-bold">Enter your details to login to your account:</p>
+                        <!--begin::Signin-->
+                        <div class="login-form login-signin">
+                            <div class="text-center mb-10 mb-lg-20">
+                                <h2 class="font-weight-bold">Sign In</h2>
+                                <p class="text-muted font-weight-bold">Enter your username and password</p>
+                            </div>
+                            <!--begin::Form-->
+                            <form class="form" action="{{route('login.store')}}" method="POST" novalidate="novalidate">
+                                @csrf
+                                <div class="form-group py-3 m-0">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="Email" placeholder="Email" name="email" autocomplete="off" />
+                                </div>
+                                <div class="form-group py-3 border-top m-0">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="Password" placeholder="Password" name="password" />
+                                </div>
+                                <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-3">
+                                    <label class="checkbox checkbox-outline m-0 text-muted">
+                                        <input type="checkbox" name="remember" />Remember me
+                                        <span></span></label>
+                                    <a href="javascript:;" id="kt_login_forgot" class="text-muted text-hover-primary">Forgot Password ?</a>
+                                </div>
+                                <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-2">
+                                    {{-- <div class="my-3 mr-2">
+                                        <span class="text-muted mr-2">Don't have an account?</span>
+                                        <a href="javascript:;" id="kt_login_signup" class="font-weight-bold">Signup</a>
+                                    </div> --}}
+                                    <button type="submit" id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3">Sign In</button>
+                                </div>
+                            </form>
+                            <!--end::Form-->
                         </div>
-                        <form class="form" action="{{ route('login.store') }}" method="POST">
+                        <!--end::Signin-->
+                        <!--begin::Signup-->
+                        <div class="login-form login-signup">
+                            <div class="text-center mb-10 mb-lg-20">
+                                <h3 class="">Sign Up</h3>
+                                <p class="text-muted font-weight-bold">Enter your details to create your account</p>
+                            </div>
+                            <!--begin::Form-->
+                            <form class="form" novalidate="novalidate">
+                                <div class="form-group py-3 m-0">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="text" placeholder="Fullname" name="fullname" autocomplete="off" />
+                                </div>
+                                <div class="form-group py-3 border-top m-0">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="password" placeholder="Email" name="email" autocomplete="off" />
+                                </div>
+                                <div class="form-group py-3 border-top m-0">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="password" placeholder="Password" name="password" autocomplete="off" />
+                                </div>
+                                <div class="form-group py-3 border-top m-0">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="password" placeholder="Confirm password" name="rpassword" autocomplete="off" />
+                                </div>
+                                <div class="form-group mt-5">
+                                    <label class="checkbox checkbox-outline">
+                                        <input type="checkbox" name="agree" />I Agree the
+                                        <a href="#">terms and conditions</a>.
+                                        <span></span></label>
+                                </div>
+                                <div class="form-group d-flex flex-wrap flex-center">
+                                    <button id="kt_login_signup_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Submit</button>
+                                    <button id="kt_login_signup_cancel" class="btn btn-outline-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</button>
+                                </div>
+                            </form>
+                            <!--end::Form-->
+                        </div>
+                        <!--end::Signup-->
+                        <!--begin::Forgot-->
+                        <div class="login-form login-forgot">
+                            <div class="text-center mb-10 mb-lg-20">
+                                <h3 class="">Forgotten Password ?</h3>
+                                <p class="text-muted font-weight-bold">Enter your email to reset your password</p>
+                            </div>
+                            <!--begin::Form-->
+                            <form class="form" novalidate="novalidate">
+                                <div class="form-group py-3 border-bottom mb-10">
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="email" placeholder="Email" name="email" autocomplete="off" />
+                                </div>
+                                <div class="form-group d-flex flex-wrap flex-center">
+                                    <button id="kt_login_forgot_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Submit</button>
+                                    <button id="kt_login_forgot_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</button>
+                                </div>
+                            </form>
+                            <!--end::Form-->
+                        </div>
+                        <!--end::Forgot-->
+                    </div>
+                    <!--end::Aside body-->
+                    <!--begin: Aside footer for desktop-->
+                    <div class="d-flex flex-column-auto justify-content-between mt-15">
+                        <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© {{now()->format('Y')}} Ju Data science hub</div>
 
-                            @csrf
-
-                            <div class="form-group">
-                                <input class="form-control h-auto text-white placeholder-white opacity-70 bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5" type="text" placeholder="Email" name="email" autocomplete="off" />
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control h-auto text-white placeholder-white opacity-70 bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5" type="password" placeholder="Password" name="password" />
-                            </div>
-                            <div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8">
-                                <label class="checkbox checkbox-outline checkbox-white text-white m-0">
-                                    <input type="checkbox" name="remember" />Remember me
-                                    <span></span></label>
-                                <a href="javascript:;" id="kt_login_forgot" class="text-white font-weight-bold">Forget Password ?</a>
-                            </div>
-                            <div class="form-group text-center mt-10">
-                                <button id="kt_login_signin_submit" class="btn btn-pill btn-outline-white font-weight-bold opacity-90 px-15 py-3">Sign In</button>
-                            </div>
-                        </form>
+                        <div class="d-flex order-1 order-sm-2 my-2">
+                            <a href="#" class="text-muted text-hover-primary">Privacy</a>
+                            <a href="#" class="text-muted text-hover-primary ml-4">Legal</a>
+                            <a href="#" class="text-muted text-hover-primary ml-4">Contact</a>
+                        </div>
+                    </div>
+                    <!--end: Aside footer for desktop-->
+                </div>
+                <!--end: Aside Container-->
+            </div>
+            <!--begin::Aside-->
+            <!--begin::Content-->
+            <div class="order-1 order-lg-2 flex-column-auto flex-lg-row-fluid d-flex flex-column p-7" style="background-image: url(assets/media/bg/bg-4.jpg);">
+                <!--begin::Content body-->
+                <div class="d-flex flex-column-fluid flex-lg-center">
+                    <div class="d-flex flex-column justify-content-center">
+                        <h3 class="display-3 font-weight-bold my-7 text-white">Welcome to Ju Data Hub!</h3>
+                        <p class="font-weight-bold font-size-lg text-white opacity-80">Empowering Tomorrow's Innovators Today: Welcome to the Data Science Hub,<br> where insights fuel innovation!</p>
 
                     </div>
-
-
                 </div>
+                <!--end::Content body-->
             </div>
+            <!--end::Content-->
         </div>
         <!--end::Login-->
     </div>
@@ -167,12 +239,43 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
 
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    @stack('js')
+    <script>
+        @if(Session::has('message') && !Session::has('error'))
+        $(function() {
+            toastr.success('{{ Session::get('
+                message ') }}');
+        })
+        @endif
+
+
+        @if(Session::has('success') && !Session::has('error'))
+        $(function() {
+            toastr.success('{{ Session::get('
+                success ') }}');
+        })
+        @endif
+        @if(session('warning'))
+        $(function() {
+            swal.fire("Error!", "{{ session('warning') }}", "warning");
+        })
+        @endif
+
+        @if(session('error'))
+        $(function() {
+            toastr.error('{{ Session::get('message') }}');
+        })
+
+        @endif
+
+    </script>
+
 
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->
-    <script src="{{ asset('assets/js/pages/custom/login/login.js') }}"></script>
-
-    <!--end::Page Scripts-->
+    {{-- <script src="{{ asset('assets/js/pages/custom/user/login.js')}}"></script> --}}
+    <!--end::Page Scripts
+        -->
 </body>
 <!--end::Body-->
 </html>
