@@ -14,13 +14,18 @@
                     <td>Import Batch</td>
                     <td>Action</td>
                 </tr>
-                @foreach ($dataSchema->datas()->select('import_batch')->get() as $datum)
+                @foreach ($dataSchema->datas()->distinct('import_batch')->pluck('import_batch') as $batch)
                     <tr>
-                        <td>1</td>
-                        <td>Action</td>
+                        <td>Batch {{ $batch }}</td>
+                        <td>
+                            <a href="" class="btn btn-danger btn-sm">
+                                <i class="fal fa-trash"></i>
+                                Delete
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
-                @if ($dataSchema->datas()->select('import_batch')->count() == 0)
+                @if ($dataSchema->datas()->distinct('import_batch')->count() == 0)
                     <td class="text-capitalize text-danger text-center font-size-h4" colspan="2">No Record
                         Found
                     </td>

@@ -52,7 +52,11 @@
                 <tbody style="" class="datatable-body">
                     @foreach ($dataSchema->datas as $key => $item)
                         <tr>
-
+                            <td>{{ $key + 1 }}</td>
+                            @foreach (json_decode($item->values, true) as $key => $value)
+                                <td>{{ $value }}</td>
+                            @endforeach
+                            <td><a href="#" class="btn btn-danger"><i class="fal fa-trash"></i> Delete</a></td>
                         </tr>
                     @endforeach
 

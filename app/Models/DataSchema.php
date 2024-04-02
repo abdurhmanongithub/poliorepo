@@ -36,4 +36,7 @@ class DataSchema extends Model
         $array = json_decode($this->structure, true);
         return $array??[];
     }
+    public function getLastImportBatch(){
+        return Data::distinct('import_batch')->max('import_batch')??0;
+    }
 }

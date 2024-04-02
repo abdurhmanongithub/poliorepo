@@ -36,6 +36,7 @@ Route::middleware(['guest'])->group(function () {
         Route::get('/data', [DataSchemaController::class,'dataIndex'])->name('data.index');
         Route::get('/data/source', [DataSchemaController::class,'dataSource'])->name('data.source');
         Route::get('/data/import/view', [DataSyncController::class,'importView'])->name('data.import.view');
+        Route::post('/data/import/excel/preview', [DataSyncController::class,'syncPreviewFromExcel'])->name('data.sync.preview.excel');
         Route::post('/data/import/excel', [DataSyncController::class,'syncFromExcel'])->name('data.sync.excel');
         Route::post('/data/import/api', [DataSyncController::class,'syncFromApi'])->name('data.sync.api');
         Route::post('/data/attribute', [DataSchemaController::class,'storeAttribute'])->name('attribute.store');

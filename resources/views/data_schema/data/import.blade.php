@@ -30,7 +30,7 @@
         <div class="card-body">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="excel_tab_pane" role="tabpanel" aria-labelledby="excel_tab_pane">
-                    <form method="POST" action="{{ route('data_schema.data.sync.excel', ['data_schema' => $dataSchema]) }}"
+                    <form method="POST" action="{{ route('data_schema.data.sync.preview.excel', ['data_schema' => $dataSchema]) }}"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
