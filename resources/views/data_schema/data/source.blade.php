@@ -14,7 +14,7 @@
                     <td>Import Batch</td>
                     <td>Action</td>
                 </tr>
-                @foreach ($dataSchema->datas()->distinct('import_batch')->pluck('import_batch') as $batch)
+                @foreach ($dataSchema->getDataBatch() as $batch)
                     <tr>
                         <td>Batch {{ $batch }}</td>
                         <td>

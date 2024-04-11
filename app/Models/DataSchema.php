@@ -39,4 +39,8 @@ class DataSchema extends Model
     public function getLastImportBatch(){
         return Data::distinct('import_batch')->max('import_batch')??0;
     }
+    public function getDataBatch(){
+        return $this->datas()->distinct('import_batch')->pluck('import_batch');
+    }
+
 }

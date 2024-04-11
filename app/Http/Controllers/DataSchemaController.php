@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
+use App\Exports\DataExport;
 use App\Models\DataSchema;
 use App\Http\Requests\StoreDataSchemaRequest;
 use App\Http\Requests\UpdateDataSchemaRequest;
 use App\Models\Category;
+use App\Models\Data;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataSchemaController extends Controller
 {
@@ -153,12 +157,48 @@ class DataSchemaController extends Controller
         return redirect()->back()->with('success', 'Data schema attribute saved successfully');
 
     }
-    public function dataIndex(DataSchema $dataSchema){
+    public function dataIndex(DataSchema $dataSchema)
+    {
         $miniSide = true;
-        return view('data_schema.data.index',compact('dataSchema','miniSide'));
+        return view('data_schema.data.index', compact('dataSchema', 'miniSide'));
     }
 
-    public function dataSource(DataSchema $dataSchema){
-        return view('data_schema.data.source',compact('dataSchema'));
+    public function dataSource(DataSchema $dataSchema)
+    {
+        return view('data_schema.data.source', compact('dataSchema'));
+    }
+    public function exportData(Request $request, DataSchema $dataSchema)
+    {
+        $input = $request->validate([
+            'type' => 'required',
+            'batch' => 'required',
+        ]);
+        $datas = Data::query();
+        if ($input['batch'] != 'all') {
+            $datas = $datas->where('batch', $input['batch']);
+        }
+        $jsonStrings = $datas->pluck('values');
+        $datas = [];
+        $jsonStrings->each(function ($jsonString) use (&$datas) {
+            $datas[] = json_decode($jsonString, true);
+        });
+        $headingJson = json_decode($dataSchema->structure);
+        $headings = [];
+        foreach ($headingJson as $heading) {
+            $headings[] = $heading->name;
+        }
+        $fileName = 'datas.' . $input['type'];
+        switch($input['type']){
+            case Constants::EXPORT_TYPE_CSV:
+                return Excel::download(new DataExport($headings, $datas), $fileName, \Maatwebsite\Excel\Excel::CSV);
+            case Constants::EXPORT_TYPE_EXCEL:
+                return Excel::download(new DataExport($headings, $datas), $fileName, \Maatwebsite\Excel\Excel::XLSX);
+            case Constants::EXPORT_TYPE_PDF:
+                return Excel::download(new DataExport($headings, $datas), $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+            case Constants::EXPORT_TYPE_HTML:
+                return Excel::download(new DataExport($headings, $datas), $fileName, \Maatwebsite\Excel\Excel::HTML);
+        }
+        return "Non Supported export";
+
     }
 }

@@ -1,5 +1,6 @@
 @extends('layouts.sublayout')
 @section('nav_content')
+    @include('data_schema.data.export_modal')
     <div class="card card-custom">
         <div class="card-header py-3">
             <div class="card-title align-items-start flex-column">
@@ -17,17 +18,17 @@
                             <ul class="navi navi-hover">
 
                                 <li class="navi-item">
-                                    <a href="#" class="navi-link">
+                                    <a href="{{ route('data_schema.data.import.view',$dataSchema->id) }}" class="navi-link">
                                         <span class="navi-icon">
-                                            <i class="flaticon2-shopping-cart-1"></i>
+                                            <i class="fal fa-file-import"></i>
                                         </span>
                                         <span class="navi-text">Import Data</span>
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a href="#" class="navi-link">
+                                    <a href="#" data-toggle="modal" data-target="#exportDataModal" class="navi-link">
                                         <span class="navi-icon">
-                                            <i class="flaticon2-shopping-cart-1"></i>
+                                            <i class="fal fa-file-export"></i>
                                         </span>
                                         <span class="navi-text">Export Data</span>
                                     </a>

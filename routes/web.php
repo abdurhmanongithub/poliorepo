@@ -58,6 +58,7 @@ Route::middleware(['guest'])->group(function () {
         Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
         Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
         Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');
+        Route::post('/export', [DataSchemaController::class,'exportData'])->name('data.export');
     });
 });
 
