@@ -25,7 +25,7 @@ class DataSyncController extends Controller
     public function syncPreviewFromExcel(DataSchema $dataSchema, Request $request)
     {
         $request->validate([
-            'excel_file' => 'required|file|mimes:xlsx,xls', // Validate file type
+            'excel_file' => 'required|file|mimes:xlsx,xls,csv', // Validate file type
         ]);
         $filePath = $request->file('excel_file')->store('temp');
         $import = new ExcelImport(); // Create an instance of your import class

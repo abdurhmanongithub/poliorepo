@@ -19,7 +19,7 @@
                                 <label for="dataFormat">Data Format</label>
                                 <select name="type" class="select2 w-100 d-block" id="dataFormat">
                                     @foreach (\App\Constants::EXPORT_TYPES as $key => $exportType)
-                                    <option value="{{ $key }}">{{ $exportType }}</option>
+                                        <option value="{{ $key }}">{{ $exportType }}</option>
                                     @endforeach
                                 </select>
                                 @error('type')

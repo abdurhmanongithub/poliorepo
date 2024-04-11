@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Data;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
@@ -162,6 +163,7 @@ class DataSchemaController extends Controller
         $miniSide = true;
         return view('data_schema.data.index', compact('dataSchema', 'miniSide'));
     }
+    
 
     public function dataSource(DataSchema $dataSchema)
     {
@@ -188,7 +190,7 @@ class DataSchemaController extends Controller
             $headings[] = $heading->name;
         }
         $fileName = 'datas.' . $input['type'];
-        switch($input['type']){
+        switch ($input['type']) {
             case Constants::EXPORT_TYPE_CSV:
                 return Excel::download(new DataExport($headings, $datas), $fileName, \Maatwebsite\Excel\Excel::CSV);
             case Constants::EXPORT_TYPE_EXCEL:
@@ -200,5 +202,10 @@ class DataSchemaController extends Controller
         }
         return "Non Supported export";
 
+    }
+    public function eraseData(DataSchema $dataSchema)
+    {
+        DB::table('data')->where('data_schema_id', $dataSchema->id)->delete();
+        return redirect()->back()->with('success', 'Data Erased Successfully');
     }
 }

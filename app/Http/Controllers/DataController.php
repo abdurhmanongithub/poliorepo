@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Data;
 use App\Http\Requests\StoreDataRequest;
 use App\Http\Requests\UpdateDataRequest;
+use App\Models\DataSchema;
+use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function fetch(Request $request,DataSchema $dataSchema)
     {
-        //
+        $data = Data::where('data_schema_id',$dataSchema->id);
+        return datatables()->of($data->pluck('values'))->toJson();
     }
 
     /**
