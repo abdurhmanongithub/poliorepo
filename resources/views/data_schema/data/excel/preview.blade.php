@@ -10,14 +10,16 @@
                 </h3>
             </div>
             <div class="card-toolbar">
-                <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
-                    <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
-                <form action="{{ route('data_schema.data.sync.excel', ['data_schema'=>$dataSchema->id]) }}" id="importForm" method="POST">
+                <form action="{{ route('data_schema.data.sync.excel', ['data_schema' => $dataSchema->id]) }}" id="importForm"
+                    method="POST">
+
+                    <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
+                        <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
                     <input type="hidden" name="file_path" value="{{ $filePath }}">
                     @csrf
                     <a href="#" onclick="event.preventDefault();$('#importForm').submit()"
                         class="btn btn-light-primary font-weight-bolder mr-2">
-                        <i class="fal fa-file-import icon-xs"></i>Import
+                        <i class="fal fa-file-import icon-xs"></i>Continue Import
                     </a>
                 </form>
 
@@ -25,7 +27,7 @@
         </div>
         <div class="card-body">
             @if ($excelData)
-                <table class="table table-bordered">
+                <table class="table table-bordered table-hover table-checkable" id="kt_datatable">
                     <thead>
                         <tr>
                             @foreach ($excelData[0][0] as $header)
@@ -34,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($excelData[0]->slice(1, 50) as $row)
+                        @foreach ($excelData[0]->slice(1, 10) as $row)
                             <tr>
                                 @foreach ($row as $value)
                                     <td>{{ $value }}</td>

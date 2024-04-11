@@ -12,4 +12,5 @@ class Data extends Model
     protected $casts = [
         'values' => 'json',
     ];
+
 }

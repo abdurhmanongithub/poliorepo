@@ -40,10 +40,13 @@ class DataSyncController extends Controller
         $excelData = Excel::toCollection($import, storage_path('app/' . $filePath))->first();
         $data = [];
         $importBatch = $dataSchema->getLastImportBatch() + 1;
+        $categoryAbbreviation = strtoupper(substr($dataSchema->subCategory->category->name, 0, 2));
+        $subCategoryAbbreviation = strtoupper(substr($dataSchema->subCategory->name, 0, 2));
+        $importBatch = $categoryAbbreviation . '_' . $subCategoryAbbreviation . '_' . date('Y_m_d') . '_' . $importBatch;
 
         // Get the keys from the first row
         $keys = $excelData->shift()->toArray();
-        $schema = json_decode($dataSchema->structure,true);
+        $schema = $dataSchema->structure;
         $names = [];
         foreach ($schema as $item) {
             $names[] = $item['name'];
@@ -54,8 +57,8 @@ class DataSyncController extends Controller
             $rowData['import_batch'] = $importBatch;
             $rowData['is_from_api'] = false;
             $values = [];
-            foreach($rowData as $key=>$datum){
-                if(in_array($key,$names)){
+            foreach ($rowData as $key => $datum) {
+                if (in_array($key, $names)) {
                     $values[$key] = $datum;
                     unset($rowData[$key]);
                 }
@@ -66,7 +69,7 @@ class DataSyncController extends Controller
         if (!empty($data)) {
             Data::insert($data); // Replace Model with your actual Eloquent model class
         }
-        return redirect()->route('data_schema.manage',['data_schema'=>$dataSchema->id]);
+        return redirect()->route('data_schema.data.index', ['data_schema' => $dataSchema->id])->with('success', 'Data imported successfully');
 
     }
 }
