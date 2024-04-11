@@ -19,19 +19,17 @@
                             @foreach ($dataSchema->getListOfAttributes() as $attribute)
                                 '{{ $attribute['name'] }}',
                             @endforeach
-                            'Actions'
                         ],
                     },
                 },
-                columns: [
+                columns: function() {
+                    var columns = [];
                     @foreach ($dataSchema->getListOfAttributes() as $attribute)
-                        {
-                            data: '{{ $attribute['name'] }}'
-                        },
-                    @endforeach {
-                        data: 'Actions'
-                    }
-                ],
+                        columns.push({ data: '{{ $attribute['name'] }}' });
+                    @endforeach
+                    columns.push({ data: null, title: 'Actions' }); // Add an empty column for Actions
+                    return columns;
+                }(),
                 columnDefs: [{
                     targets: -1,
                     title: 'Actions',
@@ -58,17 +56,15 @@
                             </a>\
                         ';
                     },
-                }, ],
+                }],
             });
         };
 
         return {
-
             //main function to initiate the module
             init: function() {
                 initTable1();
             },
-
         };
 
     }();

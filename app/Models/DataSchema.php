@@ -12,6 +12,9 @@ class DataSchema extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = [
+        'structure' => 'json',
+    ];
 
     /**
      * Get the subCategory that owns the DataSchema
@@ -33,7 +36,7 @@ class DataSchema extends Model
     }
 
     public function getListOfAttributes(){
-        $array = json_decode($this->structure, true);
+        $array = $this->structure;
         return $array??[];
     }
     public function getLastImportBatch(){

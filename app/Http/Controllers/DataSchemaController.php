@@ -163,7 +163,7 @@ class DataSchemaController extends Controller
         $miniSide = true;
         return view('data_schema.data.index', compact('dataSchema', 'miniSide'));
     }
-    
+
 
     public function dataSource(DataSchema $dataSchema)
     {
@@ -182,12 +182,12 @@ class DataSchemaController extends Controller
         $jsonStrings = $datas->pluck('values');
         $datas = [];
         $jsonStrings->each(function ($jsonString) use (&$datas) {
-            $datas[] = json_decode($jsonString, true);
+            $datas[] = $jsonString;
         });
-        $headingJson = json_decode($dataSchema->structure);
+        $headingJson = $dataSchema->structure;
         $headings = [];
         foreach ($headingJson as $heading) {
-            $headings[] = $heading->name;
+            $headings[] = $heading['name'];
         }
         $fileName = 'datas.' . $input['type'];
         switch ($input['type']) {

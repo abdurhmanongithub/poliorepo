@@ -153,6 +153,16 @@
         <div class="card-body">
             <table class="table table-bordered table-hover table-checkable" id="datatable"
                 style="margin-top: 13px !important">
+                <thead>
+                    <tr>
+                        @foreach ($dataSchema->getListOfAttributes() as $attribute)
+                            <td>
+                                {{ $attribute['name'] }}
+                            </td>
+                        @endforeach
+                        <td>Actions</td>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
