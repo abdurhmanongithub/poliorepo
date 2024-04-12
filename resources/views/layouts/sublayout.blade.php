@@ -169,6 +169,24 @@
                                 <span class="navi-text font-size-lg">Source Management</span>
                             </a>
                         </div>
+                        <div class="navi-item mb-2">
+                            <a href="{{ route('data_schema.dashboard.management',$dataSchema->id) }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.dashboard.management') === 0 ? 'active' : '' }} py-4">
+                                <span class="navi-icon mr-2">
+                                    <i class="fa fa-circle"></i>
+                                </span>
+                                <span class="navi-text font-size-lg">Dashboard Management</span>
+                            </a>
+                        </div>
+                        <div class="navi-item mb-2">
+                            <a href="{{ route('data_schema.resource.management',$dataSchema->id) }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.resource.management') === 0 ? 'active' : '' }} py-4">
+                                <span class="navi-icon mr-2">
+                                    <i class="fa fa-circle"></i>
+                                </span>
+                                <span class="navi-text font-size-lg">Resource Management</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

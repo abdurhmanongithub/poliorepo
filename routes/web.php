@@ -64,6 +64,8 @@ Route::middleware(['guest'])->group(function () {
         Route::post('/erase', [DataSchemaController::class,'eraseData'])->name('data.erase');
         Route::post('/source/delete', [DataSchemaController::class,'sourceDelete'])->name('source.delete');
         Route::get('/data/import/template/download',[DataSchemaController::class,'dataImportTemplateDownload'])->name('import.template.download');
+        Route::get('/dashboard_management',[DataSchemaController::class,'dashboardManagement'])->name('dashboard.management');
+        Route::get('/resource_management',[DataSchemaController::class,'dashboardManagement'])->name('resource.management');
     });
 });
 

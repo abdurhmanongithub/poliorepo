@@ -225,4 +225,8 @@ class DataSchemaController extends Controller
         }
         return Excel::download(new DataImportTemplateExport($headers), $dataSchema->getNextDataSource().'.xlsx');
     }
+
+    public function dashboardManagement (DataSchema $dataSchema){
+        return view('data_schema.dashboard.management',compact('dataSchema'));
+    }
 }

@@ -8,7 +8,7 @@
                     Attributes Available</span>
             </div>
             <div class="card-toolbar">
-                <button type="reset" class="btn btn-success mr-2">Export Report</button>
+                {{--  <button type="reset" class="btn btn-success mr-2">Export Report</button>  --}}
             </div>
         </div>
         <div class="card-body">
