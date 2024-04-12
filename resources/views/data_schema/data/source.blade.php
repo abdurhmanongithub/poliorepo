@@ -1,6 +1,29 @@
 @extends('layouts.sublayout')
 @section('title', 'Import Page')
+@push('js')
+    <script>
+        function deleteSource(route,source) {
+            swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            }).then(function(result) {
+                if (result.value) {
+                    $('#deleteSourceForm').attr('action', route);
+                    $('#dataSourceValue').val(source);
+                    $('#deleteSourceForm').submit();
+                }
+            });
+        }
+    </script>
+@endpush
 @section('nav_content')
+    <form action="" method="POST" id="deleteSourceForm">
+        <input type="hidden" name="source" id="dataSourceValue">
+        @csrf
+    </form>
     <div class="card card-custom">
         <div class="card-header py-3">
             <div class="card-title align-items-start flex-column">
@@ -18,7 +41,9 @@
                     <tr>
                         <td>Batch {{ $batch }}</td>
                         <td>
-                            <a href="" class="btn btn-danger btn-sm">
+                            <a href="#"
+                                onclick="deleteSource('{{ route('data_schema.source.delete', ['data_schema' => $dataSchema->id]) }}','{{ $batch }}');"
+                                class="btn btn-danger btn-sm">
                                 <i class="fal fa-trash"></i>
                                 Delete
                             </a>

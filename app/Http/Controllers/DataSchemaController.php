@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants;
 use App\Exports\DataExport;
+use App\Exports\DataImportTemplateExport;
 use App\Models\DataSchema;
 use App\Http\Requests\StoreDataSchemaRequest;
 use App\Http\Requests\UpdateDataSchemaRequest;
@@ -207,5 +208,21 @@ class DataSchemaController extends Controller
     {
         DB::table('data')->where('data_schema_id', $dataSchema->id)->delete();
         return redirect()->back()->with('success', 'Data Erased Successfully');
+    }
+    public function sourceDelete(DataSchema $dataSchema,Request $request){
+        $input = $request->validate([
+            'source' => 'required'
+        ]);
+        $dataSource = $input['source'];
+        DB::table('data')->where('data_schema_id', $dataSchema->id)->where('import_batch',$dataSource)->delete();
+        return redirect()->back()->with('success', 'Data Source Deleted Successfully');
+    }
+    public function dataImportTemplateDownload(DataSchema $dataSchema){
+        $columns = $dataSchema->structure;
+        $headers = [];
+        foreach ($columns as $column) {
+            $headers[] = $column['name'];
+        }
+        return Excel::download(new DataImportTemplateExport($headers), $dataSchema->getNextDataSource().'.xlsx');
     }
 }

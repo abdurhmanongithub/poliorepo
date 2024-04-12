@@ -13,4 +13,5 @@ class Data extends Model
         'values' => 'json',
     ];
 
+    
 }

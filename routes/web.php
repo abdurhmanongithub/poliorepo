@@ -62,6 +62,8 @@ Route::middleware(['guest'])->group(function () {
         Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');
         Route::post('/export', [DataSchemaController::class,'exportData'])->name('data.export');
         Route::post('/erase', [DataSchemaController::class,'eraseData'])->name('data.erase');
+        Route::post('/source/delete', [DataSchemaController::class,'sourceDelete'])->name('source.delete');
+        Route::get('/data/import/template/download',[DataSchemaController::class,'dataImportTemplateDownload'])->name('import.template.download');
     });
 });
 

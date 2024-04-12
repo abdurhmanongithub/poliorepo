@@ -39,10 +39,7 @@ class DataSyncController extends Controller
         $import = new ExcelImport();
         $excelData = Excel::toCollection($import, storage_path('app/' . $filePath))->first();
         $data = [];
-        $importBatch = $dataSchema->getLastImportBatch() + 1;
-        $categoryAbbreviation = strtoupper(substr($dataSchema->subCategory->category->name, 0, 2));
-        $subCategoryAbbreviation = strtoupper(substr($dataSchema->subCategory->name, 0, 2));
-        $importBatch = $categoryAbbreviation . '_' . $subCategoryAbbreviation . '_' . date('Y_m_d') . '_' . $importBatch;
+        $importBatch = $dataSchema->getNextDataSource();
 
         // Get the keys from the first row
         $keys = $excelData->shift()->toArray();

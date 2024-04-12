@@ -35,7 +35,8 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="#" class="navi-link">
+                                            <a href="{{ route('data_schema.import.template.download', ['data_schema' => $dataSchema->id]) }}"
+                                                class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="fal fa-download"></i>
                                                 </span>
