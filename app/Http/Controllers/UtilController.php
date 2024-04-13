@@ -7,4 +7,8 @@ use Illuminate\Http\Request;
 class UtilController extends Controller
 {
     //
+    public function dashboard(){
+
+
+    }
 }

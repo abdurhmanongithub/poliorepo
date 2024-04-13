@@ -30,4 +30,9 @@ class SubCategory extends Model
     {
         return $this->hasMany(DataSchema::class);
     }
+    public function approvers()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 }

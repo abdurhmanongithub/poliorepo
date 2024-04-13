@@ -36,19 +36,35 @@
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
     <!--begin::Main-->
     <div class="d-flex flex-column flex-root">
+
         <!--begin::Login-->
         <div class="login login-6 login-signin-on d-flex flex-column flex-lg-row flex-row-fluid bg-white" id="kt_login">
             <!--begin::Aside-->
             <div class="login-aside order-2 order-lg-1 d-flex flex-column-fluid flex-lg-row-auto bgi-size-cover bgi-no-repeat p-7 p-lg-10">
+
+
+
                 <!--begin: Aside Container-->
                 <div class="d-flex flex-row-fluid flex-column justify-content-between">
                     <!--begin::Aside body-->
                     <div class="d-flex flex-column-fluid flex-column flex-center mt-5 mt-lg-0">
+
                         <a href="#" class="mb-15 text-center">
                             <img src="{{ asset('assets/ju_logo.png') }}" class="max-h-80px" alt="" />
                         </a>
+
                         <!--begin::Signin-->
                         <div class="login-form login-signin">
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
                             <div class="text-center mb-10 mb-lg-20">
                                 <h2 class="font-weight-bold">Sign In</h2>
                                 <p class="text-muted font-weight-bold">Enter your username and password</p>
@@ -57,15 +73,17 @@
                             <form class="form" action="{{route('login.store')}}" method="POST" novalidate="novalidate">
                                 @csrf
                                 <div class="form-group py-3 m-0">
-                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="Email" placeholder="Email" name="email" autocomplete="off" />
+                                    <input class="form-control" type="Email" placeholder="Email" name="email" autocomplete="off" required />
+
+
                                 </div>
                                 <div class="form-group py-3 border-top m-0">
-                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="Password" placeholder="Password" name="password" />
+                                    <input class="form-control" type="Password" placeholder="Password" name="password" required />
                                 </div>
                                 <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-3">
-                                    <label class="checkbox checkbox-outline m-0 text-muted">
+                                    {{-- <label class="checkbox checkbox-outline m-0 text-muted">
                                         <input type="checkbox" name="remember" />Remember me
-                                        <span></span></label>
+                                        <span></span></label> --}}
                                     <a href="javascript:;" id="kt_login_forgot" class="text-muted text-hover-primary">Forgot Password ?</a>
                                 </div>
                                 <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-2">
@@ -82,9 +100,20 @@
                         <!--begin::Signup-->
                         <div class="login-form login-signup">
                             <div class="text-center mb-10 mb-lg-20">
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
                                 <h3 class="">Sign Up</h3>
                                 <p class="text-muted font-weight-bold">Enter your details to create your account</p>
                             </div>
+
                             <!--begin::Form-->
                             <form class="form" novalidate="novalidate">
                                 <div class="form-group py-3 m-0">
@@ -263,7 +292,8 @@
 
         @if(session('error'))
         $(function() {
-            toastr.error('{{ Session::get('message') }}');
+            toastr.error('{{ Session::get('
+                message ') }}');
         })
 
         @endif

@@ -1,11 +1,12 @@
 @extends('base')
-@section('title', 'Data sub Categories')
+@section('title', 'Approver on the sub')
 @push('js')
 <script>
-    function deleteItem(route, parent) {
+    function deleteItem(route, parent, user_id, sub_category_id) {
+
         event.preventDefault();
         Swal.fire({
-            title: "Are you sure to delete?"
+            title: "Are you sure to remove the Approver?"
             , text: "You won't be able to revert this!"
             , type: "warning"
             , showCancelButton: true
@@ -18,6 +19,9 @@
                     , data: {
                         "_method": 'DELETE'
                         , "_token": $('meta[name="csrf-token"]').attr('content')
+                        'user_id': user_id
+                        , 'sub_category_id': sub_category_id
+
                     , }
                     , dataType: 'json'
                     , success: function(data) {
@@ -30,6 +34,7 @@
                     }
                     , error: function(data) {
                         if (data.status) {
+                            console.log(data);
                             Swal.fire("Forbidden!", "You can't delete this", "error");
                         }
                     }
@@ -47,7 +52,6 @@
         $('#editCategoryModal').modal('show');
 
     }
-
     $(document).ready(function() {
         $('#editForm').submit(function(event) {
             event.preventDefault();
@@ -73,7 +77,7 @@
 </script>
 @endpush
 @section('content')
-@include('sub_category.modal')
+@include('sub_category.assign_approver_modal')
 
 <div class="card card-custom">
     @if ($errors->any())
@@ -90,9 +94,10 @@
     <div class="card-header flex-wrap border-0 pt-6 pb-0">
         <div class="card-title">
             <h3 class="card-label">
-                <span>Total: {{ $items->total() }}</span>
-                data sub categories
-                <span class="d-block text-muted pt-2 font-size-sm">All sub categories</span>
+                <span>Total: {{ count($approvers) }}</span>
+                Approvers
+                <span class="d-block text-muted pt-2 font-size-sm">All Approvers</span>
+
                 <div class="">
                 </div>
             </h3>
@@ -102,8 +107,8 @@
             Sub
             Category</a> --}}
 
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2"></i>Add Data
-                Category</button>
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2"></i>Add sub Category
+                Approver</button>
         </div>
     </div>
     <div class="card-body">
@@ -113,28 +118,21 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Sub Category Name</th>
-                        <th>Category Name</th>
-                        <th>Total Data</th>
+                        <th>Name</th>
                         <th> Actions</th>
                     </tr>
                 </thead>
                 <tbody style="" class="datatable-body">
-                    @foreach ($items as $key => $item)
+
+                    @foreach ($approvers as $key => $approver)
+
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $item?->name }}</td>
-                        <td>{{ $item?->category?->name }}</td>
-                        <td></td>
+                        <td>{{ $approver?->full_name }}</td>
+
                         <td class="d-flex justify-content-around">
-                            <a href="{{ route('sub_category.show', ['sub_category'=>$item]) }}"><i class="fa fa-eye text-info"></i></a>
 
-
-
-                            <a href="#" onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}',{{ $item->category_id }} ,'{{ $item->description }}','{{ route('sub_category.update',['sub_category'=>$item->id]) }}')" class="">
-                                <i class="fa fa-pen"></i>
-                            </a>
-                            <a href="#" onclick="event.preventDefault();deleteItem('{{ route('sub_category.destroy', ['sub_category' => $item->id]) }}',$(this))" class="">
+                            <a href="#" onclick="event.preventDefault();deleteItem('{{ route('sub_category.unassign_approver') }}',$(this))" class="">
                                 <i class="fa fa-trash text-danger"></i>
                             </a>
 
@@ -142,7 +140,8 @@
                     </tr>
                     @endforeach
 
-                    @if (count($items) < 1) <tr>
+                    @if (count($approvers) < 1) <tr>
+
                         <td class="text-capitalize text-danger text-center font-size-h4" colspan="5">No Record
                             Found</td>
                         </tr>

@@ -23,19 +23,22 @@ use App\Http\Controllers\RoleController;
 |
 */
 
-Route::get('/', function () {
-    return view('base');
-});
 Route::get('/login', [LoginController::class, 'loginView'])->name('login');
 Route::post('/login/store', [LoginController::class, 'store'])->name('login.store');
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+
+        return view('base');
+    });
     Route::get('/dashboard', [UtilController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', CategoryController::class);
     Route::resource('sub_category', SubCategoryController::class);
     Route::resource('data_schema', DataSchemaController::class);
+    Route::post('/users/assign/sub_category', [SubCategoryController::class, 'assignSubCategory'])->name('sub_category.assign_approver');
+    Route::post('/users/unassign/sub_category', [SubCategoryController::class, 'unassignSubCategory'])->name('sub_category.unassign_approver');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
@@ -47,14 +50,14 @@ Route::middleware(['guest'])->group(function () {
     Route::group(['prefix' => 'data_schema/{data_schema}', 'as' => 'data_schema.'], function () {
     });
     Route::prefix('data_schema/{data_schema}')->name('data_schema.')->group(function () {
-        Route::get('/manage', [DataSchemaController::class,'manage'])->name('manage');
-        Route::get('/data', [DataSchemaController::class,'dataIndex'])->name('data.index');
-        Route::get('/data/source', [DataSchemaController::class,'dataSource'])->name('data.source');
-        Route::get('/data/import/view', [DataSyncController::class,'importView'])->name('data.import.view');
-        Route::post('/data/import/excel/preview', [DataSyncController::class,'syncPreviewFromExcel'])->name('data.sync.preview.excel');
-        Route::post('/data/import/excel', [DataSyncController::class,'syncFromExcel'])->name('data.sync.excel');
-        Route::post('/data/import/api', [DataSyncController::class,'syncFromApi'])->name('data.sync.api');
-        Route::post('/data/attribute', [DataSchemaController::class,'storeAttribute'])->name('attribute.store');
+        Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
+        Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
+        Route::get('/data/source', [DataSchemaController::class, 'dataSource'])->name('data.source');
+        Route::get('/data/import/view', [DataSyncController::class, 'importView'])->name('data.import.view');
+        Route::post('/data/import/excel/preview', [DataSyncController::class, 'syncPreviewFromExcel'])->name('data.sync.preview.excel');
+        Route::post('/data/import/excel', [DataSyncController::class, 'syncFromExcel'])->name('data.sync.excel');
+        Route::post('/data/import/api', [DataSyncController::class, 'syncFromApi'])->name('data.sync.api');
+        Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');
         Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
         Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
         Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');

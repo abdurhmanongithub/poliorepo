@@ -10,6 +10,7 @@ class Constants
         'numeric',
         'image',
     ];
+    const ROLE_APPROVER = 'Approver';
     const RESEARCHER_USER = 0;
     const EXTERNAL_USER = 1;
     const USER_TYPES = [

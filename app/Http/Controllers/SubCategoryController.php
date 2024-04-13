@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\SubCategory;
 use App\Http\Requests\StoreSubCategoryRequest;
 use App\Http\Requests\UpdateSubCategoryRequest;
 use App\Models\Category;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
@@ -16,7 +19,7 @@ class SubCategoryController extends Controller
     {
         $items = SubCategory::paginate(100);
         $categories = Category::all();
-        return view('sub_category.index', compact('items','categories'));
+        return view('sub_category.index', compact('items', 'categories'));
     }
 
     /**
@@ -26,7 +29,7 @@ class SubCategoryController extends Controller
     {
         $subCategory = new SubCategory();
         $categories = Category::all();
-        return view('sub_category.create', compact('subCategory','categories'));
+        return view('sub_category.create', compact('subCategory', 'categories'));
     }
 
     /**
@@ -54,6 +57,7 @@ class SubCategoryController extends Controller
     public function show(SubCategory $subCategory)
     {
         //
+        return view('sub_category.show', ['subCategory' => $subCategory, 'approvers' => $subCategory->approvers, 'users' => User::all()]);
     }
 
     /**
@@ -62,7 +66,7 @@ class SubCategoryController extends Controller
     public function edit(SubCategory $subCategory)
     {
         $categories = Category::all();
-        return view('sub_category.edit', compact('subCategory','categories'));
+        return view('sub_category.edit', compact('subCategory', 'categories'));
     }
 
     /**
@@ -89,8 +93,28 @@ class SubCategoryController extends Controller
         if ($subCategory->dataSchemas()->count() == 0) {
             $subCategory->delete();
             return response()->json(['message' => 'Item deleted successfully.'], 200);
-        }else{
+        } else {
             return response()->json(['message' => 'Item is used by other resources'], 403);
 
-        }    }
+        }
+    }
+    public function assignSubCategory(Request $request)
+    {
+        $user = User::find($request->get('user_id'));
+        $subcategory = Subcategory::find($request->get('sub_category_id'));
+        // dd($subcategory);
+        $user->assignRole(Constants::ROLE_APPROVER);
+
+        $user->subcategories()->attach($subcategory);
+        return redirect()->back()->with('success', 'Subcategory assigned successfully');
+    }
+
+    public function unassignSubCategory(Request $request)
+    {
+        $user = User::find($request->get('user_id'));
+        $subcategory = Subcategory::find($request->get('sub_category_id'));
+        $user->subcategories()->detach($subcategory);
+        return redirect()->back()->with('success', 'Subcategory unassigned successfully');
+    }
+
 }

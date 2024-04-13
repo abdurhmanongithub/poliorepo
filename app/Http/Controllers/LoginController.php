@@ -23,10 +23,11 @@ class LoginController extends Controller
         // dd($request);
         $credential = $request->only('email', 'password');
         // dd($credential);
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // return redirect()->intended(RouteServiceProvider::HOME);
 
-        if (!Auth::attempt($credential, )) {
-            return redirect()->back()->with('error', 'Invalid Credentials');
+        if (!Auth::attempt($credential)) {
+
+            return redirect()->back()->withInput()->withErrors(['email' => 'Invalid email or password']);
         }
 
         $request->session()->regenerate();
