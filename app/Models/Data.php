@@ -9,5 +9,9 @@ class Data extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = [
+        'values' => 'json',
+    ];
 
+    
 }

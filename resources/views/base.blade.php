@@ -28,6 +28,17 @@
         <!--end::Layout Themes-->
         @stack('css')
         <link rel="shortcut icon" href="{{ asset('assets/ju_logo.png') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/js/pages/crud/forms/widgets/select2.min.js') }}">
+        <style>
+            .modal-content .select2-container {
+                width: 100% !important;
+            }
+
+            .modal-content .select2-dropdown {
+                width: 100% !important;
+            }
+        </style>
+
     </head>
     <!--end::Head-->
     <!--begin::Body-->
@@ -421,6 +432,10 @@
         <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
         <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
         <script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.min.js') }}"></script>
+        <script>
+            $('.select2').select2({});
+        </script>
         @stack('js')
         <script>
             @if(Session::has('message') && !Session::has('error'))

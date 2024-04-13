@@ -43,6 +43,7 @@
                         </div>
                         <div>
                             <button type="submit" class="btn btn-primary">Import From Excel</button>
+                            <a href="{{ route('data_schema.import.template.download', $dataSchema->id) }}" class="btn btn-primary">Download Import From</a>
                         </div>
                     </form>
                 </div>

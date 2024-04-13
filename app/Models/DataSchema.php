@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +11,9 @@ class DataSchema extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = [
+        'structure' => 'json',
+    ];
 
     /**
      * Get the subCategory that owns the DataSchema
@@ -32,11 +34,32 @@ class DataSchema extends Model
         return $this->hasMany(Data::class);
     }
 
-    public function getListOfAttributes(){
-        $array = json_decode($this->structure, true);
-        return $array??[];
+    public function getListOfAttributes()
+    {
+        $array = $this->structure;
+        return $array ?? [];
     }
-    public function getLastImportBatch(){
-        return Data::distinct('import_batch')->max('import_batch')??0;
+    public function getLastImportBatch()
+    {
+        return Data::distinct('import_batch')->max('import_batch') ?? 0;
+    }
+    public function getDataBatch()
+    {
+        return $this->datas()->distinct('import_batch')->pluck('import_batch');
+    }
+    public function getNextDataSource()
+    {
+        $lastImportBatch = $this->getLastImportBatch();
+        if ($lastImportBatch) {
+            $lastValue = explode('_', $lastImportBatch);
+            $lastValue = end($lastValue);
+            $importBatch = $lastValue + 1;
+        } else {
+            $importBatch = 1;
+        }
+
+        $categoryAbbreviation = strtoupper(substr($this->subCategory->category->name, 0, 2));
+        $subCategoryAbbreviation = strtoupper(substr($this->subCategory->name, 0, 2));
+        return $categoryAbbreviation . '_' . $subCategoryAbbreviation . '_' . date('Y_m_d') . '_' . $importBatch;
     }
 }

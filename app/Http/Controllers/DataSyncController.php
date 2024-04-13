@@ -25,7 +25,7 @@ class DataSyncController extends Controller
     public function syncPreviewFromExcel(DataSchema $dataSchema, Request $request)
     {
         $request->validate([
-            'excel_file' => 'required|file|mimes:xlsx,xls', // Validate file type
+            'excel_file' => 'required|file|mimes:xlsx,xls,csv', // Validate file type
         ]);
         $filePath = $request->file('excel_file')->store('temp');
         $import = new ExcelImport(); // Create an instance of your import class
@@ -39,11 +39,11 @@ class DataSyncController extends Controller
         $import = new ExcelImport();
         $excelData = Excel::toCollection($import, storage_path('app/' . $filePath))->first();
         $data = [];
-        $importBatch = $dataSchema->getLastImportBatch() + 1;
+        $importBatch = $dataSchema->getNextDataSource();
 
         // Get the keys from the first row
         $keys = $excelData->shift()->toArray();
-        $schema = json_decode($dataSchema->structure,true);
+        $schema = $dataSchema->structure;
         $names = [];
         foreach ($schema as $item) {
             $names[] = $item['name'];
@@ -54,8 +54,8 @@ class DataSyncController extends Controller
             $rowData['import_batch'] = $importBatch;
             $rowData['is_from_api'] = false;
             $values = [];
-            foreach($rowData as $key=>$datum){
-                if(in_array($key,$names)){
+            foreach ($rowData as $key => $datum) {
+                if (in_array($key, $names)) {
                     $values[$key] = $datum;
                     unset($rowData[$key]);
                 }
@@ -66,7 +66,7 @@ class DataSyncController extends Controller
         if (!empty($data)) {
             Data::insert($data); // Replace Model with your actual Eloquent model class
         }
-        return redirect()->route('data_schema.manage',['data_schema'=>$dataSchema->id]);
+        return redirect()->route('data_schema.data.index', ['data_schema' => $dataSchema->id])->with('success', 'Data imported successfully');
 
     }
 }
