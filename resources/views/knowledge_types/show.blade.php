@@ -1,12 +1,12 @@
 @extends('base')
-@section('title', 'Data Categories')
-
+@section('title', 'Approver on the sub')
 @push('js')
 <script>
-    function deleteItem(route, parent) {
+    function deleteItem(route, parent, user_id, sub_category_id) {
+
         event.preventDefault();
         Swal.fire({
-            title: "Are you sure to delete?"
+            title: "Are you sure to remove the Approver?"
             , text: "You won't be able to revert this!"
             , type: "warning"
             , showCancelButton: true
@@ -19,10 +19,13 @@
                     , data: {
                         "_method": 'DELETE'
                         , "_token": $('meta[name="csrf-token"]').attr('content')
+                        'user_id': user_id
+                        , 'sub_category_id': sub_category_id
+
                     , }
                     , dataType: 'json'
                     , success: function(data) {
-                        $(parent).closest('tr').remove();
+                        $(parent).closest('tr')[0].remove();
                         Swal.fire(
                             "Deleted!"
                             , "Item has been deleted."
@@ -32,7 +35,7 @@
                     , error: function(data) {
                         if (data.status) {
                             console.log(data);
-                            Swal.fire(data.statusText + "", data.responseJson + ' ', "error");
+                            Swal.fire("Forbidden!", "You can't delete this", "error");
                         }
                     }
                 });
@@ -40,15 +43,15 @@
         });
     }
 
-    function openEditModal(id, name, description, route) {
+    function openEditModal(id, name, categoryId, description, route) {
         $('#editCategoryModal #edit_id').val(id);
         $('#editCategoryModal #edit_name').val(name);
+        $('#editCategoryModal #edit_category').val(categoryId);
         $('#editCategoryModal #edit_description').val(description);
         $('#editCategoryModal #editCategoryForm').attr('action', route);
         $('#editCategoryModal').modal('show');
 
     }
-
     $(document).ready(function() {
         $('#editForm').submit(function(event) {
             event.preventDefault();
@@ -73,9 +76,9 @@
 
 </script>
 @endpush
-
 @section('content')
-@include('category.modal')
+@include('sub_category.assign_approver_modal')
+
 <div class="card card-custom">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -87,24 +90,27 @@
         </ul>
     </div>
     @endif
-    <div class="card-header">
+
+    <div class="card-header flex-wrap border-0 pt-6 pb-0">
         <div class="card-title">
             <h3 class="card-label">
-                <span>Total: {{ $items->total() }}</span>
-                data categories
-                <span class="d-block text-muted pt-2 font-size-sm">All data categories</span>
+                <span>Total: {{ count($approvers) }}</span>
+                Approvers
+                <span class="d-block text-muted pt-2 font-size-sm">All Approvers</span>
+
                 <div class="">
                 </div>
             </h3>
         </div>
         <div class="card-tools">
-            <button type="button" class="btn btn-primary mb-3 my-2" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2 my-2"></i>Add Data
+            {{-- <a href="{{ route('sub_category.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add
+            Sub
+            Category</a> --}}
 
-                Category</button>
-
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2"></i>Add sub Category
+                Approver</button>
         </div>
     </div>
-    <!-- Rest of your content -->
     <div class="card-body">
         <!--begin: Datatable-->
         <div class="datatable datatable-default datatable-bordered datatable-loaded">
@@ -112,30 +118,31 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Category Name</th>
-                        <th>Total Data</th>
+                        <th>Name</th>
                         <th> Actions</th>
                     </tr>
                 </thead>
                 <tbody style="" class="datatable-body">
-                    @foreach ($items as $key => $item)
+
+                    @foreach ($approvers as $key => $approver)
+
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td></td>
+                        <td>{{ $approver?->full_name }}</td>
+
                         <td class="d-flex justify-content-around">
-                            <a href="#" onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}', '{{ $item->description }}','{{ route('category.update',['category'=>$item->id]) }}')">
-                                <i class="fa fa-pen"></i>
-                            </a>
-                            <a href="#" onclick="deleteItem('{{ route('category.destroy', ['category' => $item->id]) }}', $(this))">
+
+                            <a href="#" onclick="event.preventDefault();deleteItem('{{ route('sub_category.unassign_approver') }}',$(this))" class="">
                                 <i class="fa fa-trash text-danger"></i>
                             </a>
+
                         </td>
                     </tr>
                     @endforeach
 
-                    @if (count($items) < 1) <tr>
-                        <td class="text-capitalize text-danger text-center font-size-h4" colspan="4">No Record
+                    @if (count($approvers) < 1) <tr>
+
+                        <td class="text-capitalize text-danger text-center font-size-h4" colspan="5">No Record
                             Found</td>
                         </tr>
                         @endif

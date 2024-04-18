@@ -10,6 +10,7 @@ use App\Http\Controllers\UtilController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataSchemaController;
 use App\Http\Controllers\DataSyncController;
+use App\Http\Controllers\KnowledgeTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RoleController;
 
@@ -70,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard_management',[DataSchemaController::class,'dashboardManagement'])->name('dashboard.management');
         Route::get('/resource_management',[DataSchemaController::class,'dashboardManagement'])->name('resource.management');
     });
+    Route::resource('knowledge-types', KnowledgeTypeController::class);
+
 });
 
 

@@ -37,6 +37,7 @@
             .modal-content .select2-dropdown {
                 width: 100% !important;
             }
+
         </style>
 
     </head>
@@ -153,6 +154,16 @@
                                     </a>
                                 </li>
 
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge-types') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+                                    <a href="{{ route('knowledge-types.index') }}" class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="fa fa-clock"></i>
+                                        </span>
+                                        <span class="menu-text">Knowlede Types</span>
+                                    </a>
+                                </li>
+
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
                                     <a href="{{ route('data_schema.index', []) }}" class="menu-link">
                                         <i class="menu-icon flaticon-dashboard"></i>
@@ -192,6 +203,8 @@
                                                     <span class="menu-text">Roles</span>
                                                 </a>
                                             </li>
+
+
 
                                         </ul>
                                     </div>
@@ -435,6 +448,7 @@
         <script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.min.js') }}"></script>
         <script>
             $('.select2').select2({});
+
         </script>
         @stack('js')
         <script>
