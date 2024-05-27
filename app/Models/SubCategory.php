@@ -34,5 +34,14 @@ class SubCategory extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    /**
+     * Get all of the knowledges for the SubCategory
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function knowledges(): HasMany
+    {
+        return $this->hasMany(Knowledge::class);
+    }
 
 }

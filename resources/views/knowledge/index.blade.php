@@ -1,5 +1,5 @@
 @extends('base')
-@section('title', 'Knowledge Type')
+@section('title', 'Knowledges')
 @push('js')
 <script>
     function deleteItem(route, parent) {
@@ -75,7 +75,6 @@
 </script>
 @endpush
 @section('content')
-@include('knowledge_types.modal')
 
 <div class="card card-custom">
     @if ($errors->any())
@@ -93,9 +92,9 @@
         <div class="card-title">
             <h3 class="card-label">
                 <span>Total: {{ $items->total() }}</span>
-                knowledge type
+                knowledges
                 <span class="d-block text-muted pt-2 font-size-sm">All
-                    knowledge type</span>
+                    knowledges</span>
                 <div class="">
                 </div>
             </h3>
@@ -105,7 +104,7 @@
             Sub
             Category</a> --}}
 
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2 my-2"></i>Add Knowledge type</button>
+            <a href="{{ route('knowledge.create') }}" class="btn btn-primary"><i class="fa fa-plus mr-2 my-2"></i>Add Knowledge</a>
 
         </div>
     </div>
@@ -116,8 +115,9 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Name</th>
-                        <th>Description</th>
+                        <th>Knowledge</th>
+                        <th>Type</th>
+                        <th>Sub Category</th>
                         <th> Actions</th>
                     </tr>
                 </thead>
@@ -125,9 +125,12 @@
                     @foreach ($items as $key => $item)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $item?->name }}</td>
+                        <td>{{ $item?->message }}</td>
 
-                        <td>{{ $item?->description }}</td>
+                        <td>{{ $item?->knowledgeType->name }}</td>
+                        <td>{{ $item?->subCategory->name }}</td>
+
+
                         <td class="d-flex justify-content-around">
 
 

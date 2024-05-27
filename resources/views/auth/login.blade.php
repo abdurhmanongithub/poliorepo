@@ -183,8 +183,11 @@
                 <!--begin::Content body-->
                 <div class="d-flex flex-column-fluid flex-lg-center">
                     <div class="d-flex flex-column justify-content-center">
-                        <h3 class="display-3 font-weight-bold my-7 text-white">Welcome to Ju Data Hub!</h3>
-                        <p class="font-weight-bold font-size-lg text-white opacity-80">Empowering Tomorrow's Innovators Today: Welcome to the Data Science Hub,<br> where insights fuel innovation!</p>
+                        <h3 class="display-3 font-weight-bold my-7 text-white">Welcome to {{env('APP_TITLE')}}</h3>
+                        <p class="font-weight-bold font-size-lg text-white opacity-80">{{env("LOGIN_DESC")}}
+
+
+                       </p>
 
                     </div>
                 </div>

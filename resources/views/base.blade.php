@@ -154,15 +154,31 @@
                                     </a>
                                 </li>
 
+
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge-types') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
 
                                     <a href="{{ route('knowledge-types.index') }}" class="menu-link">
                                         <span class="menu-icon">
-                                            <i class="fa fa-clock"></i>
+                                            <i class="menu-icon flaticon-list"></i>
+
                                         </span>
                                         <span class="menu-text">Knowlede Types</span>
                                     </a>
                                 </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+
+                                    <a href="{{ route('knowledge-types.index') }}" class="menu-link">
+
+                                        <span class="menu-icon">
+                                            <i class="menu-icon flaticon-book"></i>
+
+                                        </span>
+                                        <span class="menu-text">Knowledes</span>
+                                    </a>
+                                </li>
+
+
 
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
                                     <a href="{{ route('data_schema.index', []) }}" class="menu-link">
