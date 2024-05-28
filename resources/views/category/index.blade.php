@@ -98,8 +98,7 @@
             </h3>
         </div>
         <div class="card-tools">
-            <button type="button" class="btn btn-primary mb-3 my-2" data-tog        gle="modal" data-target="#addModal"><i class="fa fa-plus mr-2 my-2"></i>Add Data
-
+            <button type="button" class="btn btn-primary mb-3 my-2" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2 my-2"></i>Add Data
                 Category</button>
 
         </div>
