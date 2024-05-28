@@ -19,4 +19,19 @@ class Category extends Model
     {
         return $this->hasMany(SubCategory::class);
     }
+
+
+    public function dataSchema()
+    {
+        return $this->hasManyThrough(DataSchema::class, SubCategory::class);
+    }
+
+    public function getDataCount()
+    {
+        $dataSchemaIds = $this->dataSchema->pluck('id');
+        if (count($dataSchemaIds) > 0)
+            return Data::whereIn('data_schema_id', $dataSchemaIds)->count();
+        return 0;
+    }
+
 }
