@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-
+        ROle::updateOrCreate(['name'=>Constants::SUPER_ADMIN]);
         User::create([
             'full_name' => 'Test User',
             'email' => 'admin@gmail.com',

@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $items = Category::paginate(100);
+        $items = Category::paginate(10);
         return view('category.index', compact('items'));
     }
 
@@ -64,7 +64,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        
+
         $category->update(
             [
                 'name' => $request->get('name'),

@@ -31,4 +31,6 @@ class Constants
         Constants::INTERNAL_USER => "Interንal User",
     ];
 
+    const SUPER_ADMIN='super-admin';
+
 }

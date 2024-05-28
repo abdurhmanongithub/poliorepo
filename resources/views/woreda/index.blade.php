@@ -1,5 +1,5 @@
 @extends('base')
-@section('title', 'User')
+@section('title', 'Woreda')
 @push('js')
 <script>
     function deleteItem(route, parent) {
@@ -29,8 +29,6 @@
                         )
                     }
                     , error: function(data) {
-                        console.log(data.status);
-
                         if (data.status) {
                             Swal.fire("Forbidden!", "You can't delete this", "error");
                         }
@@ -40,9 +38,43 @@
         });
     }
 
+    function openEditModal(id, name, categoryId, description, route) {
+        $('#editCategoryModal #edit_id').val(id);
+        $('#editCategoryModal #edit_name').val(name);
+        $('#editCategoryModal #edit_category').val(categoryId);
+        $('#editCategoryModal #edit_description').val(description);
+        $('#editCategoryModal #editCategoryForm').attr('action', route);
+        $('#editCategoryModal').modal('show');
+
+    }
+
+    $(document).ready(function() {
+        $('#editForm').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            var categoryId = $('#edit_id').val(); // Retrieve category ID
+            $.ajax({
+                type: "PUT"
+                , url: "{{ url('woreda') }}" + '/' + categoryId, // Include category ID in URL
+                data: formData
+                , dataType: 'json'
+                , success: function(response) {
+                    $('#editModal').modal('hide');
+                    // Handle success, maybe update table row or reload page
+                }
+                , error: function(error) {
+                    console.log(error);
+                    // Handle error
+                }
+            });
+        });
+    });
+
 </script>
 @endpush
 @section('content')
+@include('woreda.modal')
+
 <div class="card card-custom">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -59,14 +91,18 @@
         <div class="card-title">
             <h3 class="card-label">
                 <span>Total: {{ $items->total() }}</span>
-                users
-                <span class="d-block text-muted pt-2 font-size-sm">All users</span>
+                woreda
+                <span class="d-block text-muted pt-2 font-size-sm">All Woreda</span>
                 <div class="">
                 </div>
             </h3>
         </div>
         <div class="card-tools">
-            <a href="{{ route('users.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add user</a>
+            {{-- <a href="{{ route('sub_category.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add
+            Sub
+            Category</a> --}}
+
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2 my-2"></i>Add woreda</button>
         </div>
     </div>
     <div class="card-body">
@@ -76,11 +112,8 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-
-                        <th>Roles</th>
+                        <th>Woreda</th>
+                        <th>Zone</th>
                         <th> Actions</th>
                     </tr>
                 </thead>
@@ -88,31 +121,26 @@
                     @foreach ($items as $key => $item)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $item->full_name }}</td>
-                        <td>{{ $item->email}}</td>
-                        <td>{{ $item->phone}}</td>
-
-                        <td>
-                            @foreach ($item->roles as $role )
-
-                            <li class="badge badge-info badge-pill">{{$role->name}}</li>
-
-                            @endforeach
-                        </td>
-
+                        <td>{{ $item?->name }}</td>
+                        <td>{{ $item?->zone?->name }}</td>
                         <td class="d-flex justify-content-around">
-                            <a href="{{ route('users.edit', ['user' => $item->id]) }}" class="">
+                            {{-- <a href="{{ route('zone.show', ['zone'=>$item]) }}"><i class="fa fa-eye text-info"></i></a> --}}
+
+
+
+                            <a href="#" onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}',{{ $item->zone_id }} ,'{{ $item->code }}','{{ route('woreda.update',['woreda'=>$item->id]) }}')" class="">
                                 <i class="fa fa-pen"></i>
                             </a>
-                            <a href="#" onclick="event.preventDefault();deleteItem('{{ route('users.destroy', ['user' => $item->id]) }}',$(this))" class="">
+                            <a href="#" onclick="event.preventDefault();deleteItem('{{ route('woreda.destroy', ['woreda' => $item->id]) }}',$(this))" class="">
+
                                 <i class="fa fa-trash text-danger"></i>
                             </a>
+
                         </td>
                     </tr>
                     @endforeach
-
                     @if (count($items) < 1) <tr>
-                        <td class="text-capitalize text-danger text-center font-size-h4" colspan="4">No Record
+                        <td class="text-capitalize text-danger text-center font-size-h4" colspan="5">No Record
                             Found</td>
                         </tr>
                         @endif

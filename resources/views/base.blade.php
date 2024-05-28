@@ -136,6 +136,50 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ||strpos(Route::currentRouteName(), 'woreda') === 0? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-cogwheel-1"></i>
+                                        <span class="menu-text">System Settings</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('region.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Regions</span>
+                                                </a>
+                                            </li>
+
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('zone.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Zones</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('woreda.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Woredas</span>
+                                                </a>
+                                            </li>
+
+
+
+                                        </ul>
+                                    </div>
+                                </li>
+
 
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
                                     <a href="{{ route('category.index', []) }}" class="menu-link">
@@ -168,7 +212,7 @@
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
 
 
-                                    <a href="{{ route('knowledge-types.index') }}" class="menu-link">
+                                    <a href="{{ route('knowledge.index') }}" class="menu-link">
 
                                         <span class="menu-icon">
                                             <i class="menu-icon flaticon-book"></i>

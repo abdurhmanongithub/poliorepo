@@ -13,7 +13,11 @@ use App\Http\Controllers\DataSyncController;
 use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\KnowledgeTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\WoredaController;
+use App\Http\Controllers\ZoneController;
+use App\Models\Zone;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,27 +57,30 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'data_schema/{data_schema}', 'as' => 'data_schema.'], function () {
     });
     Route::prefix('data_schema/{data_schema}')->name('data_schema.')->group(function () {
-        Route::get('/manage', [DataSchemaController::class,'manage'])->name('manage');
-        Route::get('/data', [DataSchemaController::class,'dataIndex'])->name('data.index');
-        Route::get('/data/fetch', [DataController::class,'fetch'])->name('data.fetch');
-        Route::get('/data/source', [DataSchemaController::class,'dataSource'])->name('data.source');
-        Route::get('/data/import/view', [DataSyncController::class,'importView'])->name('data.import.view');
-        Route::post('/data/import/excel/preview', [DataSyncController::class,'syncPreviewFromExcel'])->name('data.sync.preview.excel');
-        Route::post('/data/import/excel', [DataSyncController::class,'syncFromExcel'])->name('data.sync.excel');
-        Route::post('/data/import/api', [DataSyncController::class,'syncFromApi'])->name('data.sync.api');
-        Route::post('/data/attribute', [DataSchemaController::class,'storeAttribute'])->name('attribute.store');
+        Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
+        Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
+        Route::get('/data/fetch', [DataController::class, 'fetch'])->name('data.fetch');
+        Route::get('/data/source', [DataSchemaController::class, 'dataSource'])->name('data.source');
+        Route::get('/data/import/view', [DataSyncController::class, 'importView'])->name('data.import.view');
+        Route::post('/data/import/excel/preview', [DataSyncController::class, 'syncPreviewFromExcel'])->name('data.sync.preview.excel');
+        Route::post('/data/import/excel', [DataSyncController::class, 'syncFromExcel'])->name('data.sync.excel');
+        Route::post('/data/import/api', [DataSyncController::class, 'syncFromApi'])->name('data.sync.api');
+        Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');
         Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
         Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
         Route::post('/data/attribute', [DataSchemaController::class, 'storeAttribute'])->name('attribute.store');
-        Route::post('/export', [DataSchemaController::class,'exportData'])->name('data.export');
-        Route::post('/erase', [DataSchemaController::class,'eraseData'])->name('data.erase');
-        Route::post('/source/delete', [DataSchemaController::class,'sourceDelete'])->name('source.delete');
-        Route::get('/data/import/template/download',[DataSchemaController::class,'dataImportTemplateDownload'])->name('import.template.download');
-        Route::get('/dashboard_management',[DataSchemaController::class,'dashboardManagement'])->name('dashboard.management');
-        Route::get('/resource_management',[DataSchemaController::class,'dashboardManagement'])->name('resource.management');
+        Route::post('/export', [DataSchemaController::class, 'exportData'])->name('data.export');
+        Route::post('/erase', [DataSchemaController::class, 'eraseData'])->name('data.erase');
+        Route::post('/source/delete', [DataSchemaController::class, 'sourceDelete'])->name('source.delete');
+        Route::get('/data/import/template/download', [DataSchemaController::class, 'dataImportTemplateDownload'])->name('import.template.download');
+        Route::get('/dashboard_management', [DataSchemaController::class, 'dashboardManagement'])->name('dashboard.management');
+        Route::get('/resource_management', [DataSchemaController::class, 'dashboardManagement'])->name('resource.management');
     });
     Route::resource('knowledge-types', KnowledgeTypeController::class);
     Route::resource('knowledge', KnowledgeController::class);
+    Route::resource('region', RegionController::class);
+    Route::resource('zone', ZoneController::class);
+    Route::resource('woreda', WoredaController::class);
 
 });
 

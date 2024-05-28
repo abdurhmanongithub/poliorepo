@@ -1,5 +1,6 @@
 @extends('base')
-@section('title', 'User')
+@section('title', ' Regions')
+
 @push('js')
 <script>
     function deleteItem(route, parent) {
@@ -21,7 +22,7 @@
                     , }
                     , dataType: 'json'
                     , success: function(data) {
-                        $(parent).closest('tr')[0].remove();
+                        $(parent).closest('tr').remove();
                         Swal.fire(
                             "Deleted!"
                             , "Item has been deleted."
@@ -29,10 +30,9 @@
                         )
                     }
                     , error: function(data) {
-                        console.log(data.status);
-
                         if (data.status) {
-                            Swal.fire("Forbidden!", "You can't delete this", "error");
+                            console.log(data);
+                            Swal.fire(data.statusText + "", data.responseJson + ' ', "error");
                         }
                     }
                 });
@@ -40,9 +40,42 @@
         });
     }
 
+    function openEditModal(id, name, description, route) {
+        $('#editRegionModal #edit_id').val(id);
+        $('#editRegionModal #edit_name').val(name);
+        $('#editRegionModal #edit_description').val(description);
+        $('#editRegionModal #editRegionForm').attr('action', route);
+        $('#editRegionModal').modal('show');
+
+    }
+
+    $(document).ready(function() {
+        $('#editForm').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            var RegionId = $('#edit_id').val(); // Retrieve Region ID
+            $.ajax({
+                type: "PUT"
+                , url: "{{ url('region') }}" + '/' + RegionId, // Include Region ID in URL
+                data: formData
+                , dataType: 'json'
+                , success: function(response) {
+                    $('#editModal').modal('hide');
+                    // Handle success, maybe update table row or reload page
+                }
+                , error: function(error) {
+                    console.log(error);
+                    // Handle error
+                }
+            });
+        });
+    });
+
 </script>
 @endpush
+
 @section('content')
+@include('region.modal')
 <div class="card card-custom">
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -54,21 +87,23 @@
         </ul>
     </div>
     @endif
-
-    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+    <div class="card-header">
         <div class="card-title">
             <h3 class="card-label">
                 <span>Total: {{ $items->total() }}</span>
-                users
-                <span class="d-block text-muted pt-2 font-size-sm">All users</span>
+                Regions
+                <span class="d-block text-muted pt-2 font-size-sm">All Regions</span>
                 <div class="">
                 </div>
             </h3>
         </div>
         <div class="card-tools">
-            <a href="{{ route('users.create', []) }}" class="btn btn-primary"><i class="fa fa-plus mr-2"></i>Add user</a>
+            <button type="button" class="btn btn-primary mb-3 my-2" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus mr-2 my-2"></i>Add
+                Region</button>
+
         </div>
     </div>
+    <!-- Rest of your content -->
     <div class="card-body">
         <!--begin: Datatable-->
         <div class="datatable datatable-default datatable-bordered datatable-loaded">
@@ -76,11 +111,8 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-
-                        <th>Roles</th>
+                        <th> Name</th>
+                        <th>Code</th>
                         <th> Actions</th>
                     </tr>
                 </thead>
@@ -88,23 +120,13 @@
                     @foreach ($items as $key => $item)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $item->full_name }}</td>
-                        <td>{{ $item->email}}</td>
-                        <td>{{ $item->phone}}</td>
-
-                        <td>
-                            @foreach ($item->roles as $role )
-
-                            <li class="badge badge-info badge-pill">{{$role->name}}</li>
-
-                            @endforeach
-                        </td>
-
+                        <td>{{ $item->name }}</td>
+                        <td>{{$item->code}}</td>
                         <td class="d-flex justify-content-around">
-                            <a href="{{ route('users.edit', ['user' => $item->id]) }}" class="">
+                            <a href="#" onclick="openEditModal('{{ $item->id }}', '{{ $item->name }}', '{{ $item->code }}','{{ route('region.update',['region'=>$item->id]) }}')">
                                 <i class="fa fa-pen"></i>
                             </a>
-                            <a href="#" onclick="event.preventDefault();deleteItem('{{ route('users.destroy', ['user' => $item->id]) }}',$(this))" class="">
+                            <a href="#" onclick="deleteItem('{{ route('region.destroy', ['region' => $item->id]) }}', $(this))">
                                 <i class="fa fa-trash text-danger"></i>
                             </a>
                         </td>
