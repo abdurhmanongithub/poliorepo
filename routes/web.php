@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\CommunityTypeController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\DataManagementController;
 // use App\Http\Controllers\DataSchemaController;
@@ -15,8 +17,10 @@ use App\Http\Controllers\KnowledgeTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SmsHistoryController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
+use App\Models\CommunityType;
 use App\Models\Zone;
 
 /*
@@ -81,7 +85,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('region', RegionController::class);
     Route::resource('zone', ZoneController::class);
     Route::resource('woreda', WoredaController::class);
-
+    Route::resource('community-type', CommunityTypeController::class);
+    Route::resource('community', CommunityController::class);
+    Route::get('sms-module', [SmsHistoryController::class,'smsModule'])->name('sms.module');
 });
 
 

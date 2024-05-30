@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KnowledgeType;
+use Illuminate\Validation\Rule;
 
 class KnowledgeTypeController extends Controller
 {
@@ -43,7 +44,8 @@ class KnowledgeTypeController extends Controller
     public function update(Request $request, KnowledgeType $knowledgeType)
     {
         $request->validate([
-            'name' => 'required|unique:knowledge_types|max:255',
+            'name' => 'required',
+            Rule::unique('knowledge_types')->ignore($knowledgeType->id),
         ]);
         $knowledgeType->update(['name' => $request->get('name'), 'description' => $request->get('description')]);
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CommunityType;
 use App\Http\Requests\StoreCommunityTypeRequest;
 use App\Http\Requests\UpdateCommunityTypeRequest;
+use Illuminate\Http\Request;
 
 class CommunityTypeController extends Controller
 {
@@ -13,7 +14,8 @@ class CommunityTypeController extends Controller
      */
     public function index()
     {
-        //
+        $items = CommunityType::paginate(10);
+        return view('community_types.index', compact('items'));
     }
 
     /**
@@ -21,15 +23,23 @@ class CommunityTypeController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommunityTypeRequest $request)
+    public function store(Request $request)
     {
-        //
+        CommunityType::updateOrCreate(
+            [
+                'name' => $request->get('name'),
+            ],
+            [
+                'name' => $request->get('name'),
+            ]
+        );
+        return redirect()->route('community-type.index')->with('success', ' community type created successfully');
     }
 
     /**
@@ -45,15 +55,20 @@ class CommunityTypeController extends Controller
      */
     public function edit(CommunityType $communityType)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCommunityTypeRequest $request, CommunityType $communityType)
+    public function update(Request $request, CommunityType $communityType)
     {
-        //
+
+        $communityType->update(
+            [
+                'name' => $request->get('name'),
+            ]
+        );
+        return redirect()->route('community-type.index')->with('success', 'Community type updated successfully');
     }
 
     /**
@@ -61,6 +76,11 @@ class CommunityTypeController extends Controller
      */
     public function destroy(CommunityType $communityType)
     {
-        //
+        if ($communityType->communities()->count() == 0) {
+            $communityType->delete();
+            return response()->json(['message' => 'Item deleted successfully.'], 200);
+        } else {
+            return response()->json(['message' => 'Item is used by other resources'], 403);
+        }
     }
 }

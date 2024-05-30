@@ -37,6 +37,7 @@ class RegionController extends Controller
                 'name' => $request->get('name'),
             ],
             [
+                'name' => $request->get('name'),
                 'code' => $request->get('code'),
             ]
         );
@@ -71,7 +72,7 @@ class RegionController extends Controller
                 'code' => $request->get('code'),
             ]
         );
-        return redirect()->route('region.index')->with('success', 'Data category updated successfully');
+        return redirect()->route('region.index')->with('success', 'Regions updated successfully');
     }
 
     /**

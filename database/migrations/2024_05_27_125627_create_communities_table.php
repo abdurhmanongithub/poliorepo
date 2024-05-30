@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CommunityType;
 use App\Models\SubCategory;
 use App\Models\Woreda;
 use Illuminate\Database\Migrations\Migration;
@@ -15,10 +16,12 @@ return new class extends Migration {
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
             $table->string('full_name');
+            $table->string('gender');
             $table->string('phone');
             $table->string('email')->nullable();
             $table->foreignIdFor(Woreda::class)->constrained();
             $table->foreignIdFor(SubCategory::class)->constrained();
+            $table->foreignIdFor(CommunityType::class)->constrained();
             $table->timestamps();
         });
     }
