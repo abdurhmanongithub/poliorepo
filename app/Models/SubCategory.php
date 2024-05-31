@@ -43,13 +43,13 @@ class SubCategory extends Model
     {
         return $this->hasMany(Knowledge::class);
     }
-/**
- * Get the community that owns the SubCategory
- *
- * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
- */
-public function community(): BelongsTo
-{
-    return $this->belongsTo(Community::class);
-}
+    /**
+     * Get the community that owns the SubCategory
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function communities(): HasMany
+    {
+        return $this->hasMany(Community::class);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\CommunityTypeController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Models\CommunityType;
 use App\Models\Zone;
+use Spatie\FlareClient\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +81,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/data/import/template/download', [DataSchemaController::class, 'dataImportTemplateDownload'])->name('import.template.download');
         Route::get('/dashboard_management', [DataSchemaController::class, 'dashboardManagement'])->name('dashboard.management');
         Route::get('/resource_management', [DataSchemaController::class, 'dashboardManagement'])->name('resource.management');
+        Route::get('/community', [DataSchemaController::class, 'community'])->name('community.management');
+        Route::get('/sms-notification', [DataSchemaController::class, 'sms'])->name('sms.management');
     });
     Route::resource('knowledge-types', KnowledgeTypeController::class);
     Route::resource('knowledge', KnowledgeController::class);
@@ -87,7 +91,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('woreda', WoredaController::class);
     Route::resource('community-type', CommunityTypeController::class);
     Route::resource('community', CommunityController::class);
-    Route::get('sms-module', [SmsHistoryController::class,'smsModule'])->name('sms.module');
+
+    Route::resource('sms-history', SmsHistoryController::class);
+    // Route::get('live-nasa-api', [ApiController::class, 'fetchData'])->name('nasa.index');
+    // Route::post('live-nasa-api', [ApiController::class, 'fetchData'])->name('fetch.data');
+    Route::get('custom-sms-create', [SmsHistoryController::class, 'customSmsView'])->name('sms.custom.view');
+    Route::post('custom-sms-create/store', [SmsHistoryController::class, 'customSms'])->name('sms.custom.store');
+    Route::post('file-import', [SmsHistoryController::class, 'importPhoneNumber'])->name('phonenumber_import');
+
 });
 
 

@@ -62,4 +62,10 @@ class DataSchema extends Model
         $subCategoryAbbreviation = strtoupper(substr($this->subCategory->name, 0, 2));
         return $categoryAbbreviation . '_' . $subCategoryAbbreviation . '_' . date('Y_m_d') . '_' . $importBatch;
     }
+
+    public function totalCommuityMembers()
+    {
+
+        return ($this->subCategory->communities()->count());
+    }
 }

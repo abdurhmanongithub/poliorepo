@@ -2,6 +2,7 @@
 
 namespace App;
 
+use GuzzleHttp\Client;
 
 class Constants
 {
@@ -28,9 +29,37 @@ class Constants
     const USER_TYPES = [
         Constants::RESEARCHER_USER => 'Researcher User',
         Constants::EXTERNAL_USER => "External User",
-        Constants::INTERNAL_USER => "Interንal User",
+        Constants::INTERNAL_USER => "Internal User",
     ];
 
-    const SUPER_ADMIN='super-admin';
+    const SUPER_ADMIN = 'super-admin';
+    const INFORMATION = 1;
+    const MESSAGE = 2;
+
+    static function sendSms($phone, $msg)
+    {
+        return true;
+        if (preg_match('/^\d{2}/', $phone)) {
+            $phoneNumber = '2519' . substr($phone, 2);
+        } else {
+            $phoneNumber = preg_replace('/^\+/', '', $phone);
+        }
+        $client = new Client();
+        $response = $client->request('POST', env('SMS_API'), [
+            'form_params' => [
+                'token' => env('SMS_API'),
+                'phone' => $phoneNumber,
+                'msg' => $msg,
+            ],
+        ]);
+        $obj = json_decode($response->getBody());
+
+        if ($obj->error) {
+            return false;
+        } else {
+            // There is no error.
+            return true;
+        }
+    }
 
 }

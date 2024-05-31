@@ -38,6 +38,23 @@
                 width: 100% !important;
             }
 
+            <style>
+
+            /* Custom CSS to wrap long text in select2 options */
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                white-space: normal;
+                word-wrap: break-word;
+            }
+
+            .select2-results__option {
+                white-space: normal;
+                word-wrap: break-word;
+            }
+
+        </style>
+
+
+
         </style>
 
     </head>
@@ -272,9 +289,6 @@
                                         </ul>
                                     </div>
                                 </li>
-
-
-
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
                                     <a href="{{ route('data_schema.index', []) }}" class="menu-link">
                                         <i class="menu-icon flaticon-dashboard"></i>
@@ -316,6 +330,60 @@
                                             </li>
                                         </ul>
                                     </div>
+                                </li>
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'custom-sms-create') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-file"></i>
+                                        <span class="menu-text">Sms Module</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'sms.custom.view') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+
+                                                <a href="{{ route('sms.custom.view', []) }}" class="menu-link">
+
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">custom sms </span>
+
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'nasa') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <i class="menu-icon flaticon-earth-globe"></i>
+                                    <span class="menu-text">Live Api Info</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+
+
+                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'community.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+                                            <a href="{{ route('nasa.index', []) }}" class="menu-link">
+                                                <i class="menu-bullet menu-bullet-dot">
+                                                    <span></span>
+                                                </i>
+                                                <span class="menu-text">NASA </span>
+
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 </li>
                             </ul>
                         </div>
@@ -568,8 +636,11 @@
 
             @if(Session::has('success') && !Session::has('error'))
             $(function() {
-                toastr.success('{{ Session::get('
-                    success ') }}');
+                // toastr.success('{{ Session::get('
+                //     success ') }}');
+                swal.fire("succcess!", "{{ session('warning') }}", "success");
+
+
             })
             @endif
             @if(session('warning'))

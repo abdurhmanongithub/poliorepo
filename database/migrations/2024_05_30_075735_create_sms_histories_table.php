@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Community;
+use App\Models\Knowledge;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,9 +14,11 @@ return new class extends Migration
     {
         Schema::create('sms_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
-            $table->string('phone');
-            // $table
+            $table->string('message')->nullable();
+            $table->string('phone')->nullable();
+            $table->foreignIdFor(Knowledge::class)->nullable()->constrained();
+            $table->foreignIdFor(Community::class)->nullable()->constrained();
+            $table->integer('type');
             $table->timestamps();
         });
     }
