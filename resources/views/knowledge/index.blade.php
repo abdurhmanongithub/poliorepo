@@ -125,7 +125,23 @@
                     @foreach ($items as $key => $item)
                     <tr>
                         <td>{{ $key + 1 }}</td>
-                        <td>{{ $item?->message }}</td>
+                        @php
+                        $message = $item->message;
+
+                        @endphp
+
+                        @if(strlen($message) >= 100)
+                        <td>
+                            <details>
+                                <summary>{{substr($message, 0, 100) .'....'}}</summary>
+
+                                {{ $message }}
+                            </details>
+                        </td>
+                        @else
+                        <td>{{ $message }}</td>
+                        @endif
+
 
                         <td>{{ $item?->knowledgeType->name }}</td>
                         <td>{{ $item?->subCategory->name }}</td>
