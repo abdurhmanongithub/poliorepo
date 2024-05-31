@@ -360,7 +360,7 @@
                                     </div>
                                 </li>
 
-                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'nasa') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'live') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
 
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="menu-icon flaticon-earth-globe"></i>
@@ -374,11 +374,11 @@
 
                                         <li class="menu-item {{ strpos(Route::currentRouteName(), 'community.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
 
-                                            <a href="{{ route('nasa.index', []) }}" class="menu-link">
+                                            <a href="{{ route('live.index', []) }}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot">
                                                     <span></span>
                                                 </i>
-                                                <span class="menu-text">NASA </span>
+                                                <span class="menu-text">open weather  </span>
 
                                             </a>
                                         </li>

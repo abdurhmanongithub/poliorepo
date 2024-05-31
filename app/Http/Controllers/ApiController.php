@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Illuminate\Support\Facades\Validator;
+use RakibDevs\Weather\Weather;
 
 class ApiController extends Controller
 {
@@ -16,6 +17,10 @@ class ApiController extends Controller
 
     public function fetchData(Request $request)
     {
+        $wt = new Weather();
+
+        $info = $wt->getCurrentByCity('dhaka');
+        dd($info);
         // Initial validation rules
         $validator = Validator::make(
             $request->all(),

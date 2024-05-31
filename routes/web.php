@@ -93,8 +93,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('community', CommunityController::class);
 
     Route::resource('sms-history', SmsHistoryController::class);
-    // Route::get('live-nasa-api', [ApiController::class, 'fetchData'])->name('nasa.index');
-    // Route::post('live-nasa-api', [ApiController::class, 'fetchData'])->name('fetch.data');
+    Route::get('live-api', [ApiController::class, 'fetchData'])->name('live.index');
+    Route::post('live-api', [ApiController::class, 'fetchData'])->name('fetch.data');
     Route::get('custom-sms-create', [SmsHistoryController::class, 'customSmsView'])->name('sms.custom.view');
     Route::post('custom-sms-create/store', [SmsHistoryController::class, 'customSms'])->name('sms.custom.store');
     Route::post('file-import', [SmsHistoryController::class, 'importPhoneNumber'])->name('phonenumber_import');
