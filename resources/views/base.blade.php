@@ -360,30 +360,32 @@
                                     </div>
                                 </li>
 
-                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'live') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
-
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <i class="menu-icon flaticon-earth-globe"></i>
-                                    <span class="menu-text">Live Api Info</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'weather') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
 
 
-                                        <li class="menu-item {{ strpos(Route::currentRouteName(), 'community.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-earth-globe"></i>
+                                        <span class="menu-text">Weather Data</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
 
-                                            <a href="{{ route('live.index', []) }}" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-dot">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">open weather  </span>
 
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'weather.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+
+                                                <a href="{{ route('weather.index', []) }}" class="menu-link">
+
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">weather Data</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

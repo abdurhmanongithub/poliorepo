@@ -19,10 +19,12 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SmsHistoryController;
+use App\Http\Controllers\WeatherDataController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Models\CommunityType;
 use App\Models\Zone;
+use RakibDevs\Weather\Weather;
 use Spatie\FlareClient\Api;
 
 /*
@@ -98,6 +100,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('custom-sms-create', [SmsHistoryController::class, 'customSmsView'])->name('sms.custom.view');
     Route::post('custom-sms-create/store', [SmsHistoryController::class, 'customSms'])->name('sms.custom.store');
     Route::post('file-import', [SmsHistoryController::class, 'importPhoneNumber'])->name('phonenumber_import');
+    Route::post('/import-weather-data', [WeatherDataController::class, 'import'])->name('weather.import');
+    Route::resource('weather', WeatherDataController::class);
 
 });
 
