@@ -150,7 +150,6 @@ class DataSchemaController extends Controller
             $isRequired = isset($attribute['is_required']) ? $attribute['is_required'] : null;
             $name = \Str::slug($attribute['name'], '_');
             $newAttributes[] = [
-
                 'type' => $attribute['type'],
                 'name' => $name,
                 'is_required' => $isRequired ? true : false,
@@ -214,8 +213,8 @@ class DataSchemaController extends Controller
     }
     public function sourceDelete(DataSchema $dataSchema,DataSource $dataSource, Request $request)
     {
-        $dataSource->delete();
         DB::table('data')->where('data_source_id', $dataSource->id)->delete();
+        $dataSource->delete();
         return redirect()->back()->with('success', 'Data Source Deleted Successfully');
     }
     public function dataImportTemplateDownload(DataSchema $dataSchema)

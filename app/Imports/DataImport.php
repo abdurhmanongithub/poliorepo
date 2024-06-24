@@ -29,7 +29,13 @@ class DataImport implements ToModel, WithHeadingRow, WithBatchInserts
             if (array_key_exists($key, $row))
                 $values[$key] = $row[$key];
         }
-        if(count($values) == 0){
+        if (count($values) == 0) {
+            return null;
+        }
+        $allNull = empty(array_filter($values, function ($value) {
+            return !is_null($value);
+        }));
+        if ($allNull) {
             return null;
         }
         return new Data([

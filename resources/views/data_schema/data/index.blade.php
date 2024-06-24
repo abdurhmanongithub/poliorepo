@@ -1,9 +1,64 @@
 @extends('layouts.sublayout')
 @push('css')
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        @mixin modal-fullscreen() {
+            padding: 0 !important; // override inline padding-right added from js
+
+            .modal-dialog {
+                width: 100%;
+                max-width: none;
+                height: 100%;
+                margin: 0;
+            }
+
+            .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0;
+            }
+
+            .modal-body {
+                overflow-y: auto;
+            }
+
+        }
+
+        .modal-fullscreen {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            border-radius: 0 !important;
+        }
+
+        .modal-fullscreen .modal-content {
+            height: 100%;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .modal-fullscreen .modal-body {
+            overflow-y: auto;
+            padding: 15px;
+        }
+    </style>
 @endpush
 @push('js')
     <script>
+        $(document).ready(function() {
+            // Handle fullscreen button click
+            $('.fullscreen-btn').click(function() {
+                // Clone the card body content (datatable)
+                var cardBodyContent = $('#datatable-card-body').html();
+                // Set the content in the fullscreen modal body
+                $('#fullscreenModal .modal-body').html(cardBodyContent);
+                // Show the fullscreen modal
+                $('#fullscreenModal').modal('show');
+            });
+        });
+
         function eraseData() {
             swal.fire({
                 title: "Are you sure?",
@@ -24,6 +79,7 @@
 @endpush
 @section('nav_content')
     @include('data_schema.data.export_modal')
+    @include('data_schema.data.full_screen_modal')
     <form action="{{ route('data_schema.data.erase', ['data_schema' => $dataSchema->id]) }}" method="POST" id="eraseForm">
         @csrf</form>
     {{--  <div class="card card-custom">
@@ -84,6 +140,8 @@
             </div>
 
             <div class="card-toolbar">
+                <a href="#" class="btn btn-primary btn-sm mr-2 fullscreen-btn"><i class="fa fa-expand-wide mr-2"></i>
+                    Full Screen</a>
                 <div class="dropdown dropdown-inline mr-2">
                     <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -138,7 +196,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" id="datatable-card-body">
             <table class="table table-bordered table-hover table-checkable" id="datatable"
                 style="margin-top: 13px !important">
                 <thead>
