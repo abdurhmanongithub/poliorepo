@@ -1,5 +1,5 @@
 @extends('base')
-@section('title', 'Role Create')
+@section('title', 'User Create')
 @push('css')
 <style>
     .select2,

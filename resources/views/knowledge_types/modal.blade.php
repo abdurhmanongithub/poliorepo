@@ -47,7 +47,8 @@
                         <div class="form-group col-md-12">
                             <label for="">Knowledge Type</label>
 
-                            <input type="text" name="name" value="{{ old('name') }}" id="name" class="form-control" placeholder="Sub Category Name">
+                            <input type="text" name="name" value="{{ old('name') }}" id="name" class="form-control" placeholder="knowledge type">
+
                             @error('name')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror

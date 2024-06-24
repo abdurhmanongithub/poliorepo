@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateDataSchemaRequest;
 use App\Models\Category;
 use App\Models\Data;
 use App\Models\DataSource;
+use App\Models\SmsHistory;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -231,4 +232,19 @@ class DataSchemaController extends Controller
     {
         return view('data_schema.dashboard.management', compact('dataSchema'));
     }
+    public function community(DataSchema $dataSchema)
+    {
+
+        return view('data_schema.community_manage', compact('dataSchema'));
+    }
+    public function sms(DataSchema $dataSchema)
+    {
+
+        $sms = new SmsHistory();
+        $sms = $sms->information();
+        $smsHistories = $sms->wherein('community_id', $dataSchema->subCategory->communities()->pluck('id'))->get();
+        return view('data_schema.sms_manage', compact('smsHistories', 'dataSchema'));
+    }
+
+
 }

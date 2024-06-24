@@ -1,5 +1,5 @@
 @extends('base')
-@section('title', 'roles')
+@section('title', 'User')
 @push('js')
 <script>
     function deleteItem(route, parent) {
@@ -78,6 +78,8 @@
                         <th>No.</th>
                         <th>Full Name</th>
                         <th>Email</th>
+                        <th>Phone</th>
+
                         <th>Roles</th>
                         <th> Actions</th>
                     </tr>
@@ -88,6 +90,8 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $item->full_name }}</td>
                         <td>{{ $item->email}}</td>
+                        <td>{{ $item->phone}}</td>
+
                         <td>
                             @foreach ($item->roles as $role )
 
@@ -106,7 +110,6 @@
                         </td>
                     </tr>
                     @endforeach
-
                     @if (count($items) < 1) <tr>
                         <td class="text-capitalize text-danger text-center font-size-h4" colspan="4">No Record
                             Found</td>

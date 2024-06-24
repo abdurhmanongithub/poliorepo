@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $items = User::paginate(100);
+        $items = User::paginate(10);
         return view('users.index', compact('items'));
     }
 
@@ -30,11 +30,14 @@ class UserController extends Controller
             'full_name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email',
             'roles' => 'required|array',
+            'phone' => [
+                'required',
+                'regex:/^09[0-9]{8}$/'
+            ],
         ]);
         // Create user
         $pass = 12345678;
-        $user = User::create(array_merge($request->only('full_name', 'email'), ['password' => Hash::make($pass)]));
-        // dd($user);
+        $user = User::create(array_merge($request->only('full_name', 'email', 'phone'), ['password' => Hash::make($pass)]));
 
         // Assign roles
         $user->syncRoles($request->roles);

@@ -38,6 +38,23 @@
                 width: 100% !important;
             }
 
+            <style>
+
+            /* Custom CSS to wrap long text in select2 options */
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                white-space: normal;
+                word-wrap: break-word;
+            }
+
+            .select2-results__option {
+                white-space: normal;
+                word-wrap: break-word;
+            }
+
+        </style>
+
+
+
         </style>
 
     </head>
@@ -136,71 +153,58 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 ||strpos(Route::currentRouteName(), 'woreda') === 0? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
 
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
-                                    <a href="{{ route('category.index', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-dashboard"></i>
-                                        <span class="menu-text">
-                                            Data Category
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'sub_category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
-                                    <a href="{{ route('sub_category.index', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-dashboard"></i>
-                                        <span class="menu-text">
-                                            Sub Category
-                                        </span>
-                                    </a>
-                                </li>
-
-
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge-types') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
-
-                                    <a href="{{ route('knowledge-types.index') }}" class="menu-link">
-                                        <span class="menu-icon">
-                                            <i class="menu-icon flaticon-list"></i>
-
-                                        </span>
-                                        <span class="menu-text">Knowlede Types</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
-
-
-                                    <a href="{{ route('knowledge-types.index') }}" class="menu-link">
-
-                                        <span class="menu-icon">
-                                            <i class="menu-icon flaticon-book"></i>
-
-                                        </span>
-                                        <span class="menu-text">Knowledes</span>
-                                    </a>
-                                </li>
-
-
-
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
-                                    <a href="{{ route('data_schema.index', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-dashboard"></i>
-                                        <span class="menu-text">
-                                            Data Management
-                                        </span>
-                                    </a>
-                                </li>
-
-
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'roles') === 0 || strpos(Route::currentRouteName(), 'users') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-users"></i>
-                                        <span class="menu-text">User Managments</span>
+                                        <i class="menu-icon flaticon-cogwheel-1"></i>
+                                        <span class="menu-text">System Settings</span>
                                         <i class="menu-arrow"></i>
                                     </a>
                                     <div class="menu-submenu">
                                         <i class="menu-arrow"></i>
                                         <ul class="menu-subnav">
 
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('region.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Regions</span>
+                                                </a>
+                                            </li>
 
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('zone.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Zones</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('woreda.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Woredas</span>
+                                                </a>
+                                            </li>
+
+
+
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'roles') === 0 || strpos(Route::currentRouteName(), 'users') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-user-settings"></i>
+                                        <span class="menu-text">User Managments</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
 
 
                                             <li class="menu-item {{ strpos(Route::currentRouteName(), 'users.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
@@ -227,6 +231,162 @@
                                 </li>
 
 
+
+
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                    <a href="{{ route('category.index', []) }}" class="menu-link">
+                                        <i class="menu-icon flaticon-dashboard"></i>
+                                        <span class="menu-text">
+                                            Data Category
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'sub_category') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                    <a href="{{ route('sub_category.index', []) }}" class="menu-link">
+                                        <i class="menu-icon flaticon-dashboard"></i>
+                                        <span class="menu-text">
+                                            Sub Category
+                                        </span>
+                                    </a>
+                                </li>
+
+
+
+
+
+                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'knowledge-types') === 0 || strpos(Route::currentRouteName(), 'knowledge') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-book"></i>
+
+                                        <span class="menu-text">Knowledge Managments</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'users.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('knowledge-types.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Knowledge-Types</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'knowledge.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+                                                <a href="{{ route('knowledge.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Knowledges</span>
+                                                </a>
+                                            </li>
+
+
+
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                    <a href="{{ route('data_schema.index', []) }}" class="menu-link">
+                                        <i class="menu-icon flaticon-dashboard"></i>
+                                        <span class="menu-text">
+                                            Data Management
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'community-type') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-users"></i>
+                                        <span class="menu-text">Community Managments</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'community-type.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+                                                <a href="{{ route('community-type.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Community Types</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'community.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+                                                <a href="{{ route('community.index', []) }}" class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Community Member </span>
+
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'custom-sms-create') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-file"></i>
+                                        <span class="menu-text">Sms Module</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'sms.custom.view') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+
+                                                <a href="{{ route('sms.custom.view', []) }}" class="menu-link">
+
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">custom sms </span>
+
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'weather') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
+
+
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-icon flaticon-earth-globe"></i>
+                                        <span class="menu-text">Weather Data</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+
+
+                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'weather.index') === 0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+
+
+                                                <a href="{{ route('weather.index', []) }}" class="menu-link">
+
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">weather Data</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <!--end::Menu Container-->
@@ -478,8 +638,11 @@
 
             @if(Session::has('success') && !Session::has('error'))
             $(function() {
-                toastr.success('{{ Session::get('
-                    success ') }}');
+                // toastr.success('{{ Session::get('
+                //     success ') }}');
+                swal.fire("succcess!", "{{ session('warning') }}", "success");
+
+
             })
             @endif
             @if(session('warning'))
