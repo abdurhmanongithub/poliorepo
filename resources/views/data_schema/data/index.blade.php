@@ -196,7 +196,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body" id="datatable-card-body">
+        <div class="card-body table-responsive" id="datatable-card-body">
             <table class="table table-bordered table-hover table-checkable" id="datatable"
                 style="margin-top: 13px !important">
                 <thead>
