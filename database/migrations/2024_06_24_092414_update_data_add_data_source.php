@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\DataSchema;
+use App\Models\DataSource;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(DataSchema::class);
-            $table->json('values');
-            $table->timestamps();
+        Schema::table('data', function (Blueprint $table) {
+            $table->foreignIdFor(DataSource::class)->nullable();
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data');
+        Schema::table('data', function (Blueprint $table) {
+            //
+        });
     }
 };

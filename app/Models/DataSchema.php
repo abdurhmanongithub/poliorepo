@@ -41,12 +41,18 @@ class DataSchema extends Model
     }
     public function getLastImportBatch()
     {
-        return Data::distinct('import_batch')->max('import_batch') ?? 0;
+        return DataSource::where('data_schema_id', $this->id)->distinct('import_batch')->max('import_batch') ?? 0;
     }
     public function getDataBatch()
     {
-        return $this->datas()->distinct('import_batch')->pluck('import_batch');
+        return $this->dataSources()->pluck('import_batch');
     }
+
+    public function dataSources()
+    {
+        return $this->hasMany(DataSource::class);
+    }
+
     public function getNextDataSource()
     {
         $lastImportBatch = $this->getLastImportBatch();

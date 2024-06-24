@@ -10,6 +10,7 @@ use App\Http\Requests\StoreDataSchemaRequest;
 use App\Http\Requests\UpdateDataSchemaRequest;
 use App\Models\Category;
 use App\Models\Data;
+use App\Models\DataSource;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,14 +57,14 @@ class DataSchemaController extends Controller
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
-
+        $name = $request->get('name');
         $dataSchema = DataSchema::updateOrCreate(
             [
-                'name' => $request->get('name'),
+                'name' => $name,
                 'sub_category_id' => $request->get('sub_category_id'),
             ],
             [
-                'name' => $request->get('name'),
+                'name' => $name,
                 'sub_category_id' => $request->get('sub_category_id'),
                 'force_validation' => $request->get('force_validation') ? true : false
             ]
@@ -107,15 +108,15 @@ class DataSchemaController extends Controller
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
-
+        $name = $request->get('name');
         $dataSchema->update(
             [
-                'name' => $request->get('name'),
+                'name' => $name,
                 'sub_category_id' => $request->get('sub_category_id'),
                 'force_validation' => $request->get('force_validation') ? true : false
             ]
         );
-        return redirect()->back()->with('success', 'Data schema created successfully');
+        return redirect()->back()->with('success', 'Data schema updated successfully');
     }
 
     /**
@@ -147,9 +148,11 @@ class DataSchemaController extends Controller
         $newAttributes = [];
         foreach ($request->get('attribute') as $attribute) {
             $isRequired = isset($attribute['is_required']) ? $attribute['is_required'] : null;
+            $name = \Str::slug($attribute['name'], '_');
             $newAttributes[] = [
+
                 'type' => $attribute['type'],
-                'name' => $attribute['name'],
+                'name' => $name,
                 'is_required' => $isRequired ? true : false,
             ];
         }
@@ -209,24 +212,24 @@ class DataSchemaController extends Controller
         DB::table('data')->where('data_schema_id', $dataSchema->id)->delete();
         return redirect()->back()->with('success', 'Data Erased Successfully');
     }
-    public function sourceDelete(DataSchema $dataSchema,Request $request){
-        $input = $request->validate([
-            'source' => 'required'
-        ]);
-        $dataSource = $input['source'];
-        DB::table('data')->where('data_schema_id', $dataSchema->id)->where('import_batch',$dataSource)->delete();
+    public function sourceDelete(DataSchema $dataSchema,DataSource $dataSource, Request $request)
+    {
+        $dataSource->delete();
+        DB::table('data')->where('data_source_id', $dataSource->id)->delete();
         return redirect()->back()->with('success', 'Data Source Deleted Successfully');
     }
-    public function dataImportTemplateDownload(DataSchema $dataSchema){
+    public function dataImportTemplateDownload(DataSchema $dataSchema)
+    {
         $columns = $dataSchema->structure;
         $headers = [];
         foreach ($columns as $column) {
             $headers[] = $column['name'];
         }
-        return Excel::download(new DataImportTemplateExport($headers), $dataSchema->getNextDataSource().'.xlsx');
+        return Excel::download(new DataImportTemplateExport($headers), $dataSchema->getNextDataSource() . '.xlsx');
     }
 
-    public function dashboardManagement (DataSchema $dataSchema){
-        return view('data_schema.dashboard.management',compact('dataSchema'));
+    public function dashboardManagement(DataSchema $dataSchema)
+    {
+        return view('data_schema.dashboard.management', compact('dataSchema'));
     }
 }

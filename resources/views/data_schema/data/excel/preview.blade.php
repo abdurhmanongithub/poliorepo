@@ -12,7 +12,6 @@
             <div class="card-toolbar">
                 <form action="{{ route('data_schema.data.sync.excel', ['data_schema' => $dataSchema->id]) }}" id="importForm"
                     method="POST">
-
                     <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
                         <i class="ki ki-long-arrow-back icon-xs"></i>Back</a>
                     <input type="hidden" name="file_path" value="{{ $filePath }}">
@@ -25,21 +24,21 @@
 
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             @if ($excelData)
                 <table class="table table-bordered table-hover table-checkable" id="kt_datatable">
                     <thead>
                         <tr>
-                            @foreach ($excelData[0][0] as $header)
+                            @foreach ($keys as $header)
                                 <th>{{ $header }}</th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($excelData[0]->slice(1, 10) as $row)
+                        @foreach ($excelData[0] as $row)
                             <tr>
-                                @foreach ($row as $value)
-                                    <td>{{ $value }}</td>
+                                @foreach ($keys as $key)
+                                    <td>{{ array_key_exists($key,$row) ? $row[$key] : '' }}</td>
                                 @endforeach
                             </tr>
                         @endforeach

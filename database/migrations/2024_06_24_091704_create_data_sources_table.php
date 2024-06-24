@@ -12,10 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data', function (Blueprint $table) {
+        Schema::create('data_sources', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(DataSchema::class);
-            $table->json('values');
+            $table->string('import_batch')->default(0);
+            $table->boolean('is_from_api')->default(false);
+            $table->string('api_link')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data');
+        Schema::dropIfExists('data_sources');
     }
 };

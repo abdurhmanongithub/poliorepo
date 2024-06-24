@@ -2,7 +2,7 @@
 @section('title', 'Import Page')
 @push('js')
     <script>
-        function deleteSource(route,source) {
+        function deleteSource(route) {
             swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -12,7 +12,6 @@
             }).then(function(result) {
                 if (result.value) {
                     $('#deleteSourceForm').attr('action', route);
-                    $('#dataSourceValue').val(source);
                     $('#deleteSourceForm').submit();
                 }
             });
@@ -37,20 +36,18 @@
                     <td>Import Batch</td>
                     <td>Action</td>
                 </tr>
-                @foreach ($dataSchema->getDataBatch() as $batch)
+                @foreach ($dataSchema->dataSources as $dataSource)
                     <tr>
-                        <td>Batch {{ $batch }}</td>
+                        <td>Batch {{ $dataSource->import_batch }}</td>
                         <td>
-                            <a href="#"
-                                onclick="deleteSource('{{ route('data_schema.source.delete', ['data_schema' => $dataSchema->id]) }}','{{ $batch }}');"
-                                class="btn btn-danger btn-sm">
+                            <a href="#" onclick="deleteSource('{{ route('data_schema.source.delete', ['data_schema' => $dataSchema->id, 'dataSource' => $dataSource->id]) }}');" class="btn btn-danger btn-sm">
                                 <i class="fal fa-trash"></i>
                                 Delete
                             </a>
                         </td>
                     </tr>
                 @endforeach
-                @if ($dataSchema->datas()->distinct('import_batch')->count() == 0)
+                @if ($dataSchema->dataSources()->count() == 0)
                     <td class="text-capitalize text-danger text-center font-size-h4" colspan="2">No Record
                         Found
                     </td>

@@ -136,18 +136,6 @@
                         </ul>
                     </div>
                 </div>
-
-                {{--  <div class="dropdown dropdown-inline">
-                    <a href="#" class="px-5 btn btn-sm btn-primary font-weight-bolder dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Take Action</a>
-                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right" style="">
-                        <ul class="navi navi-hover">
-
-
-
-                        </ul>
-                    </div>
-                </div>  --}}
             </div>
         </div>
         <div class="card-body">
