@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'full_name' => 'Test User',
             'email' => 'admin@gmail.com',
+            'phone' => '0912121212',
             'user_type' => Constants::INTERNAL_USER,
             'password' => Hash::make('12345678')
         ]);

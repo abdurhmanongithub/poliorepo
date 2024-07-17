@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('file-import', [SmsHistoryController::class, 'importPhoneNumber'])->name('phonenumber_import');
     Route::post('/import-weather-data', [WeatherDataController::class, 'import'])->name('weather.import');
     Route::resource('weather', WeatherDataController::class);
-
+    Route::get('/get-subcategories-data', [UtilController::class, 'getSubCategoriesData'])->name('getSubCategoriesData');
 });
 
 
