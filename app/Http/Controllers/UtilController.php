@@ -7,6 +7,7 @@ use App\Models\Data;
 use App\Models\SubCategory;
 use App\Models\User;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UtilController extends Controller
@@ -53,15 +54,20 @@ class UtilController extends Controller
             ->setLabels($categoryNames)
             ->setColors(['#004c6d', '#287a8e', '#55b4b0', '#8bde97', '#b6fb80']);
 
-        $exportTrendData = [
-            'series' => [
-                ['name' => 'Coffee', 'data' => [20, 24, 26, 51, 23, 32, 48, 57]],
-                ['name' => 'Sesame', 'data' => [19, 18, 16, 29, 38, 36, 22, 9]],
-                ['name' => 'Teff', 'data' => [16, 18, 18, 20, 29, 20, 17, 22]],
-            ],
-            'xAxis' => ['2013 Q1', '2013 Q2', '2013 Q3', '2013 Q4', '2014 Q1', '2014 Q2', '2014 Q3', '2014 Q4'],
-            'colors' => ['#004c6d', '#55b4b0', '#b6fb80']
-        ];
+        $exportTrendData = $this->getExportTrendData($categories->first()->id);
+
+        // dd($exportTrendData);
+
+
+        // $exportTrendData = [
+        //     'series' => [
+        //         ['name' => 'Coffee', 'data' => [20, 24, 26, 51, 23, 32, 48, 57]],
+        //         ['name' => 'Sesame', 'data' => [19, 18, 16, 29, 38, 36, 22, 9]],
+        //         ['name' => 'Teff', 'data' => [16, 18, 18, 20, 29, 20, 17, 22]],
+        //     ],
+        //     'xAxis' => ['2013 Q1', '2013 Q2', '2013 Q3', '2013 Q4', '2014 Q1', '2014 Q2', '2014 Q3', '2014 Q4'],
+        //     'colors' => ['#004c6d', '#55b4b0', '#b6fb80']
+        // ];
 
         $initialData = $this->getCategoryData($categories->first()->id);
 
@@ -116,5 +122,89 @@ class UtilController extends Controller
             'labels' => $labels,
             'colors' => ['#004c6d', '#55b4b0', '#b6fb80', '#d4fcbc'] // Adjust as necessary
         ];
+    }
+
+
+    public function getSubCategoriesExportTrendData(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $data = $this->getCategoryData($categoryId);
+
+        return response()->json([
+            'categoryData' => $data,
+            'exportTrendData' => $this->getExportTrendData($categoryId)
+        ]);
+    }
+
+    private function getExportTrendData($categoryId)
+    {
+        $category = Category::with('subCategories.dataSchemas.datas')->find($categoryId);
+        $provinces = [];
+        $dates = [];
+
+        foreach ($category->subCategories as $subCategory) {
+            foreach ($subCategory->dataSchemas as $dataSchema) {
+                foreach ($dataSchema->datas as $data) {
+                    $values = json_decode(json_encode($data->values), true);
+                    $province = $values['province'] ?? 'Unknown';
+                    $date = isset($values['date_stool_collected']) ? $this->getQuarter($values['date_stool_collected']) : 'Unknown';
+
+                    if (!isset($provinces[$province])) {
+                        $provinces[$province] = [];
+                    }
+                    if (!isset($provinces[$province][$date])) {
+                        $provinces[$province][$date] = 0;
+                    }
+                    $provinces[$province][$date]++;
+                    if (!in_array($date, $dates)) {
+                        $dates[] = $date;
+                    }
+                }
+            }
+        }
+
+        sort($dates);
+
+        $series = [];
+        foreach ($provinces as $province => $data) {
+            $provinceData = [];
+            foreach ($dates as $date) {
+                $provinceData[] = $data[$date] ?? 0;
+            }
+            $series[] = ['name' => $province, 'data' => $provinceData];
+        }
+
+        return [
+            'series' => $series,
+            'xAxis' => $dates,
+            'colors' => ['#004c6d', '#55b4b0', '#b6fb80']
+        ];
+    }
+
+    private function getQuarter($date)
+    {
+        $date = $this->excelDateToCarbon($date);
+        $timestamp = strtotime($date);
+        $month = date('n', $timestamp);
+        $year = date('Y', $timestamp);
+
+        if ($month <= 3) {
+            return "$year Q1";
+        } elseif ($month <= 6) {
+            return "$year Q2";
+        } elseif ($month <= 9) {
+            return "$year Q3";
+        } else {
+            return "$year Q4";
+        }
+    }
+
+    function excelDateToCarbon($serialDate)
+    {
+        // Excel's epoch starts at 1900-01-01
+        $baseDate = Carbon::createFromDate(1900, 1, 1);
+
+        // Add the number of days (subtract 1 because 1900-01-01 is serial number 1)
+        return $baseDate->addDays($serialDate - 1);
     }
 }

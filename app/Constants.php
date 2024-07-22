@@ -10,6 +10,7 @@ class Constants
         'text',
         'numeric',
         'image',
+        'date'
     ];
     const EXPORT_TYPE_CSV = 'csv';
     const EXPORT_TYPE_EXCEL = 'xlsx';

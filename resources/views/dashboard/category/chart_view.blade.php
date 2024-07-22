@@ -104,6 +104,66 @@
 
     <script>
         $(document).ready(function() {
+            var exportTrendChartOptions = {
+                series: @json($exportTrendData['series']),
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    stacked: true
+                },
+                colors: @json($exportTrendData['colors']),
+                xaxis: {
+                    categories: @json($exportTrendData['xAxis'])
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '50%'
+                    }
+                }
+            };
+            var exportTrendChart = new ApexCharts(document.querySelector("#exportTrendChart"),
+                exportTrendChartOptions);
+            exportTrendChart.render();
+
+            $('#category-select').on('change', function() {
+                var categoryId = $(this).val();
+                if (categoryId) {
+                    $.ajax({
+                        url: '{{ route('getSubCategoriesExportTrendData') }}',
+                        type: 'GET',
+                        data: {
+                            category_id: categoryId
+                        },
+                        success: function(response) {
+                            if (response.categoryData && response.exportTrendData) {
+                                exportTrendChart.updateOptions({
+                                    series: response.categoryData.series,
+                                    labels: response.categoryData.labels,
+                                    colors: response.categoryData.colors
+                                }, true);
+
+                                exportTrendChart.updateOptions({
+                                    series: response.exportTrendData.series,
+                                    xaxis: {
+                                        categories: response.exportTrendData.xAxis
+                                    },
+                                    colors: response.exportTrendData.colors
+                                }, true);
+                            } else {
+                                console.error('Invalid response structure');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching data:', error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
             $('#category-select').select2();
 
             let initialSeries = @json($initialData['series']);
