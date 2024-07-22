@@ -212,7 +212,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         var options = {
             series: @json($exportTrendData['series']),
             chart: {
@@ -234,7 +234,7 @@
 
         var chart = new ApexCharts(document.querySelector("#exportTrendChart"), options);
         chart.render();
-    </script>
+    </script> --}}
     <script>
         var options = {
             series: [{
