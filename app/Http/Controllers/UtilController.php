@@ -71,6 +71,8 @@ class UtilController extends Controller
 
         $initialData = $this->getCategoryData($categories->first()->id);
 
+        $initialDataPerSeasons = $this->getCategoryDataasSeasons($categories->first()->id);
+
         $agriculturalInputChart = (new LarapexChart)->pieChart()
             ->setTitle('Agricultural Input Distribution Chart')
             ->addData($initialData['series'])
@@ -89,7 +91,7 @@ class UtilController extends Controller
             'xAxis' => ['Jan 01', '03 Jan', '05 Jan', '07 Jan', '09 Jan', '11 Jan']
         ];
 
-        return view('dashboard.show', compact('categories', 'categoryStats', 'totalCategories', 'totalUsers', 'totalData', 'totalSubCategories', 'datasetByCategory', 'exportTrendData', 'agriculturalInputChart', 'livestockMarketData', 'initialData'));
+        return view('dashboard.show', compact('categories', 'categoryStats', 'totalCategories', 'totalUsers', 'totalData', 'totalSubCategories', 'datasetByCategory', 'exportTrendData', 'agriculturalInputChart', 'livestockMarketData', 'initialData', 'initialDataPerSeasons'));
     }
 
     public function getSubCategoriesData(Request $request)
@@ -206,5 +208,71 @@ class UtilController extends Controller
 
         // Add the number of days (subtract 1 because 1900-01-01 is serial number 1)
         return $baseDate->addDays($serialDate - 1);
+    }
+
+    public function getSeasonChartData(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $data = $this->getCategoryDataasSeasons($categoryId);
+
+        // dd($data);
+        return [
+            'series' => $data['series'],
+            'labels' => $data['labels'],
+            'colors' => $data['colors'],
+            'quarterData' => $data['quarterData'],
+            'categoryData' => $data,
+        ];
+    }
+
+    private function getCategoryDataasSeasons($categoryId)
+    {
+        // dd('sasas');
+        $category = Category::with('subCategories.dataSchemas.datas')->find($categoryId);
+        $labels = [];
+        $dataCounts = [];
+        $quarterData = [
+            'Fall' => 0,
+            'Summer' => 0,
+            'Spring' => 0,
+            'Winter' => 0
+        ];
+
+        foreach ($category->subCategories as $subCategory) {
+            $labels[] = $subCategory->name;
+            $dataCount = 0;
+            foreach ($subCategory->dataSchemas as $dataSchema) {
+                foreach ($dataSchema->datas as $data) {
+                    $values = json_decode(json_encode($data->values), true);
+                    $date = \Carbon\Carbon::parse($this->excelDateToCarbon($values['date_stool_collected']));
+                    $month = $date->month;
+
+                    if ($month >= 1 && $month <= 3) {
+                        $quarterData['Winter'] += 1;
+                    } elseif ($month >= 4 && $month <= 6) {
+                        $quarterData['Spring'] += 1;
+                    } elseif ($month >= 7 && $month <= 9) {
+                        $quarterData['Summer'] += 1;
+                    } elseif ($month >= 10 && $month <= 12) {
+                        $quarterData['Fall'] += 1;
+                    }
+
+                    $dataCount += 1;
+                }
+            }
+            $dataCounts[] = $dataCount;
+        }
+
+        $totalData = array_sum($quarterData);
+        $quarterPercentages = array_values(array_map(function ($count) use ($totalData) {
+            return $totalData > 0 ? ($count / $totalData) * 100 : 0;
+        }, $quarterData));
+
+        return [
+            'series' => $dataCounts,
+            'labels' => $labels,
+            'colors' => ['#00008B', '#FF0000', '#006400', '#FF8C00'],
+            'quarterData' => $quarterPercentages,
+        ];
     }
 }

@@ -86,7 +86,7 @@
             </div>
             <div class="card-body">
                 <!--begin::Chart-->
-                <div id="livestockMarketChart" class="large-chart"></div>
+                <div id="quarterDataChart" class="large-chart"></div>
             </div>
         </div>
         <!--end::Card-->
@@ -102,6 +102,56 @@
     {{-- {{ $exportTrendChart->script() }} --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <script>
+        let initialQuarterData = @json($initialDataPerSeasons['quarterData']);
+        let quarterDataChart = new ApexCharts(document.querySelector("#quarterDataChart"), {
+            chart: {
+                type: 'pie',
+                height: 500 // Set a height to ensure it displays
+            },
+            series: initialQuarterData, // initial quarter data
+            labels: ['Fall', 'Summer', 'Spring', 'Winter'], // quarters
+            colors: ['#00008B', '#FF0000', '#006400', '#FF8C00'] // adjust as necessary
+        });
+
+        quarterDataChart.render().then(() => {
+            console.log('Quarter Data Chart rendered successfully'); // Confirm rendering
+        }).catch((error) => {
+            console.error('Error rendering quarter data chart:', error); // Log any errors
+        });
+
+        $('#category-select').on('change', function() {
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    url: '{{ route('getSeasonChartData') }}',
+                    type: 'GET',
+                    data: {
+                        category_id: categoryId
+                    },
+                    success: function(response) {
+                        if (response.categoryData) {
+                            quarterDataChart.updateOptions({
+                                series: response.categoryData.series,
+                                labels: response.categoryData.labels,
+                                colors: response.categoryData.colors
+                            }, true);
+
+                            quarterDataChart.updateOptions({
+                                series: response.categoryData.quarterData,
+                                labels: ['Fall', 'Summer', 'Spring', 'Winter']
+                            }, true);
+                        } else {
+                            console.error('Invalid response structure');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+        });
+    </script>
     <script>
         $(document).ready(function() {
             var exportTrendChartOptions = {

@@ -104,6 +104,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('weather', WeatherDataController::class);
     Route::get('/get-subcategories-data', [UtilController::class, 'getSubCategoriesData'])->name('getSubCategoriesData');
     Route::get('/getSubCategoriesExportTrendData', [UtilController::class, 'getSubCategoriesExportTrendData'])->name('getSubCategoriesExportTrendData');
+    Route::get('/getSeasonChartData', [UtilController::class, 'getSeasonChartData'])->name('getSeasonChartData');
 });
 
 
