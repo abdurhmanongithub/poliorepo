@@ -46,7 +46,7 @@ Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
 
-        return view('base');
+        return redirect()->route('dashboard');
     });
     Route::get('/dashboard', [UtilController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', CategoryController::class);
@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-subcategories-data', [UtilController::class, 'getSubCategoriesData'])->name('getSubCategoriesData');
     Route::get('/getSubCategoriesExportTrendData', [UtilController::class, 'getSubCategoriesExportTrendData'])->name('getSubCategoriesExportTrendData');
     Route::get('/getSeasonChartData', [UtilController::class, 'getSeasonChartData'])->name('getSeasonChartData');
+    Route::get('/fetch-coordinates/{categoryId}', [UtilController::class, 'fetchCoordinates']);
 });
 
 

@@ -11,6 +11,11 @@
             height: auto;
             /* Adjust as needed */
         }
+
+        #map {
+            height: 500px;
+            width: 100%;
+        }
     </style>
 @endpush
 <div class="row">
@@ -91,6 +96,22 @@
         </div>
         <!--end::Card-->
     </div>
+
+    <div class="col-lg-12">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b reduce-margin">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Data Disperse on Map</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Chart-->
+                <div id="map" class="large-chart"></div>
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
 </div>
 
 @push('js')
@@ -101,6 +122,115 @@
     {{ $datasetByCategory->script() }}
     {{-- {{ $exportTrendChart->script() }} --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer>
+    </script>
+
+    <script>
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function clusterCoordinates(coords, radius = 10) {
+            const clusters = [];
+            const visited = new Array(coords.length).fill(false);
+
+            for (let i = 0; i < coords.length; i++) {
+                if (visited[i]) continue;
+                const cluster = [];
+                for (let j = 0; j < coords.length; j++) {
+                    if (!visited[j] && getDistance(coords[i].latitude, coords[i].longitude, coords[j].latitude, coords[j]
+                            .longitude) <= radius) {
+                        cluster.push(coords[j]);
+                        visited[j] = true;
+                    }
+                }
+                clusters.push(cluster);
+            }
+
+            return clusters;
+        }
+
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the Earth in kilometers
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                0.5 - Math.cos(dLat) / 2 +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                (1 - Math.cos(dLon)) / 2;
+            return R * 2 * Math.asin(Math.sqrt(a));
+        }
+
+        function initMap() {
+            var ethiopia = {
+                lat: 9.145,
+                lng: 40.489673
+            };
+            var mapOptions = {
+                zoom: 6,
+                center: new google.maps.LatLng(9.145, 40.489673),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            $('#category-select').on('change', function() {
+                var categoryId = this.value;
+                if (categoryId) {
+                    fetch('/fetch-coordinates/' + categoryId)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear existing markers
+                            map.markers.forEach(marker => marker.setMap(null));
+                            map.markers = [];
+
+                            // Process and add new markers
+                            var markers = {};
+
+
+                            data.forEach(item => {
+                                if (item.position.latitude && item.position.longitude) {
+                                    var position = new google.maps.LatLng(item.position.latitude, item
+                                        .position.longitude);
+                                    var key = `${item.position.latitude}-${item.position.longitude}`;
+                                    if (!markers[key]) {
+                                        markers[key] = {
+                                            count: 0,
+                                            position: position
+                                        };
+                                    }
+                                    markers[key].count++;
+                                }
+                            });
+
+                            for (var key in markers) {
+                                var marker = new google.maps.Marker({
+                                    position: markers[key].position,
+                                    map: map,
+                                    icon: {
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        scale: 8,
+                                        fillColor: getRandomColor(),
+                                        fillOpacity: 1,
+                                        strokeWeight: 1,
+                                        strokeColor: '#000'
+                                    },
+                                    title: `Count: ${markers[key].count}` // Display count on hover
+                                });
+                                map.markers.push(marker);
+                            }
+                        });
+                }
+            });
+
+            // Initialize map markers array
+            map.markers = [];
+        }
+    </script>
 
     <script>
         let initialQuarterData = @json($initialDataPerSeasons['quarterData']);

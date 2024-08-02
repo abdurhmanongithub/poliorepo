@@ -149,6 +149,9 @@ class UtilController extends Controller
                 foreach ($dataSchema->datas as $data) {
                     $values = json_decode(json_encode($data->values), true);
                     $province = $values['province'] ?? 'Unknown';
+                    if (!array_key_exists('date_stool_collected', $values)) {
+                        continue;
+                    }
                     $date = isset($values['date_stool_collected']) ? $this->getQuarter($values['date_stool_collected']) : 'Unknown';
 
                     if (!isset($provinces[$province])) {
@@ -244,6 +247,9 @@ class UtilController extends Controller
             foreach ($subCategory->dataSchemas as $dataSchema) {
                 foreach ($dataSchema->datas as $data) {
                     $values = json_decode(json_encode($data->values), true);
+                    if (!array_key_exists('date_stool_collected', $values)) {
+                        continue;
+                    }
                     $date = \Carbon\Carbon::parse($this->excelDateToCarbon($values['date_stool_collected']));
                     $month = $date->month;
 
@@ -274,5 +280,45 @@ class UtilController extends Controller
             'colors' => ['#00008B', '#FF0000', '#006400', '#FF8C00'],
             'quarterData' => $quarterPercentages,
         ];
+    }
+
+    public function fetchCoordinates($categoryId)
+    {
+        // Fetch the category with related data
+        $category = Category::with('subCategories.dataSchemas.datas')->find($categoryId);
+
+        if (!$category) {
+            return response()->json([], 404); // Category not found
+        }
+
+        // Collect GPS coordinates
+        $coordinates = [];
+
+        foreach ($category->subCategories as $subCategory) {
+            foreach ($subCategory->dataSchemas as $dataSchema) {
+                foreach ($dataSchema->datas as $data) {
+                    $values = json_decode(json_encode($data->values), true);
+                    if (isset($values['area_name_gps_latitude']) && isset($values['area_name_gps_longitude'])) {
+                        $coordinates[] = [
+                            'latitude' => $values['area_name_gps_latitude'],
+                            'longitude' => $values['area_name_gps_longitude']
+                        ];
+                    }
+                }
+            }
+        }
+        
+
+        // Merge and count data from the same place
+        $mergedCoordinates = [];
+        foreach ($coordinates as $coordinate) {
+            $key = $coordinate['latitude'] . '-' . $coordinate['longitude'];
+            if (!isset($mergedCoordinates[$key])) {
+                $mergedCoordinates[$key] = ['count' => 0, 'position' => $coordinate];
+            }
+            $mergedCoordinates[$key]['count']++;
+        }
+        
+        return response()->json(array_values($mergedCoordinates));
     }
 }
