@@ -106,6 +106,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getSubCategoriesExportTrendData', [UtilController::class, 'getSubCategoriesExportTrendData'])->name('getSubCategoriesExportTrendData');
     Route::get('/getSeasonChartData', [UtilController::class, 'getSeasonChartData'])->name('getSeasonChartData');
     Route::get('/fetch-coordinates/{categoryId}', [UtilController::class, 'fetchCoordinates']);
+    Route::get('/category-data', [UtilController::class, 'getCategoryDataLineChart']);
+    Route::get('/bar-category-data', [UtilController::class, 'getCategoryDataBarChart']);
 });
 
 
