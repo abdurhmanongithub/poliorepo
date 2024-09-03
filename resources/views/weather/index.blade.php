@@ -105,10 +105,11 @@
     <div class="card-body">
         <!--begin: Datatable-->
         <div class="datatable datatable-default datatable-bordered datatable-loaded">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-responsive">
+
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>No.</th>
                         <th>Location</th>
                         <th>Year</th>
                         <th>Month</th>
@@ -126,7 +127,8 @@
 
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="datatable-body">
+
                     @foreach ($items as $key=>$data)
                     <tr>
                         <td>{{$key+1}}</td>

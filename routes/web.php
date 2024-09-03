@@ -106,6 +106,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getSubCategoriesExportTrendData', [UtilController::class, 'getSubCategoriesExportTrendData'])->name('getSubCategoriesExportTrendData');
     Route::get('/getSeasonChartData', [UtilController::class, 'getSeasonChartData'])->name('getSeasonChartData');
     Route::get('/fetch-coordinates/{categoryId}', [UtilController::class, 'fetchCoordinates']);
+    Route::get('/view/get-weather', [WeatherDataController::class, 'getWeatherView'])->name('get-weather.view');
+    Route::post('/get-weather', [WeatherDataController::class, 'getWeather'])->name('get-weather');
+
 });
 
 

@@ -360,9 +360,7 @@
                                     </div>
                                 </li>
 
-                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'weather') === 0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
-
-
+                                <li class="menu-item menu-item-submenu {{  strpos(Route::currentRouteName(), 'weather') ===0||strpos(Route::currentRouteName(),'get-weather')===0 ? 'menu-item-open' : '' }} " aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="javascript:;" class="menu-link menu-toggle">
                                         <i class="menu-icon flaticon-earth-globe"></i>
                                         <span class="menu-text">Weather Data</span>
@@ -381,7 +379,16 @@
                                                     <i class="menu-bullet menu-bullet-dot">
                                                         <span></span>
                                                     </i>
-                                                    <span class="menu-text">weather Data</span>
+                                                    <span class="menu-text">historical weather Data</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-item {{strpos(Route::currentRouteName(),'get-weather')===0 ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                                                <a href="{{ route('get-weather.view') }}" class="menu-link">
+
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Current weather Data</span>
                                                 </a>
                                             </li>
                                         </ul>
