@@ -56,6 +56,19 @@ class UtilController extends Controller
 
         $exportTrendData = $this->getExportTrendData($categories->first()->id);
 
+        $chart = (new LarapexChart)->lineChart()
+            ->setTitle('ECG-Like Chart') // Optional: Set the chart title
+            ->setSubtitle('An example of a stacked line chart') // Optional: Set the chart subtitle
+            ->setColors(['#FF1654', '#247BA0', '#70C1B3', '#FF6B6B']) // Customize colors
+            ->addData('Signal 1', [10, 40, 15, 30, 50, 35, 60, 20, 70]) // Replace with your data
+            ->addData('Signal 2', [20, 60, 25, 20, 40, 30, 50, 40, 80]) // Replace with your data
+            ->addData('Signal 3', [30, 50, 35, 10, 30, 25, 40, 30, 60]) // Replace with your data
+            ->setMarkers(['#FF1654', '#247BA0', '#70C1B3']) // Markers on the line
+            ->setStroke(2) // Adjust stroke width for a sharper line
+            ->setXAxis(['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9']) // X-Axis labels
+            // ->setGrid(true, 1, '#e0e0e0') // Add grid lines
+            ->setHorizontal(true); // Make it horizontally stacked
+
         // dd($exportTrendData);
 
 
@@ -91,7 +104,7 @@ class UtilController extends Controller
             'xAxis' => ['Jan 01', '03 Jan', '05 Jan', '07 Jan', '09 Jan', '11 Jan']
         ];
 
-        return view('dashboard.show', compact('categories', 'categoryStats', 'totalCategories', 'totalUsers', 'totalData', 'totalSubCategories', 'datasetByCategory', 'exportTrendData', 'agriculturalInputChart', 'livestockMarketData', 'initialData', 'initialDataPerSeasons'));
+        return view('dashboard.show', compact('categories', 'categoryStats', 'totalCategories', 'totalUsers', 'totalData', 'totalSubCategories', 'datasetByCategory', 'exportTrendData', 'agriculturalInputChart', 'livestockMarketData', 'initialData', 'initialDataPerSeasons', 'chart'));
     }
 
     public function getSubCategoriesData(Request $request)
@@ -307,7 +320,7 @@ class UtilController extends Controller
                 }
             }
         }
-        
+
 
         // Merge and count data from the same place
         $mergedCoordinates = [];
@@ -318,7 +331,197 @@ class UtilController extends Controller
             }
             $mergedCoordinates[$key]['count']++;
         }
-        
+
         return response()->json(array_values($mergedCoordinates));
     }
+
+    public function getCategoryDataLineChart(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $category = Category::with('subCategories.dataSchemas.datas')->find($categoryId);
+
+        $dateOfOnsetCounts = [];
+        $dateStoolCollectedCounts = [];
+        $dateStoolSentFromFieldCounts = [];
+
+        foreach ($category->subCategories as $subCategory) {
+            foreach ($subCategory->dataSchemas as $dataSchema) {
+                foreach ($dataSchema->datas as $data) {
+                    $values = $data->values;
+                    $dateKeys = [
+                        'date_of_onset' => &$dateOfOnsetCounts,
+                        'date_stool_collected' => &$dateStoolCollectedCounts,
+                        'date_stool_sent_from_field' => &$dateStoolSentFromFieldCounts
+                    ];
+
+                    foreach ($dateKeys as $key => &$counts) {
+                        if (isset($values[$key])) {
+                            if (!is_numeric($values[$key])) {
+                                continue;
+                            }
+                            $date = \Carbon\Carbon::parse($this->excelDateToCarbon($values[$key]));
+                            // $date = Carbon::parse("1899-12-30")->addDays($values[$key]); // Convert Excel date to normal date
+                            $year = $date->year;
+                            if (isset($counts[$year])) {
+                                $counts[$year]++;
+                            } else {
+                                $counts[$year] = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (!empty($dateOfOnsetCounts) || !empty($dateStoolCollectedCounts) || !empty($dateStoolSentFromFieldCounts)) {
+            $chart = $this->createLineChart([], $dateOfOnsetCounts, $dateStoolCollectedCounts, $dateStoolSentFromFieldCounts);
+            return response()->json(['chart' => $chart]);
+        }
+
+        return response()->json(['chart' => null]);
+    }
+
+    private function createLineChart($dates, $dateOfOnsetCounts, $dateStoolCollectedCounts, $dateStoolSentFromFieldCounts)
+    {
+        ksort($dateOfOnsetCounts);
+        ksort($dateStoolCollectedCounts);
+        ksort($dateStoolSentFromFieldCounts);
+
+        return [
+            'chart' => [
+                'type' => 'line',
+                'height' => 400
+            ],
+            'title' => [
+                'text' => 'Timeliness of reporting and investigation',
+                'align' => 'center'
+            ],
+            // 'subtitle' => [
+            //     'text' => 'Yearly Data Analysis'
+            // ],
+            'colors' => ['#FF1654', '#247BA0', '#70C1B3'],
+            'series' => [
+                ['name' => 'Date of Onset', 'data' => array_values($dateOfOnsetCounts)],
+                ['name' => 'Date Stool Collected', 'data' => array_values($dateStoolCollectedCounts)],
+                ['name' => 'Date Stool Sent From Field', 'data' => array_values($dateStoolSentFromFieldCounts)],
+            ],
+            'xaxis' => [
+                'categories' => array_keys($dateOfOnsetCounts)
+            ],
+            'markers' => [
+                'size' => 4,
+                'colors' => ['#FF1654', '#247BA0', '#70C1B3']
+            ],
+            'stroke' => [
+                'curve' => 'smooth',
+                'width' => 2
+            ],
+            'grid' => [
+                'borderColor' => '#e0e0e0'
+            ]
+        ];
+    }
+
+    public function getCategoryDataBarChart(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $category = Category::with('subCategories.dataSchemas.datas')->find($categoryId);
+
+        $results = [];
+        foreach ($category->subCategories as $subCategory) {
+            foreach ($subCategory->dataSchemas as $dataSchema) {
+                foreach ($dataSchema->datas as $data) {
+                    $values = $data->values;
+                    if (isset($values['final_cell_culture_result'])) {
+                        $result = $values['final_cell_culture_result'];
+                        if (isset($results[$result])) {
+                            $results[$result]++;
+                        } else {
+                            $results[$result] = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (!empty($results)) {
+            $chart = $this->createBarChart($results);
+            return response()->json(['barChart' => $chart]);
+        }
+
+        return response()->json(['barChart' => null]);
+    }
+
+    private function createBarChart($results)
+    {
+        ksort($results); // Optional: sort results by key
+        return [
+            'chart' => [
+                'type' => 'bar',
+                'height' => 400
+            ],
+            'title' => [
+                'text' => 'Distribution of Final Cell Culture Results',
+                'align' => 'center'
+            ],
+            // 'subtitle' => [
+            //     'text' => 'Distribution of Final Cell Culture Results'
+            // ],
+            'colors' => ['#247BA0'],
+            'series' => [
+                ['name' => 'Results Count', 'data' => array_values($results)]
+            ],
+            'xaxis' => [
+                'categories' => array_keys($results)
+            ],
+            'grid' => [
+                'borderColor' => '#e0e0e0'
+            ]
+        ];
+    }
+
+
+
+    // public function getCategoryDataLineChart(Request $request)
+    // {
+    //     $categoryId = $request->input('category_id');
+    //     $category = Category::with('subCategories.dataSchemas.datas')->find($categoryId);
+
+    //     $dates = [];
+    //     foreach ($category->subCategories as $subCategory) {
+    //         foreach ($subCategory->dataSchemas as $dataSchema) {
+    //             foreach ($dataSchema->datas as $data) {
+    //                 $values = $data->values;
+    //                 $dateKeys = ['date_of_onset', 'date_stool_collected', 'date_stool_sent_from_field'];
+
+    //                 foreach ($dateKeys as $key) {
+    //                     if (isset($values[$key])) {
+    //                         $date = Carbon::parse("1899-12-30")->addDays($values[$key]); // Convert Excel date to normal date
+    //                         $dates[] = $date->year;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     if (!empty($dates)) {
+    //         $chart = $this->createLineChart($dates);
+    //         return response()->json(['chart' => $chart->toJson()]);
+    //     }
+
+    //     return response()->json(['chart' => null]);
+    // }
+
+    // private function createLineChart($dates)
+    // {
+    //     $dateCounts = array_count_values($dates);
+    //     ksort($dateCounts);
+
+    //     return (new \ArielMejiaDev\LarapexCharts\LarapexChart)->lineChart()
+    //         ->setTitle('Yearly Data Analysis')
+    //         ->addData('Data Points', array_values($dateCounts))
+    //         ->setXAxis(array_keys($dateCounts));
+    // }
 }

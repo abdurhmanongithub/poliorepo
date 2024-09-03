@@ -102,6 +102,40 @@
         <div class="card card-custom gutter-b reduce-margin">
             <div class="card-header">
                 <div class="card-title">
+                    <h3 class="card-label">Timeliness of reporting and investigation</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Chart-->
+                <div id="chart" class="large-chart">
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+
+    <div class="col-lg-12">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b reduce-margin">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Distribution of Final Cell Culture Results</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Chart-->
+                <div id="bar-chart" class="large-chart">
+                </div>
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+
+    <div class="col-lg-12">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b reduce-margin">
+            <div class="card-header">
+                <div class="card-title">
                     <h3 class="card-label">Data Disperse on Map</h3>
                 </div>
             </div>
@@ -117,14 +151,84 @@
 @push('js')
     <script src="{{ $datasetByCategory->cdn() }}"></script>
     <script src="{{ $agriculturalInputChart->cdn() }}"></script>
+    <script src="{{ $chart->cdn() }}"></script>
     {{-- <script src="{{ $exportTrendChart->cdn() }}"></script> --}}
     {{ $agriculturalInputChart->script() }}
+    {!! $chart->script() !!}
     {{ $datasetByCategory->script() }}
     {{-- {{ $exportTrendChart->script() }} --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer>
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('#category-select').on('change', function() {
+                var categoryId = $(this).val();
+
+                if (categoryId) {
+                    $.ajax({
+                        url: '/bar-category-data',
+                        method: 'GET',
+                        data: {
+                            category_id: categoryId,
+                            // _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.barChart) {
+                                var chartConfig = response.barChart;
+                                var chart = new ApexCharts(document.querySelector("#bar-chart"),
+                                    chartConfig);
+                                chart.render();
+                                // console.log(response.chart);
+
+                                // $('#chart').html(response.chart);
+                            } else {
+                                $('#bar-chart').html('<p>No data available for this category.</p>');
+                            }
+                        },
+                        error: function() {
+                            $('#bar-chart').html('<p>Failed to load chart data.</p>');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#category-select').on('change', function() {
+                var categoryId = $(this).val();
+
+                if (categoryId) {
+                    $.ajax({
+                        url: '/category-data',
+                        method: 'GET',
+                        data: {
+                            category_id: categoryId,
+                            // _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.chart) {
+                                var chartConfig = response.chart;
+                                var chart = new ApexCharts(document.querySelector("#chart"),
+                                    chartConfig);
+                                chart.render();
+                                // console.log(response.chart);
+
+                                // $('#chart').html(response.chart);
+                            } else {
+                                $('#chart').html('<p>No data available for this category.</p>');
+                            }
+                        },
+                        error: function() {
+                            $('#chart').html('<p>Failed to load chart data.</p>');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
     <script>
         function getRandomColor() {
             const letters = '0123456789ABCDEF';
@@ -231,7 +335,6 @@
             map.markers = [];
         }
     </script>
-
     <script>
         let initialQuarterData = @json($initialDataPerSeasons['quarterData']);
         let quarterDataChart = new ApexCharts(document.querySelector("#quarterDataChart"), {
