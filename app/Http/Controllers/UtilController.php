@@ -22,7 +22,7 @@ class UtilController extends Controller
         $categoryStats = [];
         foreach ($categories as $category) {
             array_push($categoryStats, [
-                'id' => $category->id,
+                'id' => $category?->id,
                 'name' => $category->name,
                 'sub_category_count' => $category->subCategories()->count(),
                 'schema_count' => $category->dataSchema?->count() ?? 0,
@@ -63,7 +63,7 @@ class UtilController extends Controller
             'colors' => ['#004c6d', '#55b4b0', '#b6fb80']
         ];
 
-        $initialData = $this->getCategoryData($categories->first()->id);
+        $initialData = $this->getCategoryData($categories->first()?->id);
 
         $agriculturalInputChart = (new LarapexChart)->pieChart()
             ->setTitle('Agricultural Input Distribution Chart')
@@ -100,7 +100,7 @@ class UtilController extends Controller
         $labels = [];
         $dataCounts = [];
 
-        foreach ($category->subCategories as $subCategory) {
+        foreach ($category?->subCategories ?? [] as $subCategory) {
             $labels[] = $subCategory->name;
             $dataCount = 0;
             foreach ($subCategory->dataSchemas as $dataSchema) {
