@@ -94,13 +94,16 @@
 </div>
 
 @push('js')
-    <script src="{{ $datasetByCategory->cdn() }}"></script>
-    <script src="{{ $agriculturalInputChart->cdn() }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/some-other-library@3.35.3/dist/library.min.js"></script>
+
+    {{-- <script src="{{ $datasetByCategory->cdn() }}"></script>
+    <script src="{{ $agriculturalInputChart->cdn() }}"></script> --}}
     {{-- <script src="{{ $exportTrendChart->cdn() }}"></script> --}}
     {{ $agriculturalInputChart->script() }}
     {{ $datasetByCategory->script() }}
     {{-- {{ $exportTrendChart->script() }} --}}
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
 
     <script>
         $(document).ready(function() {
