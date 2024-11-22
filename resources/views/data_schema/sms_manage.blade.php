@@ -11,9 +11,6 @@
                 <input type="hidden" name="sms_type" value="{{ App\Constants::INFORMATION}}">
                 <input type="hidden" name="data_schema_id" value="{{$dataSchema->id}}">
 
-
-
-
                 @csrf
                 <div class="row">
                     <div class="form-group">

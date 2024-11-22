@@ -16,6 +16,7 @@ use App\Http\Controllers\DataSyncController;
 use App\Http\Controllers\KnowledgeController;
 use App\Http\Controllers\KnowledgeTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PolioDataPullerController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SmsHistoryController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Models\CommunityType;
 use App\Models\Zone;
+use Illuminate\Support\Facades\DB;
 use RakibDevs\Weather\Weather;
 use Spatie\FlareClient\Api;
 
@@ -42,11 +44,12 @@ Route::get('/login', [LoginController::class, 'loginView'])->name('login');
 Route::post('/login/store', [LoginController::class, 'store'])->name('login.store');
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
-
 Route::middleware(['auth'])->group(function () {
+    Route::get('/polio-data',[PolioDataPullerController::class,'index'])->name('polio-table.index');
+    Route::get('/polio-data/{table}',[PolioDataPullerController::class,'show'])->name('polio-table.show');
     Route::get('/', function () {
 
-        return view('base');
+        return redirect()->route('dashboard');
     });
     Route::get('/dashboard', [UtilController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', CategoryController::class);
@@ -103,6 +106,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/import-weather-data', [WeatherDataController::class, 'import'])->name('weather.import');
     Route::resource('weather', WeatherDataController::class);
     Route::get('/get-subcategories-data', [UtilController::class, 'getSubCategoriesData'])->name('getSubCategoriesData');
+    Route::get('/getSubCategoriesExportTrendData', [UtilController::class, 'getSubCategoriesExportTrendData'])->name('getSubCategoriesExportTrendData');
+    Route::get('/getSeasonChartData', [UtilController::class, 'getSeasonChartData'])->name('getSeasonChartData');
+    Route::get('/fetch-coordinates/{categoryId}', [UtilController::class, 'fetchCoordinates']);
+    Route::get('/category-data', [UtilController::class, 'getCategoryDataLineChart']);
+    Route::get('/bar-category-data', [UtilController::class, 'getCategoryDataBarChart']);
+    Route::get('/view/get-weather', [WeatherDataController::class, 'getWeatherView'])->name('get-weather.view');
+    Route::post('/get-weather', [WeatherDataController::class, 'getWeather'])->name('get-weather');
 });
 
 
