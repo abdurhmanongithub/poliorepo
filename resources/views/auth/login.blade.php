@@ -50,7 +50,8 @@
                     <div class="d-flex flex-column-fluid flex-column flex-center mt-5 mt-lg-0">
 
                         <a href="#" class="mb-15 text-center">
-                            <img src="{{ asset('assets/ju_logo.png') }}" class="max-h-80px" alt="" />
+                            <img src="{{ asset('assets/logo.png') }}" class="max-h-80px" alt="" />
+
                         </a>
 
                         <!--begin::Signin-->
@@ -165,7 +166,7 @@
                     <!--end::Aside body-->
                     <!--begin: Aside footer for desktop-->
                     <div class="d-flex flex-column-auto justify-content-between mt-15">
-                        <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© {{now()->format('Y')}} Ju Data science hub</div>
+                        <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© {{now()->format('Y')}}  Polio Antenna Data Repository</div>
 
                         <div class="d-flex order-1 order-sm-2 my-2">
                             <a href="#" class="text-muted text-hover-primary">Privacy</a>
@@ -179,11 +180,12 @@
             </div>
             <!--begin::Aside-->
             <!--begin::Content-->
-            <div class="order-1 order-lg-2 flex-column-auto flex-lg-row-fluid d-flex flex-column p-7" style="background-image: url(assets/media/bg/bg-4.jpg);">
+            <div class="order-1 order-lg-2 flex-column-auto flex-lg-row-fluid d-flex flex-column p-7" style="background-image: url(assets/media/bg/bg-5.jpg);">
                 <!--begin::Content body-->
                 <div class="d-flex flex-column-fluid flex-lg-center">
                     <div class="d-flex flex-column justify-content-center">
-                        <h3 class="display-3 font-weight-bold my-7 text-white">Welcome to {{env('APP_TITLE')}}</h3>
+                        <img src="{{ asset('assets/logo.png') }}" class="max-h-450px" alt="" />
+                        <h5 class="display-3 font-weight-bold my-5 text-white"> <br>{{env('APP_TITLE')}}</h5>
                         <p class="font-weight-bold font-size-lg text-white opacity-80">{{env("LOGIN_DESC")}}
 
 

@@ -28,7 +28,7 @@
         <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
         <!--end::Layout Themes-->
         @stack('css')
-        <link rel="shortcut icon" href="{{ asset('assets/ju_logo.png') }}" />
+        <link rel="shortcut icon" href="{{ asset('assets/logo.png') }}" />
         <link rel="stylesheet" href="{{ asset('assets/js/pages/crud/forms/widgets/select2.min.js') }}">
         <style>
             .modal-content .select2-container {
@@ -69,7 +69,7 @@
         <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
             <!--begin::Logo-->
             <a href="/">
-                <img alt="Logo" src="{{ asset('assets/ju_logo.png') }}" width="40" />
+                <img alt="Logo" src="{{ asset('assets/logo.png') }}" width="40" />
             </a>
             <!--end::Logo-->
             <!--begin::Toolbar-->
@@ -116,7 +116,7 @@
                     <div class="mt-4 brand flex-column-auto" id="kt_brand">
                         <!--begin::Logo-->
                         <a href="#" class="text-center brand-logo w-100 d-block">
-                            <img alt="Logo" src="{{ asset('assets/ju_logo.png') }}" width="50" />
+                            <img alt="Logo" src="{{ asset('assets/logo.png') }}" width="50" />
                         </a>
                         <!--end::Logo-->
 
@@ -403,42 +403,42 @@
                                     </div>
                                 </li>
 
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'weather') === 0 || strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-open' : '' }} "
-                                    aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-earth-globe"></i>
-                                        <span class="menu-text">Weather Data</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
+                                <!--<li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'weather') === 0 || strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-open' : '' }} "-->
+                                <!--    aria-haspopup="true" data-menu-toggle="hover">-->
+                                <!--    <a href="javascript:;" class="menu-link menu-toggle">-->
+                                <!--        <i class="menu-icon flaticon-earth-globe"></i>-->
+                                <!--        <span class="menu-text">Weather Data</span>-->
+                                <!--        <i class="menu-arrow"></i>-->
+                                <!--    </a>-->
+                                    <!--<div class="menu-submenu">-->
+                                    <!--    <i class="menu-arrow"></i>-->
+                                    <!--    <ul class="menu-subnav">-->
 
 
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'weather.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
+                                    <!--        <li class="menu-item {{ strpos(Route::currentRouteName(), 'weather.index') === 0 ? 'menu-item-active' : '' }}"-->
+                                    <!--            aria-haspopup="true">-->
 
 
-                                                <a href="{{ route('weather.index', []) }}" class="menu-link">
+                                    <!--            <a href="{{ route('weather.index', []) }}" class="menu-link">-->
 
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">historical weather Data</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('get-weather.view') }}" class="menu-link">
+                                    <!--                <i class="menu-bullet menu-bullet-dot">-->
+                                    <!--                    <span></span>-->
+                                    <!--                </i>-->
+                                    <!--                <span class="menu-text">historical weather Data</span>-->
+                                    <!--            </a>-->
+                                    <!--        </li>-->
+                                    <!--        <li class="menu-item {{ strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-active' : '' }}"-->
+                                    <!--            aria-haspopup="true">-->
+                                    <!--            <a href="{{ route('get-weather.view') }}" class="menu-link">-->
 
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Current weather Data</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <!--                <i class="menu-bullet menu-bullet-dot">-->
+                                    <!--                    <span></span>-->
+                                    <!--                </i>-->
+                                    <!--                <span class="menu-text">Current weather Data</span>-->
+                                    <!--            </a>-->
+                                    <!--        </li>-->
+                                    <!--    </ul>-->
+                                    <!--</div>-->
                                 </li>
                             </ul>
                         </div>

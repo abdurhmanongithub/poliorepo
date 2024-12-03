@@ -3,7 +3,7 @@
     <div class="brand flex-column-auto" id="kt_brand">
         <!--begin::Logo-->
         <a href="" class="brand-logo">
-            <img height="55" width="50" alt="Logo" src="{{ asset('assets/ju_logo.png') }}" />
+            <img height="55" width="50" alt="Logo" src="{{ asset('assets/logo.png') }}" />
         </a>
         <span class="font-size-h6"></span>
         <!--end::Logo-->
