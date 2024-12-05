@@ -115,9 +115,22 @@
                         </tr>
                     </thead>
                     <tbody style="" class="datatable-body">
+                        <tr>
+                            <td>1</td>
+                            <td>Core Group Data</td>
+                            <td>Core group data</td>
+                            <td><span
+                                    class="badge badge-info badge-sm">{{ true ? 'True' : 'False' }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('core-group-data.index') }}" class="">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
                         @foreach ($items as $key => $item)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $key + 2 }}</td>
                                 <td>{{ $item?->name }}</td>
                                 <td>{{ $item?->subCategory?->name }}</td>
                                 <td><span

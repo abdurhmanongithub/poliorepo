@@ -14,7 +14,7 @@
                             <!--begin::Name-->
                             <a href="#"
                                 class="mr-3 d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold">
-                                {{ $dataSchema->name }}
+                                {{ 'Core Group Data' }}
                                 - <span> Data Schema</span>
                                 <i class="ml-2 flaticon2-correct text-success icon-md"></i></a>
                             <!--end::Name-->
@@ -23,7 +23,7 @@
                                     <span class="mr-1 svg-icon svg-icon-md svg-icon-gray-500">
                                         <i class="fa fa-location"></i>
                                     </span>
-                                    {{ $dataSchema->subCategory?->name }} / {{ $dataSchema->subCategory?->category?->name }}
+                                    {{-- {{ $dataSchema->subCategory?->name }} / {{ $dataSchema->subCategory?->category?->name }} --}}
                                 </a>
                             </div>
                         </div>
@@ -35,8 +35,7 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="{{ route('data_schema.import.template.download', ['data_schema' => $dataSchema->id]) }}"
-                                                class="navi-link">
+                                            <a href="" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="fal fa-download"></i>
                                                 </span>
@@ -72,7 +71,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Total Datas</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span class="text-dark-50 font-weight-bold"></span>{{ $dataSchema->datas()->count() }}</span>
+                            <span class="text-dark-50 font-weight-bold"></span>{{ $totalDatas }}</span>
                     </div>
                 </div>
                 <!--end: Item-->
@@ -84,8 +83,7 @@
                     <div class="d-flex flex-column text-dark-75">
                         <span class="font-weight-bolder font-size-sm">Number of Attributes</span>
                         <span class="font-weight-bolder font-size-h5">
-                            <span
-                                class="text-dark-50 font-weight-bold"></span>{{ count($dataSchema->getListOfAttributes() ?? []) }}</span>
+                            <span class="text-dark-50 font-weight-bold"></span>{{ $columnCount }}</span>
                     </div>
 
                 </div>
@@ -109,7 +107,7 @@
                     </span>
                     <div class="d-flex flex-column flex-lg-fill">
                         <span class="text-dark-75 font-weight-bolder font-size-sm">Total Resource</span>
-                        <a href="#" class="text-primary font-weight-bolder">4</a>
+                        <a href="#" class="text-primary font-weight-bolder">0</a>
                     </div>
                 </div>
                 <!--end: Item-->
@@ -120,8 +118,7 @@
                     </span>
                     <div class="d-flex flex-column flex-lg-fill">
                         <span class="text-dark-75 font-weight-bolder font-size-sm">Total Community</span>
-                        <a href="#"
-                            class="text-primary font-weight-bolder">{{ $dataSchema->totalCommuityMembers() }}</a>
+                        <a href="#" class="text-primary font-weight-bolder">{{ 0 }}</a>
 
 
                     </div>
@@ -138,27 +135,27 @@
                 <div class="card-body pt-6 py-0" style="padding-left: 2px; padding-right: 2px;">
                     <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.show', ['data_schema' => $dataSchema->id]) }}"
-                                class="navi-link  {{ strpos(Route::currentRouteName(), 'data_schema.show') === 0 ? 'active' : '' }} py-4">
+                            <a href="{{ route('core-group-data.index') }}"
+                                class="navi-link  {{ strpos(Route::currentRouteName(), 'core-group-data.index') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
                                 <span class="navi-text font-size-lg">Dashboard</span>
                             </a>
                         </div>
-                        <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.manage', ['data_schema' => $dataSchema->id]) }}"
+                        {{-- <div class="navi-item mb-2">
+                            <a href="0"
                                 class="navi-link  {{ strpos(Route::currentRouteName(), 'data_schema.manage') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
                                 <span class="navi-text font-size-lg">Schema Management</span>
                             </a>
-                        </div>
+                        </div> --}}
 
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.data.index', ['data_schema' => $dataSchema->id]) }}"
-                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.index') === 0 ? 'active' : '' }} py-4">
+                            <a href="{{ route('core-group-data.data-management') }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'core-group-data.data-management') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
@@ -167,8 +164,8 @@
                         </div>
 
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.data.import.view', ['data_schema' => $dataSchema->id]) }}"
-                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.import.view') === 0 ? 'active' : '' }} py-4">
+                            <a href="{{ route('core-group-data.import.view', []) }}"
+                                class="navi-link {{ strpos(Route::currentRouteName(), 'core-group-data.import.view') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
                                 </span>
@@ -176,7 +173,7 @@
                             </a>
                         </div>
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.data.source', ['data_schema' => $dataSchema->id]) }}"
+                            <a href=""
                                 class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.data.source') === 0 ? 'active' : '' }} py-4">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-circle"></i>
@@ -184,7 +181,7 @@
                                 <span class="navi-text font-size-lg">Source Management</span>
                             </a>
                         </div>
-                        <!--<div class="navi-item mb-2">-->
+                        {{-- <!--<div class="navi-item mb-2">-->
                         <!--    <a href="{{ route('data_schema.dashboard.management', $dataSchema->id) }}" class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.dashboard.management') === 0 ? 'active' : '' }} py-4">-->
                         <!--        <span class="navi-icon mr-2">-->
                         <!--            <i class="fa fa-circle"></i>-->
@@ -199,10 +196,10 @@
                         <!--        </span>-->
                         <!--        <span class="navi-text font-size-lg">Resource Management</span>-->
                         <!--    </a>-->
-                        <!--</div>-->
+                        <!--</div>--> --}}
 
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.community.management', $dataSchema->id) }}"
+                            <a href=""
                                 class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.community.management') === 0 ? 'active' : '' }} py-4">
 
                                 <span class="navi-icon mr-2">
@@ -212,8 +209,7 @@
                             </a>
                         </div>
                         <div class="navi-item mb-2">
-                            <a href="{{ route('data_schema.sms.management', $dataSchema->id) }}"
-                                class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.sms.management') === 0 ? 'active' : '' }} py-4">
+                            <a href="" class="navi-link  py-4">
 
 
                                 <span class="navi-icon mr-2">

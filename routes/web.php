@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\CommunityTypeController;
+use App\Http\Controllers\CoreGroupDataController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\DataManagementController;
 // use App\Http\Controllers\DataSchemaController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\WeatherDataController;
 use App\Http\Controllers\WoredaController;
 use App\Http\Controllers\ZoneController;
 use App\Models\CommunityType;
+use App\Models\CoreGroupData;
 use App\Models\Zone;
 use Illuminate\Support\Facades\DB;
 use RakibDevs\Weather\Weather;
@@ -45,8 +47,8 @@ Route::post('/login/store', [LoginController::class, 'store'])->name('login.stor
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/polio-data',[PolioDataPullerController::class,'index'])->name('polio-table.index');
-    Route::get('/polio-data/{table}',[PolioDataPullerController::class,'show'])->name('polio-table.show');
+    Route::get('/polio-data', [PolioDataPullerController::class, 'index'])->name('polio-table.index');
+    Route::get('/polio-data/{table}', [PolioDataPullerController::class, 'show'])->name('polio-table.show');
     Route::get('/', function () {
 
         return redirect()->route('dashboard');
@@ -57,6 +59,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('data_schema', DataSchemaController::class);
     Route::post('/users/assign/sub_category', [SubCategoryController::class, 'assignSubCategory'])->name('sub_category.assign_approver');
     Route::post('/users/unassign/sub_category', [SubCategoryController::class, 'unassignSubCategory'])->name('sub_category.unassign_approver');
+    Route::get('core-group-data', [CoreGroupDataController::class, 'index'])->name('core-group-data.index');
+    Route::get('core-group-data/data-management', [CoreGroupDataController::class, 'dataManagement'])->name('core-group-data.data-management');
+    Route::get('core-group-data/import/view', [CoreGroupDataController::class, 'importView'])->name('core-group-data.import.view');
+    Route::post('core-group-data/excel-import/preview', [CoreGroupDataController::class, 'importPreview'])->name('core-group-data.import.preview');
+    Route::post('core-group-data/excel-import/import', [CoreGroupDataController::class, 'import'])->name('core-group-data.import');
+    Route::get('core-group-data/data-fetch', [CoreGroupDataController::class, 'datafetch'])->name('core-group-data.fetch');
+
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
@@ -65,8 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('role/{role}/permission/{permission}', [RoleController::class, 'revokePermission'])->name('role.permission.revoke');
     Route::post('role/{role}/giveAllPermission', [RoleController::class, 'giveAllPermission'])->name('role.giveAllPermission');
     Route::post('role/{role}/removeAllPermission', [RoleController::class, 'removeAllPermission'])->name('role.removeAllPermission');
-    Route::group(['prefix' => 'data_schema/{data_schema}', 'as' => 'data_schema.'], function () {
-    });
+    Route::group(['prefix' => 'data_schema/{data_schema}', 'as' => 'data_schema.'], function () {});
     Route::prefix('data_schema/{data_schema}')->name('data_schema.')->group(function () {
         Route::get('/manage', [DataSchemaController::class, 'manage'])->name('manage');
         Route::get('/data', [DataSchemaController::class, 'dataIndex'])->name('data.index');
@@ -114,5 +122,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/view/get-weather', [WeatherDataController::class, 'getWeatherView'])->name('get-weather.view');
     Route::post('/get-weather', [WeatherDataController::class, 'getWeather'])->name('get-weather');
 });
-
-

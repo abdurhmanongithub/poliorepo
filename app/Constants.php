@@ -17,6 +17,8 @@ class Constants
     const EXPORT_TYPE_PDF = 'pdf';
     const EXPORT_TYPE_HTML = 'html';
 
+    const OTHER_DATA_SOURCE_CORE_GROUP_DATA = 'Core Group Data';
+
     const EXPORT_TYPES = [
         Constants::EXPORT_TYPE_CSV => 'CSV',
         Constants::EXPORT_TYPE_EXCEL => 'EXCEL',
