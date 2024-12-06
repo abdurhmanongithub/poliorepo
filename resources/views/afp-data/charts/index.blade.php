@@ -1,4 +1,5 @@
 @include('afp-data.charts.polio-virus-detection-by-year-chart')
 @include('afp-data.charts.polio-emerging-seasons-chart')
 @include('afp-data.charts.polio-emerging-months-chart')
+@include('afp-data.charts.polio-virus-distribution-by-gender-chart')
 @include('afp-data.charts.regional_distribution')

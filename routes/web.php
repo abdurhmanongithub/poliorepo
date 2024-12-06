@@ -53,6 +53,7 @@ Route::get('/afp-province-distribution', [DashboardController::class, 'afpProvin
 Route::get('/polio-virus-detection-by-year-chart', [DashboardController::class, 'getPolioVirusDetectionByYear']);
 Route::get('/polio-emerging-seasons-chart', [DashboardController::class, 'getTopPolioEmergingSeasons']);
 Route::get('/polio-emerging-months-chart', [DashboardController::class, 'getTopPolioEmergingMonths']);
+Route::get('/polio-virus-distribution-by-gender-chart', [DashboardController::class, 'getPolioVirusDistributionByGender']);
 
 
 Route::middleware(['auth'])->group(function () {

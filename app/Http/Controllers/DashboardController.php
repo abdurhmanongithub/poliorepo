@@ -157,4 +157,36 @@ class DashboardController extends Controller
         // Return the response
         return response()->json($chartData);
     }
+    public function getPolioVirusDistributionByGender()
+    {
+        // Query to get the count of polio cases by gender
+        $data = DB::table('polio_lab')
+            ->selectRaw('sex, COUNT(*) as cases')
+            ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for positive polio cases
+            ->whereIn('sex',['M','F'])
+            ->groupBy('sex')
+            ->get();
+
+        // Prepare data for the pie chart
+        $genders = ['Male', 'Female']; // Gender categories
+        $genderCounts = [
+            'Male' => 0,
+            'Female' => 0,
+        ];
+
+        // Loop through the data and map cases to respective genders
+        foreach ($data as $row) {
+            $gender = $row->sex == 'M' ? 'Male' : 'Female';
+            $genderCounts[$gender] = $row->cases;
+        }
+
+        // Prepare the response data for the pie chart
+        $chartData = [
+            'labels' => $genders,
+            'series' => array_values($genderCounts), // Number of cases for each gender
+        ];
+
+        // Return the response
+        return response()->json($chartData);
+    }
 }
