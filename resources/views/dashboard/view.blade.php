@@ -1,7 +1,7 @@
 @extends('base')
 @section('title', 'Dashboard')
 @section('content')
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-xl-3">
             <!--begin::Stats Widget 29-->
             <div class="card card-custom bgi-no-repeat card-stretch gutter-b"
@@ -70,10 +70,31 @@
             </div>
             <!--end::Stats Widget 29-->
         </div>
-    </div>
-    <div class="row">
-        @include('core-group-data.charts.index')
-        @include('afp-data.charts.index')
+    </div> --}}
+    <ul class="nav nav-tabs nav-tabs-line">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Polio Lab Data Chart</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">EPHI Data Chart</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Core
+                Group Data Chart</a>
+        </li>
+    </ul>
+    <div class="tab-content mt-5" id="myTabContent">
+        <div class="tab-pane fade show active" id="tab_pane_polio_lab_data_chart" role="tabpanel"
+            aria-labelledby="tab_pane_polio_lab_data_chart">
+            <div class="row">
+                @include('afp-data.charts.index')
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab_pane_ephi_data_chart" role="tabpanel" aria-labelledby="tab_pane_ephi_data_chart">
+        </div>
+        <div class="tab-pane fade" id="core_group_data_chart" role="tabpanel" aria-labelledby="core_group_data_chart">
+            @include('core-group-data.charts.index')
+        </div>
     </div>
 @endsection
 @push('js')
