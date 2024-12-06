@@ -18,6 +18,7 @@ class Constants
     const EXPORT_TYPE_HTML = 'html';
 
     const OTHER_DATA_SOURCE_CORE_GROUP_DATA = 'Core Group Data';
+    const OTHER_DATA_SOURCE_AFP_DATA = 'AFP EPHI DATA';
 
     const EXPORT_TYPES = [
         Constants::EXPORT_TYPE_CSV => 'CSV',

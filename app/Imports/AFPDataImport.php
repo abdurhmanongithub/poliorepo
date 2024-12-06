@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\AFPData;
 use App\Models\CoreGroupData;
 use App\Models\Data;
 use App\Models\DataSource;
@@ -14,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
 
-class CoreGroupDataImport implements ToModel, WithHeadingRow, WithBatchInserts
+class AFPDataImport implements ToModel, WithHeadingRow, WithBatchInserts
 {
 
     private $dataSource = null;
@@ -41,7 +42,7 @@ class CoreGroupDataImport implements ToModel, WithHeadingRow, WithBatchInserts
             return null;
         }
         $values['other_data_source_id'] = $this->dataSource->id;
-        return new CoreGroupData($values);
+        return new AFPData($values);
     }
 
     public function batchSize(): int

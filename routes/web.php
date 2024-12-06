@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AFPDataController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommunityController;
@@ -59,12 +60,22 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('data_schema', DataSchemaController::class);
     Route::post('/users/assign/sub_category', [SubCategoryController::class, 'assignSubCategory'])->name('sub_category.assign_approver');
     Route::post('/users/unassign/sub_category', [SubCategoryController::class, 'unassignSubCategory'])->name('sub_category.unassign_approver');
-    Route::get('core-group-data', [CoreGroupDataController::class, 'index'])->name('core-group-data.index');
-    Route::get('core-group-data/data-management', [CoreGroupDataController::class, 'dataManagement'])->name('core-group-data.data-management');
-    Route::get('core-group-data/import/view', [CoreGroupDataController::class, 'importView'])->name('core-group-data.import.view');
-    Route::post('core-group-data/excel-import/preview', [CoreGroupDataController::class, 'importPreview'])->name('core-group-data.import.preview');
-    Route::post('core-group-data/excel-import/import', [CoreGroupDataController::class, 'import'])->name('core-group-data.import');
-    Route::get('core-group-data/data-fetch', [CoreGroupDataController::class, 'datafetch'])->name('core-group-data.fetch');
+    Route::prefix('a-f-p-data')->group(function () {
+        Route::get('/', [AFPDataController::class, 'index'])->name('afp-data.index');
+        Route::get('/data-management', [AFPDataController::class, 'dataManagement'])->name('afp-data.data-management');
+        Route::get('/import/view', [AFPDataController::class, 'importView'])->name('afp-data.import.view');
+        Route::post('/excel-import/preview', [AFPDataController::class, 'importPreview'])->name('afp-data.import.preview');
+        Route::post('/excel-import/import', [AFPDataController::class, 'import'])->name('afp-data.import');
+        Route::get('/data-fetch', [AFPDataController::class, 'datafetch'])->name('afp-data.fetch');
+    });
+    Route::prefix('core-group-data')->group(function () {
+        Route::get('/', [CoreGroupDataController::class, 'index'])->name('core-group-data.index');
+        Route::get('/data-management', [CoreGroupDataController::class, 'dataManagement'])->name('core-group-data.data-management');
+        Route::get('/import/view', [CoreGroupDataController::class, 'importView'])->name('core-group-data.import.view');
+        Route::post('/excel-import/preview', [CoreGroupDataController::class, 'importPreview'])->name('core-group-data.import.preview');
+        Route::post('/excel-import/import', [CoreGroupDataController::class, 'import'])->name('core-group-data.import');
+        Route::get('/data-fetch', [CoreGroupDataController::class, 'datafetch'])->name('core-group-data.fetch');
+    });
 
 
     Route::resource('users', UserController::class);

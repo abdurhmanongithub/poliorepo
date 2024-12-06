@@ -119,8 +119,7 @@
                             <td>1</td>
                             <td>Core Group Data</td>
                             <td>Core group data</td>
-                            <td><span
-                                    class="badge badge-info badge-sm">{{ true ? 'True' : 'False' }}</span>
+                            <td><span class="badge badge-info badge-sm">{{ true ? 'True' : 'False' }}</span>
                             </td>
                             <td>
                                 <a href="{{ route('core-group-data.index') }}" class="">
@@ -128,9 +127,21 @@
                                 </a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>AFP - EPHI Data</td>
+                            <td>AFP - EPHI Data</td>
+                            <td><span class="badge badge-info badge-sm">{{ true ? 'True' : 'False' }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('afp-data.index') }}" class="">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
                         @foreach ($items as $key => $item)
                             <tr>
-                                <td>{{ $key + 2 }}</td>
+                                <td>{{ $key + 3 }}</td>
                                 <td>{{ $item?->name }}</td>
                                 <td>{{ $item?->subCategory?->name }}</td>
                                 <td><span
