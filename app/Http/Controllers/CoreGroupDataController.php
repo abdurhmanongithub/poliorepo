@@ -79,7 +79,7 @@ class CoreGroupDataController extends Controller
             'source' => Constants::OTHER_DATA_SOURCE_CORE_GROUP_DATA,
         ]);
         $keys = [];
-        foreach (Schema::getColumnListing('core_group_data') as $item) {
+        foreach (Schema::getColumnListing('core_group_dat   a') as $item) {
             $keys[] = \Str::slug($item, '_');
         }
         Excel::import(new CoreGroupDataImport($otherDataSource,$keys),storage_path('app/' . $filePath));
