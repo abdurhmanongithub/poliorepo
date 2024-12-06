@@ -65,4 +65,96 @@ class DashboardController extends Controller
             ],
         ]);
     }
+    public function getTopPolioEmergingSeasons()
+    {
+        // Map months to seasons
+        $seasons = [
+            'Winter/Kiremt' => [12, 1, 2], // December, January, February
+            'Spring/Belg' => [3, 4, 5],  // March, April, May
+            'Summer/Bega' => [6, 7, 8],  // June, July, August
+            'Autumn/Tseday' => [9, 10, 11] // September, October, November
+        ];
+
+        // Query to get the count of polio cases by month
+        $data = DB::table('polio_lab')
+            ->selectRaw('MONTH(STR_TO_DATE(date_of_onset, "%m/%d/%Y")) as month, COUNT(*) as cases')
+            ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected polio cases
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Group cases by seasons
+        $seasonCounts = [
+            'Winter/Kiremt' => 0,
+            'Spring/Belg' => 0,
+            'Summer/Bega' => 0,
+            'Autumn/Tseday' => 0
+        ];
+
+        foreach ($data as $row) {
+            $month = $row->month;
+            foreach ($seasons as $season => $months) {
+                if (in_array($month, $months)) {
+                    $seasonCounts[$season] += $row->cases;
+                    break;
+                }
+            }
+        }
+
+        // Prepare the data for the pie chart
+        $seasonsData = [
+            'labels' => array_keys($seasonCounts),
+            'series' => array_values($seasonCounts),
+        ];
+
+        // Return the response
+        return response()->json($seasonsData);
+    }
+    public function getTopPolioEmergingMonths()
+    {
+        // Query to get the count of polio cases by month
+        $data = DB::table('polio_lab')
+            ->selectRaw('MONTH(STR_TO_DATE(date_of_onset, "%m/%d/%Y")) as month, COUNT(*) as cases')
+            ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected polio cases
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Prepare data for the pie chart
+        $months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+            'Unkown'
+        ];
+
+        // Initialize an array to store the number of cases per month
+        $monthCounts = array_fill(0, 12, 0);
+
+        // Loop through the data and map cases to respective months
+        foreach ($data as $row) {
+            $month = $row->month - 1; // Adjust for 0-based indexing
+            $monthCounts[$month] = $row->cases;
+        }
+        // Prepare the data for the pie chart
+        $monthCounts[12] = $monthCounts['-1'];
+        unset($monthCounts['-1']);
+        $chartData = [
+            'labels' => $months,
+            'series' => $monthCounts,
+        ];
+        // dd($chartData);
+
+        // Return the response
+        return response()->json($chartData);
+    }
 }
