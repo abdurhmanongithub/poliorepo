@@ -24,8 +24,9 @@
                     // Ensure the response format is correct
                     if (response && Array.isArray(response.series) && Array.isArray(response.labels)) {
                         // Prepare the chart options
+                        const series = response.series.map(Number);
                         var options = {
-                            series: response.series.flat(), // Series data (counts for each month)
+                            series: series, // Series data (counts for each month)
                             chart: {
                                 height: 350,
                                 type: 'pie'

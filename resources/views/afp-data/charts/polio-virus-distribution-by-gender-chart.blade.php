@@ -24,8 +24,9 @@
                     // Ensure the response format is correct
                     if (response && Array.isArray(response.series) && Array.isArray(response.labels)) {
                         // Prepare the chart options
+                        const series = response.series.map(Number);
                         var options = {
-                            series: response.series, // Data for the number of cases per gender
+                            series: series, // Data for the number of cases per gender
                             chart: {
                                 type: 'pie',
                                 height: 350

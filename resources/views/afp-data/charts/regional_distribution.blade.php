@@ -28,6 +28,9 @@
                     var regionCounts = data.map(function(item) {
                         return item.count;
                     });
+                    // console.log(regionCounts);
+                    regionCounts = regionCounts.map(Number);
+
                     // Initialize the chart
                     var options = {
                         series: regionCounts,
