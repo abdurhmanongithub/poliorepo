@@ -71,7 +71,10 @@
             <!--end::Stats Widget 29-->
         </div>
     </div>
-    @include('core-group-data.charts.index')
+    <div class="row">
+        @include('core-group-data.charts.index')
+        @include('afp-data.charts.index')
+    </div>
 @endsection
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>

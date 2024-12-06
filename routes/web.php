@@ -49,6 +49,8 @@ Route::post('/login/store', [LoginController::class, 'store'])->name('login.stor
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
 Route::get('/regional-distribution', [DashboardController::class, 'regionalDistribution']);
+Route::get('/afp-province-distribution', [DashboardController::class, 'afpProvinceDistribution']);
+Route::get('/polio-virus-detection-by-year-chart', [DashboardController::class, 'getPolioVirusDetectionByYear']);
 
 
 Route::middleware(['auth'])->group(function () {

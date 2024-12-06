@@ -33,4 +33,36 @@ class DashboardController extends Controller
         // Return the counts as JSON
         return response()->json($regionCounts);
     }
+    public function afpProvinceDistribution()
+    {
+        $regionCounts = DB::table('a_f_p_data')
+            ->select('province', DB::raw('count(*) as count'))
+            ->groupBy('province')
+            ->get();
+
+        // Return the data as JSON
+        return response()->json($regionCounts);
+    }
+    public function getPolioVirusDetectionByYear()
+    {
+        // Query to process and retrieve data
+        $data = DB::table('polio_lab')
+            ->selectRaw("YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
+            ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected cases
+            ->groupBy('year')
+            ->orderBy('year', 'asc')
+            ->get();
+        $years = $data->pluck('year')->toArray(); // X-axis categories
+        $cases = $data->pluck('cases')->toArray(); // Y-axis values
+        $years[0] = 'Unkown';
+        return response()->json([
+            'categories' => $years,
+            'series' => [
+                [
+                    'name' => 'Polio Cases Detected',
+                    'data' => $cases,
+                ],
+            ],
+        ]);
+    }
 }
