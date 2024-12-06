@@ -106,6 +106,99 @@ class UtilController extends Controller
 
         return view('dashboard.show', compact('categories', 'categoryStats', 'totalCategories', 'totalUsers', 'totalData', 'totalSubCategories', 'datasetByCategory', 'exportTrendData', 'agriculturalInputChart', 'livestockMarketData', 'initialData', 'initialDataPerSeasons', 'chart'));
     }
+    public function liveDashboard()
+    {
+        $categories = Category::with('subCategories.dataSchemas.datas')->get();
+        $totalUsers = User::count();
+        $totalData = Data::count();
+        $totalCategories = Category::count();
+        $totalSubCategories = SubCategory::count();
+        $categoryStats = [];
+        foreach ($categories as $category) {
+            array_push($categoryStats, [
+                'id' => $category?->id,
+                'name' => $category->name,
+                'sub_category_count' => $category->subCategories()->count(),
+                'schema_count' => $category->dataSchema?->count() ?? 0,
+                'data_count' => $category->getDataCount(),
+                'missing_values' => 0,
+            ]);
+        }
+
+        $categoryNames = [];
+        $categoryDataCounts = [];
+
+        foreach ($categories as $category) {
+            $categoryNames[] = $category->name;
+            $dataCount = 0;
+            foreach ($category->subCategories as $subCategory) {
+                foreach ($subCategory->dataSchemas as $dataSchema) {
+                    if ($dataSchema->datas) {
+                        $dataCount += $dataSchema->datas->count();
+                    }
+                }
+            }
+            $categoryDataCounts[] = $dataCount;
+        }
+
+        $datasetByCategory = (new LarapexChart)->pieChart()
+            ->setTitle('Datasets by Category')
+            ->addData($categoryDataCounts)
+            ->setLabels($categoryNames)
+            ->setColors(['#004c6d', '#287a8e', '#55b4b0', '#8bde97', '#b6fb80']);
+
+        $exportTrendData = $this->getExportTrendData($categories->first()->id);
+
+        $chart = (new LarapexChart)->lineChart()
+            ->setTitle('ECG-Like Chart') // Optional: Set the chart title
+            ->setSubtitle('An example of a stacked line chart') // Optional: Set the chart subtitle
+            ->setColors(['#FF1654', '#247BA0', '#70C1B3', '#FF6B6B']) // Customize colors
+            ->addData('Signal 1', [10, 40, 15, 30, 50, 35, 60, 20, 70]) // Replace with your data
+            ->addData('Signal 2', [20, 60, 25, 20, 40, 30, 50, 40, 80]) // Replace with your data
+            ->addData('Signal 3', [30, 50, 35, 10, 30, 25, 40, 30, 60]) // Replace with your data
+            ->setMarkers(['#FF1654', '#247BA0', '#70C1B3']) // Markers on the line
+            ->setStroke(2) // Adjust stroke width for a sharper line
+            ->setXAxis(['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9']) // X-Axis labels
+            // ->setGrid(true, 1, '#e0e0e0') // Add grid lines
+            ->setHorizontal(true); // Make it horizontally stacked
+
+        // dd($exportTrendData);
+
+
+        // $exportTrendData = [
+        //     'series' => [
+        //         ['name' => 'Coffee', 'data' => [20, 24, 26, 51, 23, 32, 48, 57]],
+        //         ['name' => 'Sesame', 'data' => [19, 18, 16, 29, 38, 36, 22, 9]],
+        //         ['name' => 'Teff', 'data' => [16, 18, 18, 20, 29, 20, 17, 22]],
+        //     ],
+        //     'xAxis' => ['2013 Q1', '2013 Q2', '2013 Q3', '2013 Q4', '2014 Q1', '2014 Q2', '2014 Q3', '2014 Q4'],
+        //     'colors' => ['#004c6d', '#55b4b0', '#b6fb80']
+        // ];
+
+        $initialData = $this->getCategoryData($categories->first()?->id);
+
+        $initialDataPerSeasons = $this->getCategoryDataasSeasons($categories->first()->id);
+
+        $agriculturalInputChart = (new LarapexChart)->pieChart()
+            ->setTitle('Agricultural Input Distribution Chart')
+            ->addData($initialData['series'])
+            ->setLabels($initialData['labels'])
+            ->setColors($initialData['colors']);
+
+        // $agriculturalInputData = [
+        //     'series' => [22.5, 30.6, 22.8, 24.1],
+        //     'labels' => ['Fertilizer', 'Seeds', 'Pesticide', 'Mechanization'],
+        //     'colors' => ['#004c6d', '#55b4b0', '#b6fb80', '#d4fcbc']
+        // ];
+
+        $livestockMarketData = [
+            'domestic' => [23, 35, 27, 22, 17, 31, 22, 12, 16],
+            'exported' => [42, 35, 43, 22, 17, 31, 22, 12, 16],
+            'xAxis' => ['Jan 01', '03 Jan', '05 Jan', '07 Jan', '09 Jan', '11 Jan']
+        ];
+
+        return view('dashboard.live', compact('categories', 'categoryStats', 'totalCategories', 'totalUsers', 'totalData', 'totalSubCategories', 'datasetByCategory', 'exportTrendData', 'agriculturalInputChart', 'livestockMarketData', 'initialData', 'initialDataPerSeasons', 'chart'));
+    }
 
     public function getSubCategoriesData(Request $request)
     {

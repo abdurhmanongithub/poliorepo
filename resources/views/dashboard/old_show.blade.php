@@ -1,7 +1,7 @@
 @extends('base')
 @section('title', 'Dashboard')
 @section('content')
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-xl-3">
             <!--begin::Stats Widget 29-->
             <div class="card card-custom bgi-no-repeat card-stretch gutter-b"
@@ -70,7 +70,7 @@
             </div>
             <!--end::Stats Widget 29-->
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-12">
             <div class="card card-custom card-stretch gutter-b">
@@ -84,10 +84,12 @@
                     <div class="card-toolbar">
                         <ul class="nav nav-pills nav-pills-sm nav-dark-75">
                             <li class="nav-item">
-                                <a class="nav-link py-2 px-4 active" data-toggle="tab" href="#category_chart_view">Chart View</a>
+                                <a class="nav-link py-2 px-4 active" data-toggle="tab" href="#category_chart_view">Chart
+                                    View</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link py-2 px-4" data-toggle="tab" href="#category_tabular_view">Tabular View</a>
+                                <a class="nav-link py-2 px-4" data-toggle="tab" href="#category_tabular_view">Tabular
+                                    View</a>
                             </li>
                         </ul>
                     </div>

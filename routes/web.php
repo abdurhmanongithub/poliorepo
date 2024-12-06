@@ -43,6 +43,7 @@ use Spatie\FlareClient\Api;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/live-dashboard', [UtilController::class, 'liveDashboard'])->name('live.dashboard');
 
 Route::get('/login', [LoginController::class, 'loginView'])->name('login');
 Route::post('/login/store', [LoginController::class, 'store'])->name('login.store');
@@ -51,14 +52,16 @@ Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 Route::get('/regional-distribution', [DashboardController::class, 'regionalDistribution']);
 Route::get('/afp-province-distribution', [DashboardController::class, 'afpProvinceDistribution']);
 Route::get('/polio-virus-detection-by-year-chart', [DashboardController::class, 'getPolioVirusDetectionByYear']);
+Route::get('/polio-virus-detection-by-year-line-chart', [DashboardController::class, 'getPolioVirusDetectionByYearLineChart']);
 Route::get('/polio-emerging-seasons-chart', [DashboardController::class, 'getTopPolioEmergingSeasons']);
 Route::get('/polio-emerging-months-chart', [DashboardController::class, 'getTopPolioEmergingMonths']);
 Route::get('/polio-virus-distribution-by-gender-chart', [DashboardController::class, 'getPolioVirusDistributionByGender']);
 Route::get('/suspected-polio-virus-cell-culturing-results-chart', [DashboardController::class, 'getSuspectedPolioVirusResults']);
 Route::get('/polio-cases-by-province', [DashboardController::class, 'getPolioCasesByProvince']);
 Route::get('/polio-case-trends', [DashboardController::class, 'getPolioCaseTrends']);
-
-
+Route::get('/get-timeliness-of-reporting', [DashboardController::class, 'getTimelinessOfReporting']);
+Route::get('/afp-polio-virus-detection-by-year-chart', [DashboardController::class, 'getAFPPolioVirusDataDetectionByYear']);
+Route::get('/core-group-map-chart',[DashboardController::class,'getGroupedLocations']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/polio-data', [PolioDataPullerController::class, 'index'])->name('polio-table.index');
     Route::get('/polio-data/{table}', [PolioDataPullerController::class, 'show'])->name('polio-table.show');

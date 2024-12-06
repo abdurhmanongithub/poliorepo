@@ -1,4 +1,4 @@
-@extends('base')
+@extends('base_fluid')
 @section('title', 'Dashboard')
 @section('content')
     {{-- <div class="row">

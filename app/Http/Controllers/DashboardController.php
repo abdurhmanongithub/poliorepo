@@ -43,10 +43,33 @@ class DashboardController extends Controller
         // Return the data as JSON
         return response()->json($regionCounts);
     }
+
     public function getPolioVirusDetectionByYear()
     {
         // Query to process and retrieve data
         $data = DB::table('polio_lab')
+            ->selectRaw("YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
+            ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected cases
+            ->groupBy('year')
+            ->orderBy('year', 'asc')
+            ->get();
+        $years = $data->pluck('year')->toArray(); // X-axis categories
+        $cases = $data->pluck('cases')->toArray(); // Y-axis values
+        $years[0] = 'Unkown';
+        return response()->json([
+            'categories' => $years,
+            'series' => [
+                [
+                    'name' => 'Polio Cases Detected',
+                    'data' => $cases,
+                ],
+            ],
+        ]);
+    }
+    public function getAFPPolioVirusDataDetectionByYear()
+    {
+        // Query to process and retrieve data
+        $data = DB::table('a_f_p_data')
             ->selectRaw("YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected cases
             ->groupBy('year')
@@ -294,5 +317,82 @@ class DashboardController extends Controller
                 ]
             ]
         ]);
+    }
+
+    function getTimelinessOfReporting()
+    {
+        $data = DB::table('polio_lab')
+            ->selectRaw("
+            patients_names,
+            province,
+            district,
+            date_of_onset,
+            date_stool_collected,
+            date_sent_from_field,
+            DATEDIFF(STR_TO_DATE(date_stool_collected, '%m/%d/%Y'), STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as collection_delay,
+            DATEDIFF(STR_TO_DATE(date_sent_from_field, '%m/%d/%Y'), STR_TO_DATE(date_stool_collected, '%m/%d/%Y')) as sending_delay,
+            DATEDIFF(STR_TO_DATE(date_sent_from_field, '%m/%d/%Y'), STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as total_delay
+        ")
+            ->whereNotNull('date_of_onset')
+            ->whereNotNull('date_stool_collected')
+            ->whereNotNull('date_sent_from_field')
+            ->get();
+
+        return response()->json($data);
+    }
+    public function getPolioVirusDetectionByYearLineChart()
+    {
+        // Query to process and retrieve data
+        $data = DB::table('polio_lab') // Replace with the correct table name
+            ->selectRaw('YEAR(STR_TO_DATE(date_of_onset, "%m/%d/%Y")) as year, final_cell_culture_result, COUNT(*) as cases')
+            ->whereIn('final_cell_culture_result', ['2-Negative', '3-NPENT', '1-Suspected Poliovirus']) // Filter for specific results
+            ->groupBy('year', 'final_cell_culture_result')
+            ->orderBy('year', 'asc')
+            ->get();
+
+        // Process the data
+        $years = $data->pluck('year')->unique()->sort()->values()->toArray(); // X-axis categories (years)
+        $years[0] = 'Unkown';
+        $results = [
+            '2-Negative' => array_fill(0, count($years), 0),
+            '3-NPENT' => array_fill(0, count($years), 0),
+            '1-Suspected Poliovirus' => array_fill(0, count($years), 0),
+        ];
+
+        // Fill the results array with counts for each final_cell_culture_result by year
+        foreach ($data as $item) {
+            $yearIndex = array_search($item->year, $years);
+            $results[$item->final_cell_culture_result][$yearIndex] = $item->cases;
+        }
+
+        // Format the data for the chart
+        $series = [];
+        foreach ($results as $result => $cases) {
+            $series[] = [
+                'name' => $result, // The result type (2-Negative, 3-NPENT, 1-Suspected Poliovirus)
+                'data' => $cases,
+            ];
+        }
+
+        return response()->json([
+            'categories' => $years,
+            'series' => $series,
+        ]);
+    }
+
+    public function getGroupedLocations()
+    {
+        $data = DB::table('core_group_data') // Replace with your actual table name
+            ->selectRaw('
+            gps_latitude,
+            gps_longitude,
+            COUNT(*) as record_count,
+            GROUP_CONCAT(area_name_region SEPARATOR ", ") as regions,
+            GROUP_CONCAT(area_name_village SEPARATOR ", ") as villages
+        ')
+            ->groupBy('gps_latitude', 'gps_longitude')
+            ->get();
+
+        return response()->json($data);
     }
 }
