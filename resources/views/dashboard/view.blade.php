@@ -1,6 +1,12 @@
 @extends('base')
 @section('title', 'Dashboard')
 @section('content')
+    <style>
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>
     {{-- <div class="row">
         <div class="col-xl-3">
             <!--begin::Stats Widget 29-->
