@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Suspected Polio Virus: Distribution of Cell Culturing Results</h3>
+                <h3 class="card-label">Distribution of Cell Culturing Results for Suspected Polio Virus by Gender</h3>
             </div>
         </div>
         <div class="card-body">

@@ -31,7 +31,6 @@
                         var chart = new ApexCharts(document.querySelector("#chart"),
                             chartConfig);
                         chart.render();
-                        // console.log(response.chart);
 
                         // $('#chart').html(response.chart);
                     } else {

@@ -73,14 +73,13 @@
     </div> --}}
     <ul class="nav nav-tabs nav-tabs-line">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Polio Lab Data Chart</a>
+            <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Lab Data Insights</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">EPHI Data Chart</a>
+            <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Surveillance Data</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Core
-                Group Data Chart</a>
+            <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Insights</a>
         </li>
     </ul>
     <div class="tab-content mt-5" id="myTabContent">

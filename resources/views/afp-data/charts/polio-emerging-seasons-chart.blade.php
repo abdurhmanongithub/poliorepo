@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Top Seasons for Polio Outbreaks</h3>
+                <h3 class="card-label">Seasonal Distributions of Polio Outbreaks</h3>
             </div>
         </div>
         <div class="card-body">
@@ -32,7 +32,7 @@
                             },
                             labels: response.labels, // Labels (seasons)
                             title: {
-                                text: 'Top Seasons for Polio Outbreaks',
+                                text: 'Seasonal Distributions of Polio Outbreaks',
                                 align: 'center'
                             },
                             tooltip: {

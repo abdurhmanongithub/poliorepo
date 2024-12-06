@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Top Polio Emerging Months: Incidence by Month</h3>
+                <h3 class="card-label">Emerging Months: Monthly Incidence Trends</h3>
             </div>
         </div>
         <div class="card-body">

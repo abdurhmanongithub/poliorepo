@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Annual Polio Virus Detection Trends</h3>
+                <h3 class="card-label">Yearly Trends in Polio Virus Detection (Up to 2022)</h3>
             </div>
         </div>
         <div class="card-body">
@@ -21,7 +21,6 @@
             url: '/polio-virus-detection-by-year-chart', // The route that returns the data
             type: 'GET',
             success: function(response) {
-                console.log(response);
                 // Prepare the data for the chart
                 if (response && response.categories && response.series) {
                     // Prepare the chart options

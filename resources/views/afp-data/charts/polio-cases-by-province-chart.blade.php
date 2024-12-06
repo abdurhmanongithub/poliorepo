@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Geographical Distribution of Polio Cases by Province</h3>
+                <h3 class="card-label">Polio Case Distribution by Region: A Geographical Overview</h3>
             </div>
         </div>
         <div class="card-body">
