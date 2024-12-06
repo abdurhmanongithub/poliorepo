@@ -163,7 +163,7 @@ class DashboardController extends Controller
         $data = DB::table('polio_lab')
             ->selectRaw('sex, COUNT(*) as cases')
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for positive polio cases
-            ->whereIn('sex',['M','F'])
+            ->whereIn('sex', ['M', 'F'])
             ->groupBy('sex')
             ->get();
 
@@ -187,6 +187,41 @@ class DashboardController extends Controller
         ];
 
         // Return the response
+        return response()->json($chartData);
+    }
+    public function getSuspectedPolioVirusResults()
+    {
+        // Query to get the count of cases based on final_cell_culture_result
+        $data = DB::table('polio_lab')
+            ->selectRaw('final_cell_culture_result, COUNT(*) as cases, sex')
+            ->groupBy('final_cell_culture_result', 'sex') // Group by result and sex
+            ->get();
+
+        // Prepare data for the stacked bar chart
+        $resultCategories = ['2-Negative', '3-NPENT', '1-Suspected Poliovirus']; // Categories for final_cell_culture_result
+        $sexCategories = ['Male', 'Female']; // Gender categories
+        $resultCounts = [
+            '2-Negative' => ['Male' => 0, 'Female' => 0],
+            '3-NPENT' => ['Male' => 0, 'Female' => 0],
+            '1-Suspected Poliovirus' => ['Male' => 0, 'Female' => 0],
+        ];
+
+        // Map the cases to their respective categories (sex and final_cell_culture_result)
+        foreach ($data as $row) {
+            $result = $row->final_cell_culture_result;
+            $gender = $row->sex == 'M' ? 'Male' : 'Female';
+            $resultCounts[$result][$gender] = $row->cases;
+        }
+
+        // Prepare the data for the chart
+        $chartData = [
+            'labels' => $resultCategories, // X-axis labels: "Missing", "Negative", "WPV-polio"
+            'maleData' => array_column($resultCounts, 'Male'), // Y-axis data for Male
+            'femaleData' => array_column($resultCounts, 'Female'), // Y-axis data for Female
+        ];
+
+        // dd($chartData);
+        // Return the data as JSON for the frontend
         return response()->json($chartData);
     }
 }

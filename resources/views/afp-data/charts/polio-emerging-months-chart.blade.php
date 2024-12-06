@@ -21,8 +21,6 @@
             url: '/polio-emerging-months-chart', // The route that returns the season data
             type: 'GET',
             success: function(response) {
-                console.log('sd');
-                console.log(Array.isArray(response.series) && Array.isArray(response.labels));
                 // Ensure the response format is correct
                 if (response && Array.isArray(response.series) && Array.isArray(response.labels)) {
                     // Prepare the chart options

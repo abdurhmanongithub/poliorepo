@@ -29,7 +29,6 @@
                         )
                     }
                     , error: function(data) {
-                        console.log(data.status);
 
                         if (data.status) {
                             Swal.fire("Forbidden!", "You can't delete this", "error");
