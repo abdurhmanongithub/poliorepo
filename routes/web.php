@@ -56,6 +56,7 @@ Route::get('/polio-emerging-months-chart', [DashboardController::class, 'getTopP
 Route::get('/polio-virus-distribution-by-gender-chart', [DashboardController::class, 'getPolioVirusDistributionByGender']);
 Route::get('/suspected-polio-virus-cell-culturing-results-chart', [DashboardController::class, 'getSuspectedPolioVirusResults']);
 Route::get('/polio-cases-by-province', [DashboardController::class, 'getPolioCasesByProvince']);
+Route::get('/polio-case-trends', [DashboardController::class, 'getPolioCaseTrends']);
 
 
 Route::middleware(['auth'])->group(function () {

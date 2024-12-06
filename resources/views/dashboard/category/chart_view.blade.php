@@ -55,7 +55,6 @@
                 <!--begin::Chart-->
                 <div class="large-chart">
                     <div id="exportTrendChart" class="large-chart"></div>
-                    {{-- {!! $exportTrendChart->container() !!} --}}
                 </div>
             </div>
         </div>
@@ -161,39 +160,40 @@
     {{-- {{ $exportTrendChart->script() }} --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('MAP_API_KEY') }}&callback=initMap" async defer>
-    <script>
-        $(document).ready(function() {
-            $('#category-select').on('change', function() {
-                var categoryId = $(this).val();
+        < script >
+            $(document).ready(function() {
+                $('#category-select').on('change', function() {
+                    var categoryId = $(this).val();
 
-                if (categoryId) {
-                    $.ajax({
-                        url: '/bar-category-data',
-                        method: 'GET',
-                        data: {
-                            category_id: categoryId,
-                            // _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.barChart) {
-                                var chartConfig = response.barChart;
-                                var chart = new ApexCharts(document.querySelector("#bar-chart"),
-                                    chartConfig);
-                                chart.render();
-                                // console.log(response.chart);
+                    if (categoryId) {
+                        $.ajax({
+                            url: '/bar-category-data',
+                            method: 'GET',
+                            data: {
+                                category_id: categoryId,
+                                // _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.barChart) {
+                                    var chartConfig = response.barChart;
+                                    var chart = new ApexCharts(document.querySelector("#bar-chart"),
+                                        chartConfig);
+                                    chart.render();
+                                    // console.log(response.chart);
 
-                                // $('#chart').html(response.chart);
-                            } else {
-                                $('#bar-chart').html('<p>No data available for this category.</p>');
+                                    // $('#chart').html(response.chart);
+                                } else {
+                                    $('#bar-chart').html(
+                                        '<p>No data available for this category.</p>');
+                                }
+                            },
+                            error: function() {
+                                $('#bar-chart').html('<p>Failed to load chart data.</p>');
                             }
-                        },
-                        error: function() {
-                            $('#bar-chart').html('<p>Failed to load chart data.</p>');
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
-        });
     </script>
     <script>
         $(document).ready(function() {

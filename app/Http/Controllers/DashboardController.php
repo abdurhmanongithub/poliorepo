@@ -247,4 +247,52 @@ class DashboardController extends Controller
             ],
         ]);
     }
+    // public function getPolioCaseTrends()
+    // {
+    //     $data = DB::table('polio_lab')
+    //         ->selectRaw("MONTH(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as month, YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
+    //         ->groupBy(DB::raw("month"), DB::raw("year"))
+    //         ->orderBy('year', 'asc')
+    //         ->orderBy('month', 'asc')
+    //         ->get();
+
+    //     return response()->json($data);
+    // }
+    public function getPolioCaseTrends()
+    {
+        $data = DB::table('polio_lab')
+            ->selectRaw("MONTH(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as month, YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
+            ->groupBy(DB::raw("year"), DB::raw("month"))
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Prepare the data for the line chart
+        $months = [];
+        $cases = [];
+
+        foreach ($data as $row) {
+            $months[] = "{$row->year}-{$row->month}";  // Combine year and month for a timeline
+            $cases[] = $row->cases;  // Get the case count
+        }
+        dd([
+            'categories' => $months,
+            'series' => [
+                [
+                    'name' => 'Polio Cases',
+                    'data' => $cases
+                ]
+            ]
+        ]);
+
+        return response()->json([
+            'categories' => $months,
+            'series' => [
+                [
+                    'name' => 'Polio Cases',
+                    'data' => $cases
+                ]
+            ]
+        ]);
+    }
 }
