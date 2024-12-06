@@ -91,9 +91,14 @@
             </div>
         </div>
         <div class="tab-pane fade" id="tab_pane_ephi_data_chart" role="tabpanel" aria-labelledby="tab_pane_ephi_data_chart">
+            <div class="row">
+                @include('afp-data.charts.ephi-chart')
+            </div>
         </div>
         <div class="tab-pane fade" id="core_group_data_chart" role="tabpanel" aria-labelledby="core_group_data_chart">
-            @include('core-group-data.charts.index')
+            <div class="row">
+                @include('core-group-data.charts.index')
+            </div>
         </div>
     </div>
 @endsection
