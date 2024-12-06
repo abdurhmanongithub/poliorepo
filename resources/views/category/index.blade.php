@@ -31,7 +31,6 @@
                     }
                     , error: function(data) {
                         if (data.status) {
-                            console.log(data);
                             Swal.fire(data.statusText + "", data.responseJson + ' ', "error");
                         }
                     }

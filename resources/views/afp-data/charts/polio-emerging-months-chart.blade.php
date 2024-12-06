@@ -15,56 +15,55 @@
     <!--end::Card-->
 </div>
 @push('js')
-<script>
-    var getTopPolioEmergingMonths = function() {
-        $.ajax({
-            url: '/polio-emerging-months-chart', // The route that returns the season data
-            type: 'GET',
-            success: function(response) {
-                // Ensure the response format is correct
-                console.log(typeof(response.series));
-                if (response && Array.isArray(response.series) && Array.isArray(response.labels)) {
-                    // Prepare the chart options
-                    var options = {
-                        series: response.series, // Series data (counts for each month)
-                        chart: {
-                            height: 380,
-                            type: 'pie'
-                        },
-                        labels: response.labels, // Labels (months)
-                        title: {
-                            text: 'Top Polio Emerging Months',
-                            align: 'center'
-                        },
-                        tooltip: {
-                            y: {
-                                formatter: function(val) {
-                                    return val + " cases";
+    <script>
+        var getTopPolioEmergingMonths = function() {
+            $.ajax({
+                url: '/polio-emerging-months-chart', // The route that returns the season data
+                type: 'GET',
+                success: function(response) {
+                    // Ensure the response format is correct
+                    if (response && Array.isArray(response.series) && Array.isArray(response.labels)) {
+                        // Prepare the chart options
+                        var options = {
+                            series: response.series.flat(), // Series data (counts for each month)
+                            chart: {
+                                height: 350,
+                                type: 'pie'
+                            },
+                            labels: response.labels, // Labels (months)
+                            title: {
+                                text: 'Emerging Months: Monthly Incidence Trends',
+                                align: 'center'
+                            },
+                            tooltip: {
+                                y: {
+                                    formatter: function(val) {
+                                        return val + " cases";
+                                    }
                                 }
                             }
-                        }
-                    };
+                        };
 
-                    // Render the pie chart
-                    var chart = new ApexCharts(
-                        document.querySelector("#polio-emerging-months-chart"),
-                        options
-                    );
-                    chart.render();
-                } else {
-                    console.error("Unexpected response format. Check your backend:", response);
-                    alert("The data could not be loaded due to an unexpected format.");
+                        // Render the pie chart
+                        var chart = new ApexCharts(
+                            document.querySelector("#polio-emerging-months-chart"),
+                            options
+                        );
+                        chart.render();
+                    } else {
+                        console.error("Unexpected response format. Check your backend:", response);
+                        alert("The data could not be loaded due to an unexpected format.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching polio emerging seasons data:", error);
+                    alert("Failed to load data. Please try again later.");
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error fetching polio emerging seasons data:", error);
-                alert("Failed to load data. Please try again later.");
-            }
-        });
-    }
+            });
+        }
 
-    $(function() {
-        getTopPolioEmergingMonths();
-    })
-</script>
+        $(function() {
+            getTopPolioEmergingMonths();
+        })
+    </script>
 @endpush

@@ -31,7 +31,6 @@
                     }
                     , error: function(data) {
                         if (data.status) {
-                            console.log(data);
                             Swal.fire(data.statusText + "", data.responseJson + ' ', "error");
                         }
                     }
@@ -65,7 +64,6 @@
                     // Handle success, maybe update table row or reload page
                 }
                 , error: function(error) {
-                    console.log(error);
                     // Handle error
                 }
             });
