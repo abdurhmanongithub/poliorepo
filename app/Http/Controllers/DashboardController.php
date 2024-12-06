@@ -224,4 +224,27 @@ class DashboardController extends Controller
         // Return the data as JSON for the frontend
         return response()->json($chartData);
     }
+    public function getPolioCasesByProvince()
+    {
+        // Query to group data by province and filter by final_cell_culture_result
+        $data = DB::table('polio_lab')
+            ->select('province', DB::raw('COUNT(*) as cases'))
+            ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected polio cases
+            ->groupBy('province')
+            ->orderBy('cases', 'desc') // Sort provinces by the number of cases
+            ->get();
+
+        // Prepare data for the response
+        $provinces = $data->pluck('province')->toArray(); // X-axis categories
+        $cases = $data->pluck('cases')->toArray(); // Y-axis values
+        return response()->json([
+            'categories' => $provinces,
+            'series' => [
+                [
+                    'name' => 'Polio Cases Detected',
+                    'data' => $cases,
+                ],
+            ],
+        ]);
+    }
 }

@@ -3,4 +3,5 @@
 @include('afp-data.charts.polio-emerging-months-chart')
 @include('afp-data.charts.polio-virus-distribution-by-gender-chart')
 @include('afp-data.charts.suspected-polio-virus-cell-culturing-results-chart')
+@include('afp-data.charts.polio-cases-by-province-chart')
 @include('afp-data.charts.regional_distribution')
