@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\CommunityTypeController;
 use App\Http\Controllers\CoreGroupDataController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\DataManagementController;
 // use App\Http\Controllers\DataSchemaController;
@@ -47,6 +48,9 @@ Route::get('/login', [LoginController::class, 'loginView'])->name('login');
 Route::post('/login/store', [LoginController::class, 'store'])->name('login.store');
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
+Route::get('/regional-distribution', [DashboardController::class, 'regionalDistribution']);
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/polio-data', [PolioDataPullerController::class, 'index'])->name('polio-table.index');
     Route::get('/polio-data/{table}', [PolioDataPullerController::class, 'show'])->name('polio-table.show');
@@ -55,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('dashboard');
     });
     Route::get('/dashboard', [UtilController::class, 'dashboard'])->name('dashboard');
+
     Route::resource('category', CategoryController::class);
     Route::resource('sub_category', SubCategoryController::class);
     Route::resource('data_schema', DataSchemaController::class);
