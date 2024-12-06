@@ -22,7 +22,7 @@
             type: 'GET',
             success: function(response) {
                 // Ensure the response format is correct
-                console.log(response.series);
+                console.log(typeof(response.series));
                 if (response && Array.isArray(response.series) && Array.isArray(response.labels)) {
                     // Prepare the chart options
                     var options = {
