@@ -28,8 +28,8 @@
                     var options = {
                         series: response.series, // Series data (counts for each month)
                         chart: {
-                            type: 'pie',
-                            height: 350
+                            height: 380,
+                            type: 'pie'
                         },
                         labels: response.labels, // Labels (months)
                         title: {
