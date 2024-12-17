@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateAFPDataRequest;
 use App\Imports\AFPDataImport;
 use App\Imports\AFPDataImportForPreview;
 use App\Models\AFPData;
+use App\Models\Content;
 use App\Models\OtherDataSource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -96,34 +97,55 @@ class AFPDataController extends Controller
     {
 
         $headers = Schema::getColumnListing('a_f_p_data');
-        $headers = array_diff($headers, ['id','other_data_source_id','created_at','updated_at']);
+        $headers = array_diff($headers, ['id', 'other_data_source_id', 'created_at', 'updated_at']);
         return Excel::download(new DataImportTemplateExport($headers), 'a_f_p_data_import_template.xlsx');
     }
     public function dataSource()
     {
-        $sources = OtherDataSource::whereIn('id',AFPData::distinct('other_data_source_id')->pluck('other_data_source_id'))->get();
-        return view('afp-data.source',compact('sources'));
+        $sources = OtherDataSource::whereIn('id', AFPData::distinct('other_data_source_id')->pluck('other_data_source_id'))->get();
+        return view('afp-data.source', compact('sources'));
     }
-    public function dataSourceDelete(OtherDataSource $source){
+    public function dataSourceDelete(OtherDataSource $source)
+    {
         DB::table('a_f_p_data')->where('other_data_source_id', $source->id)->delete();
         $source->delete();
         return redirect()->back()->with('success', 'Data Source Deleted Successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAFPDataRequest $request)
+    public function content()
     {
-        //
+        $contents = Content::where('type', 'afp')->get();
+        return view('afp-data.content', compact('contents'));
+    }
+    public function contentStore(Request $request)
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'language' => 'required',
+        ]);
+        $data['type'] = 'afp';
+        Content::create($data);
+        session()->flash('success', 'Content added successfully!');
+        return response()->json(['success' => true, 'message' => 'Content added successfully!']);
+    }
+    public function contentUpdate(Request $request, Content $content)
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'language' => 'required',
+        ]);
+        $content->update($data);
+        session()->flash('success', 'Content updated successfully!');
+        return response()->json(['success' => true, 'message' => 'Content updated successfully!']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AFPData $aFPData)
+    public function contentDelete(Content $content)
     {
-        //
+        $content->delete();
+        session()->flash('success', 'Content deleted successfully!');
+        return response()->json(['success' => true, 'message' => 'Content deleted successfully!']);
     }
 
     /**

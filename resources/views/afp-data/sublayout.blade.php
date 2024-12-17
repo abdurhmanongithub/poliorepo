@@ -128,7 +128,7 @@
                         <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.source') === 0 ? 'active' : '' }}" href="{{ route('afp-data.source', ['id'=>1]) }}">Source Management</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.source') === 0 ? 'active' : '' }}" href="{{ route('afp-data.source', ['id'=>1]) }}">Knowledge Store</a>
+                        <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.content') === 0 ? 'active' : '' }}" href="{{ route('afp-data.content', []) }}">Knowledge Store</a>
                     </li>
                 </ul>
             </div>
