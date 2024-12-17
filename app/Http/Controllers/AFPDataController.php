@@ -11,6 +11,7 @@ use App\Imports\AFPDataImportForPreview;
 use App\Models\AFPData;
 use App\Models\OtherDataSource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -98,12 +99,15 @@ class AFPDataController extends Controller
         $headers = array_diff($headers, ['id','other_data_source_id','created_at','updated_at']);
         return Excel::download(new DataImportTemplateExport($headers), 'a_f_p_data_import_template.xlsx');
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function dataSource()
     {
-        //
+        $sources = OtherDataSource::whereIn('id',AFPData::distinct('other_data_source_id')->pluck('other_data_source_id'))->get();
+        return view('afp-data.source',compact('sources'));
+    }
+    public function dataSourceDelete(OtherDataSource $source){
+        DB::table('a_f_p_data')->where('other_data_source_id', $source->id)->delete();
+        $source->delete();
+        return redirect()->back()->with('success', 'Data Source Deleted Successfully');
     }
 
     /**

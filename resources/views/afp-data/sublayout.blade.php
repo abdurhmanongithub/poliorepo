@@ -125,7 +125,7 @@
                             href="{{ route('afp-data.import.view', []) }}">Import Data</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Source Management</a>
+                        <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.source') === 0 ? 'active' : '' }}" href="{{ route('afp-data.source', ['id'=>1]) }}">Source Management</a>
                     </li>
                 </ul>
             </div>

@@ -84,6 +84,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/excel-import/import', [AFPDataController::class, 'import'])->name('afp-data.import');
         Route::get('/data-fetch', [AFPDataController::class, 'datafetch'])->name('afp-data.fetch');
         Route::get('/data/import-template/download', [AFPDataController::class, 'importTemplateDownload'])->name('afp-import.template.download');
+        Route::get('/source', [AFPDataController::class, 'dataSource'])->name('afp-data.source');
+        Route::post('/source/{source}', [AFPDataController::class, 'dataSourceDelete'])->name('afp-data.source.delete');
+
     });
     Route::prefix('core-group-data')->group(function () {
         Route::get('/', [CoreGroupDataController::class, 'index'])->name('core-group-data.index');
@@ -92,7 +95,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/excel-import/preview', [CoreGroupDataController::class, 'importPreview'])->name('core-group-data.import.preview');
         Route::post('/excel-import/import', [CoreGroupDataController::class, 'import'])->name('core-group-data.import');
         Route::get('/data-fetch', [CoreGroupDataController::class, 'datafetch'])->name('core-group-data.fetch');
+
     });
+
 
 
     Route::resource('users', UserController::class);
