@@ -47,7 +47,7 @@ class DashboardController extends Controller
     public function getPolioVirusDetectionByYear()
     {
         // Query to process and retrieve data
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw("YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected cases
             ->groupBy('year')
@@ -99,7 +99,7 @@ class DashboardController extends Controller
         ];
 
         // Query to get the count of polio cases by month
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw('MONTH(STR_TO_DATE(date_of_onset, "%m/%d/%Y")) as month, COUNT(*) as cases')
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected polio cases
             ->groupBy('month')
@@ -136,7 +136,7 @@ class DashboardController extends Controller
     public function getTopPolioEmergingMonths()
     {
         // Query to get the count of polio cases by month
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw('MONTH(STR_TO_DATE(date_of_onset, "%m/%d/%Y")) as month, COUNT(*) as cases')
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected polio cases
             ->groupBy('month')
@@ -183,7 +183,7 @@ class DashboardController extends Controller
     public function getPolioVirusDistributionByGender()
     {
         // Query to get the count of polio cases by gender
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw('sex, COUNT(*) as cases')
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for positive polio cases
             ->whereIn('sex', ['M', 'F'])
@@ -215,7 +215,7 @@ class DashboardController extends Controller
     public function getSuspectedPolioVirusResults()
     {
         // Query to get the count of cases based on final_cell_culture_result
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw('final_cell_culture_result, COUNT(*) as cases, sex')
             ->groupBy('final_cell_culture_result', 'sex') // Group by result and sex
             ->get();
@@ -250,7 +250,7 @@ class DashboardController extends Controller
     public function getPolioCasesByProvince()
     {
         // Query to group data by province and filter by final_cell_culture_result
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->select('province', DB::raw('COUNT(*) as cases'))
             ->where('final_cell_culture_result', 'like', '%1-Suspected Poliovirus%') // Filter for detected polio cases
             ->groupBy('province')
@@ -272,7 +272,7 @@ class DashboardController extends Controller
     }
     // public function getPolioCaseTrends()
     // {
-    //     $data = DB::table('polio_lab')
+    //     $data = DB::table('a_f_p_data')
     //         ->selectRaw("MONTH(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as month, YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
     //         ->groupBy(DB::raw("month"), DB::raw("year"))
     //         ->orderBy('year', 'asc')
@@ -283,7 +283,7 @@ class DashboardController extends Controller
     // }
     public function getPolioCaseTrends()
     {
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw("MONTH(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as month, YEAR(STR_TO_DATE(date_of_onset, '%m/%d/%Y')) as year, COUNT(*) as cases")
             ->groupBy(DB::raw("year"), DB::raw("month"))
             ->orderBy('year', 'asc')
@@ -321,7 +321,7 @@ class DashboardController extends Controller
 
     function getTimelinessOfReporting()
     {
-        $data = DB::table('polio_lab')
+        $data = DB::table('a_f_p_data')
             ->selectRaw("
             patients_names,
             province,
@@ -343,7 +343,7 @@ class DashboardController extends Controller
     public function getPolioVirusDetectionByYearLineChart()
     {
         // Query to process and retrieve data
-        $data = DB::table('polio_lab') // Replace with the correct table name
+        $data = DB::table('a_f_p_data') // Replace with the correct table name
             ->selectRaw('YEAR(STR_TO_DATE(date_of_onset, "%m/%d/%Y")) as year, final_cell_culture_result, COUNT(*) as cases')
             ->whereIn('final_cell_culture_result', ['2-Negative', '3-NPENT', '1-Suspected Poliovirus']) // Filter for specific results
             ->groupBy('year', 'final_cell_culture_result')

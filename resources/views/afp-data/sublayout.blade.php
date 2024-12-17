@@ -1,3 +1,4 @@
+<?php $disableContianer = true; ?>
 @extends('base')
 @section('content')
     @php
@@ -18,14 +19,6 @@
                                 - <span> Data Schema</span>
                                 <i class="ml-2 flaticon2-correct text-success icon-md"></i></a>
                             <!--end::Name-->
-                            <div class="flex-wrap my-2 d-flex">
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold">
-                                    <span class="mr-1 svg-icon svg-icon-md svg-icon-gray-500">
-                                        <i class="fa fa-location"></i>
-                                    </span>
-                                    {{-- {{ $dataSchema->subCategory?->name }} / {{ $dataSchema->subCategory?->category?->name }} --}}
-                                </a>
-                            </div>
                         </div>
                         <div class="my-1 my-lg-0">
                             <div class="dropdown dropdown-inline">
@@ -35,7 +28,7 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="" class="navi-link">
+                                            <a href="{{ route('afp-import.template.download', []) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="fal fa-download"></i>
                                                 </span>
@@ -48,21 +41,12 @@
                             </div>
                         </div>
                     </div>
-                    <!--end: Title-->
-                    <!--begin: Content-->
-                    {{-- <div class="flex-wrap d-flex align-items-center justify-content-between">
-                        <div class="py-5 mr-5 flex-grow-1 font-weight-bold text-dark-50 py-lg-2 w-100">
-                            There is no description of the center
-                            <br>
-                        </div>
-                    </div>  --}}
-                    <!--end: Content-->
                 </div>
                 <!--end: Info-->
             </div>
             <div class="separator separator-solid my-7"></div>
             <!--begin: Items-->
-            <div class="flex-wrap d-flex align-items-center">
+            {{-- <div class="flex-wrap d-flex align-items-center">
                 <!--begin: Item-->
                 <div class="my-1 mr-5 d-flex align-items-center flex-lg-fill">
                     <span class="mr-4">
@@ -125,12 +109,31 @@
                 </div>
                 <!--end: Item-->
 
+            </div> --}}
+            <div class="flex-wrap d-flex align-items-center">
+                <ul class="nav nav-tabs nav-tabs-line">
+                    <li class="nav-item">
+                        <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.index') === 0 ? 'active' : '' }}"
+                            href="{{ route('afp-data.index') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.data-management') === 0 ? 'active' : '' }}"
+                            href="{{ route('afp-data.data-management') }}">Data Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ strpos(Route::currentRouteName(), 'afp-data.import.view') === 0 ? 'active' : '' }}"
+                            href="{{ route('afp-data.import.view', []) }}">Import Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Source Management</a>
+                    </li>
+                </ul>
             </div>
             <!--begin: Items-->
         </div>
     </div>
     <div class="d-flex flex-row">
-        <div class="p0 flex-row-auto col-md-3 offcanvas-mobile" style="padding: 0" id="kt_profile_aside">
+        {{-- <div class="p0 flex-row-auto col-md-3 offcanvas-mobile" style="padding: 0" id="kt_profile_aside">
             <div class="card card-custom card-stretch">
                 <div class="card-body pt-6 py-0" style="padding-left: 2px; padding-right: 2px;">
                     <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
@@ -143,16 +146,6 @@
                                 <span class="navi-text font-size-lg">Dashboard</span>
                             </a>
                         </div>
-                        {{-- <div class="navi-item mb-2">
-                            <a href="0"
-                                class="navi-link  {{ strpos(Route::currentRouteName(), 'data_schema.manage') === 0 ? 'active' : '' }} py-4">
-                                <span class="navi-icon mr-2">
-                                    <i class="fa fa-circle"></i>
-                                </span>
-                                <span class="navi-text font-size-lg">Schema Management</span>
-                            </a>
-                        </div> --}}
-
                         <div class="navi-item mb-2">
                             <a href="{{ route('afp-data.data-management') }}"
                                 class="navi-link {{ strpos(Route::currentRouteName(), 'afp-data.data-management') === 0 ? 'active' : '' }} py-4">
@@ -181,23 +174,6 @@
                                 <span class="navi-text font-size-lg">Source Management</span>
                             </a>
                         </div>
-                        {{-- <!--<div class="navi-item mb-2">-->
-                        <!--    <a href="{{ route('data_schema.dashboard.management', $dataSchema->id) }}" class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.dashboard.management') === 0 ? 'active' : '' }} py-4">-->
-                        <!--        <span class="navi-icon mr-2">-->
-                        <!--            <i class="fa fa-circle"></i>-->
-                        <!--        </span>-->
-                        <!--        <span class="navi-text font-size-lg">Dashboard Management</span>-->
-                        <!--    </a>-->
-                        <!--</div>-->
-                        <!--<div class="navi-item mb-2">-->
-                        <!--    <a href="{{ route('data_schema.resource.management', $dataSchema->id) }}" class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.resource.management') === 0 ? 'active' : '' }} py-4">-->
-                        <!--        <span class="navi-icon mr-2">-->
-                        <!--            <i class="fa fa-circle"></i>-->
-                        <!--        </span>-->
-                        <!--        <span class="navi-text font-size-lg">Resource Management</span>-->
-                        <!--    </a>-->
-                        <!--</div>--> --}}
-
                         <div class="navi-item mb-2">
                             <a href=""
                                 class="navi-link {{ strpos(Route::currentRouteName(), 'data_schema.community.management') === 0 ? 'active' : '' }} py-4">
@@ -218,16 +194,13 @@
                                 <span class="navi-text font-size-lg">Sms Managent</span>
                             </a>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!--end::Aside-->
         <!--begin::Content-->
-        <div class="flex-row-fluid ml-md-9" style="margin-left: 5px!important;">
+        <div class="flex-row-fluid ml-md-12" style="margin-left: 5px!important;">
             <!--begin::Card-->
             @yield('nav_content')
         </div>

@@ -458,7 +458,7 @@
                     <!--begin::Entry-->
                     <div class="p-5 flex-column-fluid">
                         <!--begin::Container-->
-                        <div class="container mt-6">
+                        <div class="{{ isset($disableContianer)?'':'containerd' }} mt-6">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <p><strong>Oops Something went wrong</strong></p>

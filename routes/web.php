@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/excel-import/preview', [AFPDataController::class, 'importPreview'])->name('afp-data.import.preview');
         Route::post('/excel-import/import', [AFPDataController::class, 'import'])->name('afp-data.import');
         Route::get('/data-fetch', [AFPDataController::class, 'datafetch'])->name('afp-data.fetch');
+        Route::get('/data/import-template/download', [AFPDataController::class, 'importTemplateDownload'])->name('afp-import.template.download');
     });
     Route::prefix('core-group-data')->group(function () {
         Route::get('/', [CoreGroupDataController::class, 'index'])->name('core-group-data.index');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants;
+use App\Exports\DataImportTemplateExport;
 use App\Http\Requests\StoreAFPDataRequest;
 use App\Http\Requests\UpdateAFPDataRequest;
 use App\Imports\AFPDataImport;
@@ -89,6 +90,13 @@ class AFPDataController extends Controller
     {
         $data = AFPData::query();
         return datatables()->of($data->get())->toJson();
+    }
+    public function importTemplateDownload()
+    {
+
+        $headers = Schema::getColumnListing('a_f_p_data');
+        $headers = array_diff($headers, ['id','other_data_source_id','created_at','updated_at']);
+        return Excel::download(new DataImportTemplateExport($headers), 'a_f_p_data_import_template.xlsx');
     }
     /**
      * Show the form for creating a new resource.

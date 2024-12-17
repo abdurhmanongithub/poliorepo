@@ -73,7 +73,7 @@
     </div> --}}
     <ul class="nav nav-tabs nav-tabs-line">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Lab Data Insights</a>
+            <a class="nav-link active" data-toggle="tab" href="#tab_pane_a_f_p_data_data_chart">Lab Data Insights</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Surveillance Data</a>
@@ -83,8 +83,8 @@
         </li>
     </ul>
     <div class="tab-content mt-5" id="myTabContent">
-        <div class="tab-pane fade show active" id="tab_pane_polio_lab_data_chart" role="tabpanel"
-            aria-labelledby="tab_pane_polio_lab_data_chart">
+        <div class="tab-pane fade show active" id="tab_pane_a_f_p_data_data_chart" role="tabpanel"
+            aria-labelledby="tab_pane_a_f_p_data_data_chart">
             <div class="row">
                 @include('afp-data.charts.index')
             </div>
