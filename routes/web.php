@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/data/import-template/download', [AFPDataController::class, 'importTemplateDownload'])->name('afp-import.template.download');
         Route::get('/source', [AFPDataController::class, 'dataSource'])->name('afp-data.source');
         Route::post('/source/{source}', [AFPDataController::class, 'dataSourceDelete'])->name('afp-data.source.delete');
+        Route::post('/knowledge', [AFPDataController::class, 'dataSourceDelete'])->name('afp-data.source.delete');
 
     });
     Route::prefix('core-group-data')->group(function () {
