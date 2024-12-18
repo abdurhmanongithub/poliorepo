@@ -24,15 +24,15 @@ class Community extends Model
     {
         return $this->belongsTo(Woreda::class);
     }
-    public function subCategory(): BelongsTo
-    {
-        return $this->belongsTo(SubCategory::class);
-    }
+    // public function subCategory(): BelongsTo
+    // {
+    //     return $this->belongsTo(SubCategory::class);
+    // }
     /**
      * Get all of the smsHistories for the Community
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */ 
+     */
     public function smsHistories(): HasMany
     {
         return $this->hasMany(SmsHistory::class);

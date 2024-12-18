@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('phone');
             $table->string('email')->nullable();
             $table->foreignIdFor(Woreda::class)->constrained();
-            $table->foreignIdFor(SubCategory::class)->constrained();
+            // $table->foreignIdFor(SubCategory::class)->constrained();
             $table->foreignIdFor(CommunityType::class)->constrained();
             $table->timestamps();
         });

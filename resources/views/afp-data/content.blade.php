@@ -97,6 +97,7 @@
                         <td>{{ $content->language }}</td>
                         <td>{{ $content->content }}</td>
                         <td>
+                            <a href="{{ route('afp-data.content.show', ['content'=>$content->id]) }}" class="btn btn-info btn-sm">Manage</a>
                             <button class="btn btn-primary btn-sm editBtn">Edit</button>
                             <button class="btn btn-danger btn-sm deleteBtn">Delete</button>
                         </td>

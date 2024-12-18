@@ -89,7 +89,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/knowledge', [AFPDataController::class, 'content'])->name('afp-data.content');
         Route::post('/knowledge', [AFPDataController::class, 'contentStore'])->name('afp-data.content.store');
         Route::put('/knowledge/{content}', [AFPDataController::class, 'contentUpdate'])->name('afp-data.content.update');
+        Route::get('/knowledge/{content}', [AFPDataController::class, 'contentShow'])->name('afp-data.content.show');
         Route::delete('/knowledge/{content}', [AFPDataController::class, 'contentDelete'])->name('afp-data.content.delete');
+        Route::post('/knowledge/{content}/notify', [AFPDataController::class, 'notify'])->name('afp-data.notify');
 
     });
     Route::prefix('core-group-data')->group(function () {

@@ -12,6 +12,9 @@ class Constants
         'image',
         'date'
     ];
+    const BROADCAST_STATUS_PENDING = 0;
+    const BROADCAST_STATUS_SENT = 1;
+    const BROADCAST_STATUS_FAILED = 2;
     const EXPORT_TYPE_CSV = 'csv';
     const EXPORT_TYPE_EXCEL = 'xlsx';
     const EXPORT_TYPE_PDF = 'pdf';
@@ -65,5 +68,4 @@ class Constants
             return true;
         }
     }
-
 }

@@ -9,8 +9,12 @@ use App\Http\Requests\UpdateAFPDataRequest;
 use App\Imports\AFPDataImport;
 use App\Imports\AFPDataImportForPreview;
 use App\Models\AFPData;
+use App\Models\Broadcast;
+use App\Models\Community;
+use App\Models\CommunityType;
 use App\Models\Content;
 use App\Models\OtherDataSource;
+use App\SmsHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -148,12 +152,63 @@ class AFPDataController extends Controller
         return response()->json(['success' => true, 'message' => 'Content deleted successfully!']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AFPData $aFPData)
+    public function contentShow(Content $content)
     {
-        //
+        $notifications = Broadcast::where('content_id', $content->id)->get();
+        $communityTypes = CommunityType::all();
+        $communities = Community::all();
+        return view('afp-data.content-show', compact('content', 'notifications', 'communities', 'communityTypes'));
+    }
+    public function notify(Content $content, Request $request)
+    {
+        $data = $request->validate([
+            'send_by' => 'required',
+            'community_type' => 'required_if:send_by,0',
+            'communities' => 'required_if:send_by,1',
+            'csv' => 'required_if:send_by,2',
+        ]);
+        $broadcasts = [];
+        switch ($data['send_by']) {
+            case 0:
+                $members = Community::where('community_type_id', $data['community_type'])->get();
+                foreach ($members as $member) {
+                    $broadcast = BroadCast::create([
+                        'content_id' => $content->id,
+                        'community_id' => $member->id,
+                        'phone' => $member->phone,
+                        'status' => Constants::BROADCAST_STATUS_PENDING,
+                    ]);
+                    array_push($broadcasts, $broadcast);
+                }
+                break;
+            case 1:
+                $members = Community::whereIn('community_type_id', $data['communities'])->get();
+                foreach ($members as $member) {
+                    $broadcast = BroadCast::create([
+                        'content_id' => $content->id,
+                        'community_id' => $member->id,
+                        'phone' => $member->phone,
+                        'status' => Constants::BROADCAST_STATUS_PENDING,
+                    ]);
+                    array_push($broadcasts, $broadcast);
+                }
+                break;
+            case 2:
+                $csv = collect(json_decode($data['csv']))->pluck('value')->toArray();
+                foreach ($csv as $phone) {
+                    $broadcast = BroadCast::create([
+                        'content_id' => $content->id,
+                        'phone' => $phone,
+                        'status' => Constants::BROADCAST_STATUS_PENDING,
+                    ]);
+                    array_push($broadcasts, $broadcast);
+                }
+                break;
+        }
+        foreach ($broadcasts as $broadcast) {
+            // SmsHelper::sendSms($broadcast->phone, $content->content);
+        }
+        return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 
     /**

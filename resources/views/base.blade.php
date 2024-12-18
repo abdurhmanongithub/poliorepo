@@ -256,7 +256,7 @@
 
 
 
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'category') === 0 ? 'menu-item-active' : '' }}"
+                                {{-- <li class="menu-item {{ strpos(Route::currentRouteName(), 'category') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('category.index', []) }}" class="menu-link">
                                         <i class="menu-icon flaticon-dashboard"></i>
@@ -273,13 +273,13 @@
                                             Sub Category
                                         </span>
                                     </a>
-                                </li>
+                                </li> --}}
 
 
 
 
 
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'knowledge-types') === 0 || strpos(Route::currentRouteName(), 'knowledge') === 0 ? 'menu-item-open' : '' }} "
+                                {{-- <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'knowledge-types') === 0 || strpos(Route::currentRouteName(), 'knowledge') === 0 ? 'menu-item-open' : '' }} "
                                     aria-haspopup="true" data-menu-toggle="hover">
 
 
@@ -316,7 +316,7 @@
 
                                         </ul>
                                     </div>
-                                </li>
+                                </li> --}}
                                 <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
                                     aria-haspopup="true">
                                     <a href="{{ route('data_schema.index', []) }}" class="menu-link">

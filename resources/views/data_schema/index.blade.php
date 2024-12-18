@@ -89,7 +89,9 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">
-                    <span>Total: {{ $items->total() }}</span>
+                    <span>Total: 2
+                        {{-- {{ $items->total() }} --}}
+                    </span>
                     data categories
                     <span class="d-block text-muted pt-2 font-size-sm">All data schema</span>
                     <div class="">
@@ -97,9 +99,9 @@
                 </h3>
             </div>
             <div class="card-tools">
-                <a href="#" data-toggle="modal" data-target="#addModal" class="btn btn-primary"><i
+                {{-- <a href="#" data-toggle="modal" data-target="#addModal" class="btn btn-primary"><i
                         class="fa fa-plus mr-2"></i>Add
-                    data schema</a>
+                    data schema</a> --}}
             </div>
         </div>
         <div class="card-body">
@@ -139,7 +141,7 @@
                                 </a>
                             </td>
                         </tr>
-                        @foreach ($items as $key => $item)
+                        {{-- @foreach ($items as $key => $item)
                             <tr>
                                 <td>{{ $key + 3 }}</td>
                                 <td>{{ $item?->name }}</td>
@@ -170,7 +172,7 @@
                                 <td class="text-capitalize text-danger text-center font-size-h4" colspan="5">No Record
                                     Found</td>
                             </tr>
-                        @endif
+                        @endif --}}
                     </tbody>
 
                 </table>
