@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Constants;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DataSeeder extends Seeder
 {
@@ -13,11 +15,5 @@ class DataSeeder extends Seeder
      */
     public function run(): void
     {
-        if (User::count() == 0)
-            User::create([
-                'full_name' => 'Super Admin',
-                'email' => 'super@gmail.com',
-                'password' => bcrypt('password'),
-            ]);
     }
 }

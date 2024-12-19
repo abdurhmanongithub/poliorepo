@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,10 +23,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole('super-admin')) {
+                return true; // Bypass all permissions
+            }
+        });
         Paginator::useBootstrap();
         Blade::directive('uppercase', function ($expression) {
             return "<?php echo strtoupper($expression); ?>";
-
         });
     }
 }

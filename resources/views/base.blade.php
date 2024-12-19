@@ -116,7 +116,7 @@
                     <div class="mt-4 brand flex-column-auto" id="kt_brand">
                         <!--begin::Logo-->
                         <a href="#" class="text-center brand-logo w-100 d-block">
-                            <img alt="Logo" src="{{ asset('assets/logo.png') }}" width="50" />
+                            <img alt="Logo" style="background-color: blue;width:100%;" src="{{ asset('assets/logo.png') }}" width="50" />
                         </a>
                         <!--end::Logo-->
 
@@ -160,98 +160,105 @@
                                 </a>
                                 </li> --}}
 
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('dashboard', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-dashboard"></i>
-                                        <span class="menu-text">
-                                            Dashboard
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 ? 'menu-item-open' : '' }} "
-                                    aria-haspopup="true" data-menu-toggle="hover">
+                                @can('manage.dashboard')
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'dashboard') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('dashboard', []) }}" class="menu-link">
+                                            <i class="menu-icon flaticon-dashboard"></i>
+                                            <span class="menu-text">
+                                                Dashboard
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endcan
+                                @canany(['regions.icrud', 'regions.index', 'zones.icrud', 'zones.index',
+                                    'woredas.icrud', 'woredas.index'])
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'region') === 0 || strpos(Route::currentRouteName(), 'zone') === 0 || strpos(Route::currentRouteName(), 'woreda') === 0 ? 'menu-item-open' : '' }} "
+                                        aria-haspopup="true" data-menu-toggle="hover">
 
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-cogwheel-1"></i>
-                                        <span class="menu-text">System Settings</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            <i class="menu-icon flaticon-cogwheel-1"></i>
+                                            <span class="menu-text">System Settings</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
+                                                @canany(['regions.icrud', 'regions.index'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('region.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Regions</span>
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['zones.icurd', 'zones.index'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('zone.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Zones</span>
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['woredas.icrud', 'woredas.index'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('woreda.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Woredas</span>
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcanany
 
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'region.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('region.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Regions</span>
-                                                </a>
-                                            </li>
-
-
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'zone.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('zone.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Zones</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'woreda.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('woreda.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Woredas</span>
-                                                </a>
-                                            </li>
-
-
-
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'roles') === 0 || strpos(Route::currentRouteName(), 'users') === 0 ? 'menu-item-open' : '' }} "
-                                    aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-user-settings"></i>
-                                        <span class="menu-text">User Managments</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-
-
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'users.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('users.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Users</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'roles.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
-                                                <a href="{{ route('roles.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Roles</span>
-                                                </a>
-                                            </li>
-
-
-
-                                        </ul>
-                                    </div>
-                                </li>
+                                @canany(['users.icrud', 'roles.icrud', 'users.index', 'roles.index'])
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'roles') === 0 || strpos(Route::currentRouteName(), 'users') === 0 ? 'menu-item-open' : '' }} "
+                                        aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            <i class="menu-icon flaticon-user-settings"></i>
+                                            <span class="menu-text">User Managments</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
+                                                @canany(['users.icrud', 'users.index'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'users.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('users.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Users</span>
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['roles.index', 'roles.icrud'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'roles.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
+                                                        <a href="{{ route('roles.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Roles</span>
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcanany
 
 
 
@@ -317,91 +324,104 @@
                                         </ul>
                                     </div>
                                 </li> --}}
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('data_schema.index', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-dashboard"></i>
-                                        <span class="menu-text">
-                                            Data Management
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
-                                    aria-haspopup="true">
-                                    <a href="{{ route('polio-table.index', []) }}" class="menu-link">
-                                        <i class="menu-icon flaticon-table"></i>
-                                        <span class="menu-text">
-                                            Polio Data
-                                        </span>
-                                    </a>
-                                </li>
+                                @canany(['manage.afp-data', 'manage.core-data'])
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('data_schema.index', []) }}" class="menu-link">
+                                            <i class="menu-icon flaticon-dashboard"></i>
+                                            <span class="menu-text">
+                                                Data Management
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endcanany
+                                @can('manage.polio-data')
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true">
+                                        <a href="{{ route('polio-table.index', []) }}" class="menu-link">
+                                            <i class="menu-icon flaticon-table"></i>
+                                            <span class="menu-text">
+                                                Polio Data
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endcan
 
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'community-type') === 0 ? 'menu-item-open' : '' }} "
-                                    aria-haspopup="true" data-menu-toggle="hover">
+                                @canany(['community-types.icrud', 'community-types.index', 'community-members.icrud',
+                                    'community-members.index'])
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'community-type') === 0 ? 'menu-item-open' : '' }} "
+                                        aria-haspopup="true" data-menu-toggle="hover">
 
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-users"></i>
-                                        <span class="menu-text">Community Managments</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            <i class="menu-icon flaticon-users"></i>
+                                            <span class="menu-text">Community Managments</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
 
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'community-type.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
+                                                @canany(['community-types.icrud', 'community-types.index'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'community-type.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
 
-                                                <a href="{{ route('community-type.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Community Types</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'community.index') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
+                                                        <a href="{{ route('community-type.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Community Types</span>
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                                @canany(['community-members.icrud', 'community-members.index'])
+                                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'community.index') === 0 ? 'menu-item-active' : '' }}"
+                                                        aria-haspopup="true">
 
-                                                <a href="{{ route('community.index', []) }}" class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Community Member </span>
+                                                        <a href="{{ route('community.index', []) }}" class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Community Member </span>
 
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'custom-sms-create') === 0 ? 'menu-item-open' : '' }} "
-                                    aria-haspopup="true" data-menu-toggle="hover">
-
-
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-icon flaticon-file"></i>
-                                        <span class="menu-text">Sms Module</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-
-
-                                            <li class="menu-item {{ strpos(Route::currentRouteName(), 'sms.custom.view') === 0 ? 'menu-item-active' : '' }}"
-                                                aria-haspopup="true">
+                                                        </a>
+                                                    </li>
+                                                @endcanany
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcanany
+                                @can('manage.custom-sms')
+                                    <li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'custom-sms-create') === 0 ? 'menu-item-open' : '' }} "
+                                        aria-haspopup="true" data-menu-toggle="hover">
 
 
-                                                <a href="{{ route('sms.custom.view', []) }}" class="menu-link">
+                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                            <i class="menu-icon flaticon-file"></i>
+                                            <span class="menu-text">Sms Module</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                        <div class="menu-submenu">
+                                            <i class="menu-arrow"></i>
+                                            <ul class="menu-subnav">
 
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">custom sms </span>
 
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
+                                                <li class="menu-item {{ strpos(Route::currentRouteName(), 'sms.custom.view') === 0 ? 'menu-item-active' : '' }}"
+                                                    aria-haspopup="true">
+
+
+                                                    <a href="{{ route('sms.custom.view', []) }}" class="menu-link">
+
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">custom sms </span>
+
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcan
 
                                 <!--<li class="menu-item menu-item-submenu {{ strpos(Route::currentRouteName(), 'weather') === 0 || strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-open' : '' }} "-->
                                 <!--    aria-haspopup="true" data-menu-toggle="hover">-->
@@ -410,35 +430,35 @@
                                 <!--        <span class="menu-text">Weather Data</span>-->
                                 <!--        <i class="menu-arrow"></i>-->
                                 <!--    </a>-->
-                                    <!--<div class="menu-submenu">-->
-                                    <!--    <i class="menu-arrow"></i>-->
-                                    <!--    <ul class="menu-subnav">-->
+                                <!--<div class="menu-submenu">-->
+                                <!--    <i class="menu-arrow"></i>-->
+                                <!--    <ul class="menu-subnav">-->
 
 
-                                    <!--        <li class="menu-item {{ strpos(Route::currentRouteName(), 'weather.index') === 0 ? 'menu-item-active' : '' }}"-->
-                                    <!--            aria-haspopup="true">-->
+                                <!--        <li class="menu-item {{ strpos(Route::currentRouteName(), 'weather.index') === 0 ? 'menu-item-active' : '' }}"-->
+                                <!--            aria-haspopup="true">-->
 
 
-                                    <!--            <a href="{{ route('weather.index', []) }}" class="menu-link">-->
+                                <!--            <a href="{{ route('weather.index', []) }}" class="menu-link">-->
 
-                                    <!--                <i class="menu-bullet menu-bullet-dot">-->
-                                    <!--                    <span></span>-->
-                                    <!--                </i>-->
-                                    <!--                <span class="menu-text">historical weather Data</span>-->
-                                    <!--            </a>-->
-                                    <!--        </li>-->
-                                    <!--        <li class="menu-item {{ strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-active' : '' }}"-->
-                                    <!--            aria-haspopup="true">-->
-                                    <!--            <a href="{{ route('get-weather.view') }}" class="menu-link">-->
+                                <!--                <i class="menu-bullet menu-bullet-dot">-->
+                                <!--                    <span></span>-->
+                                <!--                </i>-->
+                                <!--                <span class="menu-text">historical weather Data</span>-->
+                                <!--            </a>-->
+                                <!--        </li>-->
+                                <!--        <li class="menu-item {{ strpos(Route::currentRouteName(), 'get-weather') === 0 ? 'menu-item-active' : '' }}"-->
+                                <!--            aria-haspopup="true">-->
+                                <!--            <a href="{{ route('get-weather.view') }}" class="menu-link">-->
 
-                                    <!--                <i class="menu-bullet menu-bullet-dot">-->
-                                    <!--                    <span></span>-->
-                                    <!--                </i>-->
-                                    <!--                <span class="menu-text">Current weather Data</span>-->
-                                    <!--            </a>-->
-                                    <!--        </li>-->
-                                    <!--    </ul>-->
-                                    <!--</div>-->
+                                <!--                <i class="menu-bullet menu-bullet-dot">-->
+                                <!--                    <span></span>-->
+                                <!--                </i>-->
+                                <!--                <span class="menu-text">Current weather Data</span>-->
+                                <!--            </a>-->
+                                <!--        </li>-->
+                                <!--    </ul>-->
+                                <!--</div>-->
                                 </li>
                             </ul>
                         </div>
@@ -458,7 +478,7 @@
                     <!--begin::Entry-->
                     <div class="p-5 flex-column-fluid">
                         <!--begin::Container-->
-                        <div class="{{ isset($disableContianer)?'':'containerd' }} mt-6">
+                        <div class="{{ isset($disableContianer) ? '' : 'containerd' }} mt-6">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <p><strong>Oops Something went wrong</strong></p>
@@ -681,8 +701,10 @@
         <script>
             @if (Session::has('message') && !Session::has('error'))
                 $(function() {
-                    toastr.success('{{ Session::get('
-                                        message ') }}');
+                    toastr.success(
+                        '{{ Session::get('
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    message ') }}'
+                    );
                 })
             @endif
 
@@ -690,7 +712,7 @@
             @if (Session::has('success') && !Session::has('error'))
                 $(function() {
                     // toastr.success('{{ Session::get('
-                                    //     success ') }}');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    //     success ') }}');
                     swal.fire("succcess!", "{{ session('warning') }}", "success");
 
 
