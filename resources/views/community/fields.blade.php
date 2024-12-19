@@ -66,7 +66,7 @@
         @enderror
     </div>
 
-    <div class="form-group col-6">
+    {{-- <div class="form-group col-6">
         <label for="sub_category_id">Sub Category</label>
         <select name="sub_category_id" class="form-control " id="sub_category_id">
             <option value="" disabled {{ old('sub_category_id', $community->sub_category_id ?? '') == '' ? 'selected' : '' }}>Select</option>
@@ -79,5 +79,5 @@
         @error('sub_category_id')
         <span class="text-danger">{{ $message }}</span>
         @enderror
-    </div>
+    </div> --}}
 </div>

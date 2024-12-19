@@ -52,12 +52,10 @@
                         chart.render();
                     } else {
                         console.error("Unexpected response format. Check your backend:", response);
-                        alert("The data could not be loaded due to an unexpected format.");
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching polio emerging seasons data:", error);
-                    alert("Failed to load data. Please try again later.");
                 }
             });
         }

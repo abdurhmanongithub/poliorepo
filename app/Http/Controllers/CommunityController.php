@@ -56,7 +56,7 @@ class CommunityController extends Controller
                 'gender' => $request->get('gender'),
                 'woreda_id' => $request->get('woreda_id'),
                 'community_type_id' => $request->get('community_type_id'),
-                'sub_category_id' => $request->get('sub_category_id'),
+                // 'sub_category_id' => $request->get('sub_category_id'),
                 'phone' => $request->get('phone'),
                 'email' => $request->get('email'),
             ]
@@ -103,7 +103,7 @@ class CommunityController extends Controller
                 'gender' => $request->get('gender'),
                 'woreda_id' => $request->get('woreda_id'),
                 'community_type_id' => $request->get('community_type_id'),
-                'sub_category_id' => $request->get('sub_category_id'),
+                // 'sub_category_id' => $request->get('sub_category_id'),
                 'phone' => $request->get('phone'),
                 'email' => $request->get('email'),
             ]

@@ -76,7 +76,6 @@
                     } else {
                         // If data format is not expected, log the response for debugging
                         console.error("Unexpected response format. Check your backend:", response);
-                        alert("The data could not be loaded due to an unexpected format.");
                     }
                 },
                 error: function(xhr, status, error) {

@@ -21,8 +21,7 @@
                                 class="card-title font-weight-bolder text-success text-hover-state-dark font-size-h6 mb-4 d-block">Available
                                 Data</a>
                             <div class="font-weight-bold text-muted font-size-sm">
-                                <span
-                                    class="text-dark-75 font-size-h2 font-weight-bolder mr-2">{{ ($totalDatas) }}</span>
+                                <span class="text-dark-75 font-size-h2 font-weight-bolder mr-2">{{ $totalDatas }}</span>
                                 Records
                             </div>
                             <div class="progress progress-xs mt-7 bg-success-o-60">
@@ -78,6 +77,7 @@
                     </div>
                     <!--end::Stats Widget 21-->
                 </div>
+                @include('afp-data.charts.index')
             </div>
         </div>
     </div>

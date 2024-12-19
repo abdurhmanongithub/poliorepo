@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Constants;
+use App\Exports\DataImportTemplateExport;
 use App\Http\Requests\StoreAFPDataRequest;
 use App\Http\Requests\UpdateAFPDataRequest;
 use App\Imports\AFPDataImport;
 use App\Imports\AFPDataImportForPreview;
 use App\Models\AFPData;
+use App\Models\Broadcast;
+use App\Models\Community;
+use App\Models\CommunityType;
+use App\Models\Content;
 use App\Models\OtherDataSource;
+use App\SmsHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -90,36 +97,118 @@ class AFPDataController extends Controller
         $data = AFPData::query();
         return datatables()->of($data->get())->toJson();
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function importTemplateDownload()
     {
-        //
+
+        $headers = Schema::getColumnListing('a_f_p_data');
+        $headers = array_diff($headers, ['id', 'other_data_source_id', 'created_at', 'updated_at']);
+        return Excel::download(new DataImportTemplateExport($headers), 'a_f_p_data_import_template.xlsx');
+    }
+    public function dataSource()
+    {
+        $sources = OtherDataSource::whereIn('id', AFPData::distinct('other_data_source_id')->pluck('other_data_source_id'))->get();
+        return view('afp-data.source', compact('sources'));
+    }
+    public function dataSourceDelete(OtherDataSource $source)
+    {
+        DB::table('a_f_p_data')->where('other_data_source_id', $source->id)->delete();
+        $source->delete();
+        return redirect()->back()->with('success', 'Data Source Deleted Successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAFPDataRequest $request)
+    public function content()
     {
-        //
+        $contents = Content::where('type', 'afp')->get();
+        return view('afp-data.content', compact('contents'));
+    }
+    public function contentStore(Request $request)
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'language' => 'required',
+        ]);
+        $data['type'] = 'afp';
+        Content::create($data);
+        session()->flash('success', 'Content added successfully!');
+        return response()->json(['success' => true, 'message' => 'Content added successfully!']);
+    }
+    public function contentUpdate(Request $request, Content $content)
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'language' => 'required',
+        ]);
+        $content->update($data);
+        session()->flash('success', 'Content updated successfully!');
+        return response()->json(['success' => true, 'message' => 'Content updated successfully!']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(AFPData $aFPData)
+    public function contentDelete(Content $content)
     {
-        //
+        $content->delete();
+        session()->flash('success', 'Content deleted successfully!');
+        return response()->json(['success' => true, 'message' => 'Content deleted successfully!']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AFPData $aFPData)
+    public function contentShow(Content $content)
     {
-        //
+        $notifications = Broadcast::where('content_id', $content->id)->get();
+        $communityTypes = CommunityType::all();
+        $communities = Community::all();
+        return view('afp-data.content-show', compact('content', 'notifications', 'communities', 'communityTypes'));
+    }
+    public function notify(Content $content, Request $request)
+    {
+        $data = $request->validate([
+            'send_by' => 'required',
+            'community_type' => 'required_if:send_by,0',
+            'communities' => 'required_if:send_by,1',
+            'csv' => 'required_if:send_by,2',
+        ]);
+        $broadcasts = [];
+        switch ($data['send_by']) {
+            case 0:
+                $members = Community::where('community_type_id', $data['community_type'])->get();
+                foreach ($members as $member) {
+                    $broadcast = BroadCast::create([
+                        'content_id' => $content->id,
+                        'community_id' => $member->id,
+                        'phone' => $member->phone,
+                        'status' => Constants::BROADCAST_STATUS_PENDING,
+                    ]);
+                    array_push($broadcasts, $broadcast);
+                }
+                break;
+            case 1:
+                $members = Community::whereIn('community_type_id', $data['communities'])->get();
+                foreach ($members as $member) {
+                    $broadcast = BroadCast::create([
+                        'content_id' => $content->id,
+                        'community_id' => $member->id,
+                        'phone' => $member->phone,
+                        'status' => Constants::BROADCAST_STATUS_PENDING,
+                    ]);
+                    array_push($broadcasts, $broadcast);
+                }
+                break;
+            case 2:
+                $csv = collect(json_decode($data['csv']))->pluck('value')->toArray();
+                foreach ($csv as $phone) {
+                    $broadcast = BroadCast::create([
+                        'content_id' => $content->id,
+                        'phone' => $phone,
+                        'status' => Constants::BROADCAST_STATUS_PENDING,
+                    ]);
+                    array_push($broadcasts, $broadcast);
+                }
+                break;
+        }
+        foreach ($broadcasts as $broadcast) {
+            // SmsHelper::sendSms($broadcast->phone, $content->content);
+        }
+        return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 
     /**
