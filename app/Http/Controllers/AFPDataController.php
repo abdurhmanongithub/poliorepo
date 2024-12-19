@@ -34,10 +34,38 @@ class AFPDataController extends Controller
         ]);
     }
 
-    function dataManagement()
+    function dataManagement(Request $request)
     {
-        return view('afp-data.data-manage', [
+        $datas = AFPData::query();
+        if ($request->filled('fieldFilter')) {
+            $datas->where('field', 'like', '%' . $request->fieldFilter . '%');
+        }
+
+        if ($request->filled('provinceFilter')) {
+            $datas->where('province', $request->provinceFilter);
+        }
+
+        if ($request->filled('sexFilter')) {
+            $datas->where('sex', $request->sexFilter);
+        }
+
+        if ($request->filled('ageFilter')) {
+            // Example logic to filter by age ranges
+            if ($request->ageFilter == '10') {
+                $datas->whereBetween('age_in_years', [10, 20]);
+            } elseif ($request->ageFilter == '20') {
+                $datas->whereBetween('age_in_years', [20, 40]);
+            } elseif ($request->ageFilter == '40') {
+                $datas->where('age_in_years', '>=', 40);
+            }
+        }
+
+        $datas = $datas->paginate(20);
+        $provinces = AFPData::distinct('province')->pluck('province');
+        return view('afp-data.data.table', [
             'totalDatas' => AFPData::count(),
+            'datas' => $datas,
+            'provinces' => $provinces,
             'columns' => Schema::getColumnListing('a_f_p_data'),
             'columnCount' => count(Schema::getColumnListing('a_f_p_data')),
         ]);
