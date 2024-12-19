@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Yearly Trends in Polio Virus Detection (Up to 2022)</h3>
+                <h3 class="card-label">Yearly Trends in Polio Virus Detection </h3>
             </div>
         </div>
         <div class="card-body">

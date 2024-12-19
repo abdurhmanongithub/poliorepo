@@ -3,7 +3,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label">Core Data Disperse on Map</h3>
+                <h3 class="card-label"> CORE Group Data: Mapped Location Insights: GPS Coordinates, Record Count, Regions, and Villages</h3>
             </div>
         </div>
         <div class="card-body">

@@ -71,17 +71,39 @@
             <!--end::Stats Widget 29-->
         </div>
     </div> --}}
-    <ul class="nav nav-tabs nav-tabs-line">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Lab Data Insights</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Surveillance Data</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Insights</a>
-        </li>
-    </ul>
+     
+    <div style="text-align: center; padding: 30px 20px; background-color: #0056b3; color: white; border-bottom: 5px solid #003d80;">
+        <h1 style="font-size: 1.25em; margin: 0; line-height: 1.3; text-transform: capitalize;">
+            Insights from Ethiopian Acute Flaccid Paralysis Surveillance Data
+        </h1>
+        <p style="font-size: 1em; margin: 10px 0 0; font-style: italic; color: #d0e7ff;">
+            Comprehensive analysis and Trends 
+        </p>
+        <hr style="border: 0; height: 1px; background: #d0e7ff; margin: 20px 0;">
+        <ul class="nav nav-tabs nav-tabs-line" style="justify-content: center; margin-top: 10px;">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Lab Data Insights</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Surveillance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Key Data</a>
+            </li>
+        </ul>
+    </div>
+    
+    <!--<ul class="nav nav-tabs nav-tabs-line">-->
+    <!--    <li class="nav-item">-->
+    <!--        <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Lab Data Insights</a>-->
+    <!--    </li>-->
+    <!--    <li class="nav-item">-->
+    <!--        <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Surveillance Data</a>-->
+    <!--    </li>-->
+    <!--    <li class="nav-item">-->
+    <!--        <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Insights</a>-->
+    <!--    </li>-->
+    <!--</ul>-->
     <div class="tab-content mt-5" id="myTabContent">
         <div class="tab-pane fade show active" id="tab_pane_polio_lab_data_chart" role="tabpanel"
             aria-labelledby="tab_pane_polio_lab_data_chart">
