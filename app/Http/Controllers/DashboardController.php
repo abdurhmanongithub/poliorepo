@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AFPData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +33,128 @@ class DashboardController extends Controller
 
         // Return the counts as JSON
         return response()->json($regionCounts);
+    }
+
+    public function afpMissingDataChart()
+    {
+        // Fetch the missing data counts for each field
+        $missingData = [
+            'field' => AFPData::whereNull('field')
+                ->orWhere('field', '')
+                ->orWhereRaw('LOWER(field) = ?', ['missing'])
+                ->count(),
+
+            'epid_number' => AFPData::whereNull('epid_number')
+                ->orWhere('epid_number', '')
+                ->orWhereRaw('LOWER(epid_number) = ?', ['missing'])
+                ->count(),
+
+            'laboratory_id_number' => AFPData::whereNull('laboratory_id_number')
+                ->orWhere('laboratory_id_number', '')
+                ->orWhereRaw('LOWER(laboratory_id_number) = ?', ['missing'])
+                ->count(),
+
+            'patients_names' => AFPData::whereNull('patients_names')
+                ->orWhere('patients_names', '')
+                ->orWhereRaw('LOWER(patients_names) = ?', ['missing'])
+                ->count(),
+
+            'province' => AFPData::whereNull('province')
+                ->orWhere('province', '')
+                ->orWhereRaw('LOWER(province) = ?', ['missing'])
+                ->count(),
+
+            'district' => AFPData::whereNull('district')
+                ->orWhere('district', '')
+                ->orWhereRaw('LOWER(district) = ?', ['missing'])
+                ->count(),
+
+            'date_of_onset' => AFPData::whereNull('date_of_onset')
+                ->orWhere('date_of_onset', '')
+                ->orWhereRaw('LOWER(date_of_onset) = ?', ['missing'])
+                ->count(),
+
+            'date_stool_collected' => AFPData::whereNull('date_stool_collected')
+                ->orWhere('date_stool_collected', '')
+                ->orWhereRaw('LOWER(date_stool_collected) = ?', ['missing'])
+                ->count(),
+
+            'date_stool_received_in_lab' => AFPData::whereNull('date_stool_received_in_lab')
+                ->orWhere('date_stool_received_in_lab', '')
+                ->orWhereRaw('LOWER(date_stool_received_in_lab) = ?', ['missing'])
+                ->count(),
+
+            'case_or_contact' => AFPData::whereNull('case_or_contact')
+                ->orWhere('case_or_contact', '')
+                ->orWhereRaw('LOWER(case_or_contact) = ?', ['missing'])
+                ->count(),
+
+            'specimen_number' => AFPData::whereNull('specimen_number')
+                ->orWhere('specimen_number', '')
+                ->orWhereRaw('LOWER(specimen_number) = ?', ['missing'])
+                ->count(),
+
+            'specimen_condition_on_receipt' => AFPData::whereNull('specimen_condition_on_receipt')
+                ->orWhere('specimen_condition_on_receipt', '')
+                ->orWhereRaw('LOWER(specimen_condition_on_receipt) = ?', ['missing'])
+                ->count(),
+
+            'final_cell_culture_result' => AFPData::whereNull('final_cell_culture_result')
+                ->orWhere('final_cell_culture_result', '')
+                ->orWhereRaw('LOWER(final_cell_culture_result) = ?', ['missing'])
+                ->count(),
+
+            'final_combined_itd_result' => AFPData::whereNull('final_combined_itd_result')
+                ->orWhere('final_combined_itd_result', '')
+                ->orWhereRaw('LOWER(final_combined_itd_result) = ?', ['missing'])
+                ->count(),
+
+            'sex' => AFPData::whereNull('sex')
+                ->orWhere('sex', '')
+                ->orWhereRaw('LOWER(sex) = ?', ['missing'])
+                ->count(),
+
+            'age_in_years' => AFPData::whereNull('age_in_years')
+                ->orWhere('age_in_years', '')
+                ->orWhereRaw('LOWER(age_in_years) = ?', ['missing'])
+                ->count(),
+
+            'age_in_months' => AFPData::whereNull('age_in_months')
+                ->orWhere('age_in_months', '')
+                ->orWhereRaw('LOWER(age_in_months) = ?', ['missing'])
+                ->count(),
+
+            'opv_doses' => AFPData::whereNull('opv_doses')
+                ->orWhere('opv_doses', '')
+                ->orWhereRaw('LOWER(opv_doses) = ?', ['missing'])
+                ->count(),
+
+            'date_stool_sent_from_field' => AFPData::whereNull('date_stool_sent_from_field')
+                ->orWhere('date_stool_sent_from_field', '')
+                ->orWhereRaw('LOWER(date_stool_sent_from_field) = ?', ['missing'])
+                ->count(),
+
+            'date_final_cell_culture_results' => AFPData::whereNull('date_final_cell_culture_results')
+                ->orWhere('date_final_cell_culture_results', '')
+                ->orWhereRaw('LOWER(date_final_cell_culture_results) = ?', ['missing'])
+                ->count(),
+
+            'itd_mixture' => AFPData::whereNull('itd_mixture')
+                ->orWhere('itd_mixture', '')
+                ->orWhereRaw('LOWER(itd_mixture) = ?', ['missing'])
+                ->count(),
+        ];
+        // Prepare the categories (field names) and series (missing values count)
+        $categories = array_keys($missingData);
+        $series = array_values($missingData);
+
+        return response()->json([
+            'categories' => $categories,
+            'series' => [[
+                'name' => 'Missing Values Count',
+                'data' => $series
+            ]],
+        ]);
     }
     public function afpProvinceDistribution()
     {

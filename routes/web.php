@@ -52,6 +52,7 @@ Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 Route::get('/regional-distribution', [DashboardController::class, 'regionalDistribution']);
 Route::get('/afp-province-distribution', [DashboardController::class, 'afpProvinceDistribution']);
 Route::get('/polio-virus-detection-by-year-chart', [DashboardController::class, 'getPolioVirusDetectionByYear']);
+Route::get('/afp-missing-data-chart', [DashboardController::class, 'afpMissingDataChart']);
 Route::get('/polio-virus-detection-by-year-line-chart', [DashboardController::class, 'getPolioVirusDetectionByYearLineChart']);
 Route::get('/polio-emerging-seasons-chart', [DashboardController::class, 'getTopPolioEmergingSeasons']);
 Route::get('/polio-emerging-months-chart', [DashboardController::class, 'getTopPolioEmergingMonths']);
