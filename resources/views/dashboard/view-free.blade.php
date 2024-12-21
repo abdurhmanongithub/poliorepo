@@ -113,8 +113,8 @@
                 @include('afp-data.charts.index')
             </div>
         </div>
-        <div class="tab-pane fade" id="tab_pane_a_f_p_data_data_chart" role="tabpanel"
-            aria-labelledby="tab_pane_a_f_p_data_data_chart">
+        <div class="tab-pane fade" id="tab_pane_polio_lab_data_chart" role="tabpanel"
+            aria-labelledby="tab_pane_polio_lab_data_chart">
             <div class="row">
                 @include('core-group-data.charts.index')
             </div>
