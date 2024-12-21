@@ -82,14 +82,15 @@
         <hr style="border: 0; height: 1px; background: #d0e7ff; margin: 20px 0;">
         <ul class="nav nav-tabs nav-tabs-line" style="justify-content: center; margin-top: 10px;">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">Lab Data Insights</a>
+                <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">
+                    Core Group Data insights</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Surveillance</a>
+                <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Data Insights</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Key Data</a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 
