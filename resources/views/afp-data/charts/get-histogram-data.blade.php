@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div class="col-lg-12">
+{{-- <div class="col-lg-12">
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <div class="card-title">
@@ -22,7 +22,7 @@
             <div id="chart-result" class="d-flex justify-content-center"></div>
         </div>
     </div>
-</div>
+</div> --}}
 
 @push('js')
     <script>

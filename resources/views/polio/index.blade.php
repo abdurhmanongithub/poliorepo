@@ -3,7 +3,7 @@
     <div class="card card-custom">
         <div class="card-header py-3">
             <div class="card-title align-items-start flex-column">
-                <h3 class="card-label font-weight-bolder text-dark">Polio Data available tables </h3>
+                <h3 class="card-label font-weight-bolder text-dark">AFP Data Insight </h3>
                 <span class="text-muted font-weight-bold font-size-sm mt-1">{{ count($tablesWithRowCount) }}</span>
             </div>
             <div class="card-toolbar">

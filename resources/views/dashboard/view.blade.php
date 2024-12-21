@@ -73,11 +73,11 @@
     </div> --}}
     <ul class="nav nav-tabs nav-tabs-line">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#tab_pane_a_f_p_data_data_chart">Polio Lab Data Chart</a>
+            <a class="nav-link active" data-toggle="tab" href="#tab_pane_a_f_p_data_data_chart">AFP Data Insight</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Core
-                Group Data Chart</a>
+                Group Data Insight</a>
         </li>
     </ul>
     <div class="tab-content mt-5" id="myTabContent">

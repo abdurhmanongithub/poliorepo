@@ -329,14 +329,14 @@ class AFPDataController extends Controller
     public function getHistogramDataForResultTime()
     {
         // Fetch data from the database (stool collected and final cell culture results date)
-        $data = AFPData::whereNotNull('date_stool_collected')
+        $data = AFPData::whereNotNull('date_stool_sent_from_field')
             ->whereNotNull('date_final_cell_culture_results')
-            ->get(['date_stool_collected', 'date_final_cell_culture_results']);
+            ->get(['date_stool_sent_from_field', 'date_final_cell_culture_results']);
 
         // Calculate the delays
         $delays = [];
         foreach ($data as $row) {
-            $dateCollected = Carbon::parse($row->date_stool_collected);
+            $dateCollected = Carbon::parse($row->date_stool_sent_from_field);
             $dateResult = Carbon::parse($row->date_final_cell_culture_results);
 
             // Calculate the difference in days
@@ -345,7 +345,8 @@ class AFPDataController extends Controller
         }
 
         // Group delays into bins (for example, 0-5 days, 6-10 days, etc.)
-        $bins = range(18000, max($delays), 80); // You can adjust the bin size if needed
+        // dd(max($delays));
+        $bins = range(0, max($delays), 1); // You can adjust the bin size if needed
         $counts = array_fill(0, count($bins), 0);
 
         // Count occurrences for each bin

@@ -53,6 +53,9 @@ class AFPDataImport implements ToModel, WithHeadingRow, WithBatchInserts
         $values['date_final_cell_culture_results'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(
             \PhpOffice\PhpSpreadsheet\Shared\Date::stringToExcel($row['date_final_cell_culture_results'])
         )->format('Y-m-d H:i:s');
+        $values['date_stool_sent_from_field'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(
+            \PhpOffice\PhpSpreadsheet\Shared\Date::stringToExcel($row['date_stool_sent_from_field'])
+        )->format('Y-m-d H:i:s');
         return new AFPData($values);
     }
 
