@@ -7,9 +7,11 @@ use App\Http\Requests\StoreCoreGroupDataRequest;
 use App\Http\Requests\UpdateCoreGroupDataRequest;
 use App\Imports\CoreGroupDataImport;
 use App\Imports\CoreGroupDataImportForPreview;
+use App\Models\AFPData;
 use App\Models\CoreGroupData;
 use App\Models\OtherDataSource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Maatwebsite\Excel\Facades\Excel;
 use stdClass;
@@ -71,7 +73,8 @@ class CoreGroupDataController extends Controller
             'filePath' => $filePath
         ]);
     }
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         ini_set('max_execution_time', 6000);
         $filePath = $request->input('file_path');
         $otherDataSource = OtherDataSource::create([
@@ -82,14 +85,27 @@ class CoreGroupDataController extends Controller
         foreach (Schema::getColumnListing('core_group_dat   a') as $item) {
             $keys[] = \Str::slug($item, '_');
         }
-        Excel::import(new CoreGroupDataImport($otherDataSource,$keys),storage_path('app/' . $filePath));
+        Excel::import(new CoreGroupDataImport($otherDataSource, $keys), storage_path('app/' . $filePath));
         return redirect()->route('core-group-data.data-management')->with('success', 'Data imported successfully');
     }
 
-    public function datafetch(){
+    public function datafetch()
+    {
         $data = CoreGroupData::query();
         return datatables()->of($data->get())->toJson();
     }
+
+
+    public function getCaseCounts()
+    {
+        $data = CoreGroupData::select('area_name_region', DB::raw('COUNT(*) as case_count'))
+            ->whereIn('area_name_region', ['Somali', 'Gambella', 'Oromia', 'Benshangul Gumuz', 'SNNP'])
+            ->groupBy('area_name_region')
+
+            ->get();
+        return response()->json($data);
+    }
+   
     /**
      * Show the form for creating a new resource.
      */

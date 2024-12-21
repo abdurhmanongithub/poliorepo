@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AFPData;
+use App\Models\CoreGroupData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -155,6 +156,66 @@ class DashboardController extends Controller
                 'data' => $series
             ]],
         ]);
+    }
+    public function coreMissingDataChart()
+    {
+        // Fetch the missing data counts for each field
+        $missingData = [];
+
+        // List of all the columns you want to check
+        $columns = [
+            'area_name_region',
+            'area_name_zone_somali',
+            'area_name_zone_oromia',
+            'area_name_zone_gambella',
+            'area_name_zone_benshangul',
+            'area_name_zone_snnp',
+            'area_name_woreda_somali_afder',
+            'area_name_woreda_somali_liben',
+            'area_name_woreda_somali_shebele',
+            'area_name_woreda_somali_siti',
+            'area_name_woreda_somali_dollo',
+            'area_name_woreda_somali_dawa',
+            'area_name_woreda_oromia_borena',
+            'area_name_woreda_oromia_kellem',
+            'area_name_woreda_gambella_agnua',
+            'area_name_woreda_gambella_nuer',
+            'area_name_woreda_gambella_majang',
+            'area_name_woreda_benshangul_assosa',
+            'area_name_woreda_benshangul_metekel',
+            'area_name_woreda_benshangul_kamashi',
+            'area_name_woreda_snnp_bench_maji',
+            'area_name_woreda_snnp_south_omo',
+            'area_name_kebele',
+            'area_name_village',
+            'area_name_gps',
+            'gps_latitude',
+            'gps_longitude'
+        ];
+
+        // Loop through each column and count the missing values
+        foreach ($columns as $column) {
+            $missingData[$column] = CoreGroupData::whereNull($column)
+                ->orWhere($column, '')
+                ->orWhereRaw('LOWER(' . $column . ') = ?', ['missing'])
+                ->count();
+        }
+        // Prepare the categories (field names) and series (missing values count)
+        $categories = array_keys($missingData);
+        $series = array_values($missingData);
+
+        return response()->json([
+            'categories' => $categories,
+            'series' => [[
+                'name' => 'Missing Values Count',
+                'data' => $series
+            ]],
+        ]);
+    }
+    public function getCoreGpsData()
+    {
+        $data = CoreGroupData::select('gps_latitude', 'gps_longitude')->get();
+        return response()->json($data);
     }
     public function afpProvinceDistribution()
     {

@@ -76,9 +76,6 @@
             <a class="nav-link active" data-toggle="tab" href="#tab_pane_a_f_p_data_data_chart">Polio Lab Data Chart</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">EPHI Data Chart</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Core
                 Group Data Chart</a>
         </li>
@@ -88,11 +85,6 @@
             aria-labelledby="tab_pane_a_f_p_data_data_chart">
             <div class="row">
                 @include('afp-data.charts.index')
-            </div>
-        </div>
-        <div class="tab-pane fade" id="tab_pane_ephi_data_chart" role="tabpanel" aria-labelledby="tab_pane_ephi_data_chart">
-            <div class="row">
-                @include('afp-data.charts.ephi-chart')
             </div>
         </div>
         <div class="tab-pane fade" id="core_group_data_chart" role="tabpanel" aria-labelledby="core_group_data_chart">

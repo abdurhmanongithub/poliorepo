@@ -15,6 +15,7 @@ use App\Models\CommunityType;
 use App\Models\Content;
 use App\Models\OtherDataSource;
 use App\SmsHelper;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -239,19 +240,141 @@ class AFPDataController extends Controller
         return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAFPDataRequest $request, AFPData $aFPData)
+    public function getAgeGroupDistribution()
     {
-        //
+        $data = AFPData::select(
+            \DB::raw('CASE
+            WHEN age_in_years BETWEEN 0 AND 5 THEN "0-5"
+            WHEN age_in_years BETWEEN 6 AND 10 THEN "6-10"
+            WHEN age_in_years BETWEEN 11 AND 15 THEN "11-15"
+            ELSE "16+" END as age_group'),
+            \DB::raw('COUNT(*) as case_count')
+        )->groupBy('age_group')->get();
+
+        return response()->json($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AFPData $aFPData)
+    public function getCaseTrends()
     {
-        //
+        $data = AFPData::where('date_of_onset', '!=', null)->where('date_of_onset', '!=', 'Not applicable')->select(
+            \DB::raw('DATE_FORMAT(STR_TO_DATE(date_of_onset, "%m/%d/%Y"), "%M") as month_name'),
+            \DB::raw('COUNT(*) as case_count')
+        )
+            ->groupBy('month_name')
+            ->orderBy(
+                \DB::raw('STR_TO_DATE(CONCAT("01 ", month_name, " 2024"), "%d %M %Y")'),
+                'ASC'
+            )
+            ->get();
+        if (!$data['0']->month_name) {
+            $data['0']->month_name = 'Unkown';
+        }
+        return response()->json($data);
+    }
+    public function getHistogramData()
+    {
+        // Fetch the data from AFPData model
+        $data = AFPData::select('date_stool_collected', 'date_stool_received_in_lab')
+            ->get();
+
+        $delays = [];
+
+        foreach ($data as $item) {
+            $stoolCollected = $this->parseDate($item->date_stool_collected);
+            $stoolReceivedInLab = $this->parseDate($item->date_stool_received_in_lab);
+
+            // Calculate the delay in days
+            if ($stoolCollected && $stoolReceivedInLab) {
+                $delays[] = $stoolReceivedInLab->diffInDays($stoolCollected);
+            }
+        }
+
+        // Group data into bins (e.g., 1 day intervals)
+        $binSize = 1; // Size of each bin (1 day interval)
+        $minDelay = min($delays);
+        $maxDelay = 16;
+
+        // Initialize bins
+        $bins = [];
+
+        // Populate bins with initialized values (ensure every possible bin exists)
+        for ($i = $minDelay; $i <= $maxDelay; $i++) {
+            $bins[$i] = 0; // Initialize all bins with 0
+        }
+
+        // Populate bins
+        foreach ($delays as $delay) {
+            $binIndex = floor(($delay - $minDelay) / $binSize);
+
+            // Make sure the binIndex exists
+            if (isset($bins[$binIndex])) {
+                $bins[$binIndex] += 1; // Increment the bin count
+            } else {
+                // In case the binIndex doesn't exist, we can safely ignore or log it
+                // or create the bin dynamically like:
+                // $bins[$binIndex] = 1;
+            }
+        }
+
+        // Prepare labels for bins
+        $binLabels = array_map(function ($bin) use ($binSize) {
+            return $bin * $binSize . ' - ' . ($bin + 1) * $binSize . ' days';
+        }, array_keys($bins));
+
+        return response()->json([
+            'bins' => $binLabels,
+            'counts' => array_values($bins),
+        ]);
+    }
+    public function getHistogramDataForResultTime()
+    {
+        // Fetch data from the database (stool collected and final cell culture results date)
+        $data = AFPData::whereNotNull('date_stool_collected')
+            ->whereNotNull('date_final_cell_culture_results')
+            ->get(['date_stool_collected', 'date_final_cell_culture_results']);
+
+        // Calculate the delays
+        $delays = [];
+        foreach ($data as $row) {
+            $dateCollected = Carbon::parse($row->date_stool_collected);
+            $dateResult = Carbon::parse($row->date_final_cell_culture_results);
+
+            // Calculate the difference in days
+            $delay = $dateResult->diffInDays($dateCollected);
+            $delays[] = $delay;
+        }
+
+        // Group delays into bins (for example, 0-5 days, 6-10 days, etc.)
+        $bins = range(18000, max($delays), 80); // You can adjust the bin size if needed
+        $counts = array_fill(0, count($bins), 0);
+
+        // Count occurrences for each bin
+        foreach ($delays as $delay) {
+            foreach ($bins as $index => $bin) {
+                if ($delay <= $bin) {
+                    $counts[$index]++;
+                    break;
+                }
+            }
+        }
+
+        // Return the data as JSON
+        return response()->json([
+            'bins' => $bins,
+            'counts' => $counts
+        ]);
+    }
+
+    // Helper method to safely parse dates
+    private function parseDate($date)
+    {
+        if (empty($date)) {
+            return null;
+        }
+        try {
+            return Carbon::parse($date);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

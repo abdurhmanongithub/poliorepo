@@ -14,13 +14,14 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class AFPDataImport implements ToModel, WithHeadingRow, WithBatchInserts
 {
 
     private $dataSource = null;
     private $keys = [];
-    public function __construct(OtherDataSource $dataSource,$keys)
+    public function __construct(OtherDataSource $dataSource, $keys)
     {
         $this->dataSource = $dataSource;
         $this->keys = $keys;
@@ -42,6 +43,16 @@ class AFPDataImport implements ToModel, WithHeadingRow, WithBatchInserts
             return null;
         }
         $values['other_data_source_id'] = $this->dataSource->id;
+        $values['date_stool_collected'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(
+            \PhpOffice\PhpSpreadsheet\Shared\Date::stringToExcel($row['date_stool_collected'])
+        )->format('Y-m-d H:i:s');
+
+        $values['date_stool_received_in_lab'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(
+            \PhpOffice\PhpSpreadsheet\Shared\Date::stringToExcel($row['date_stool_received_in_lab'])
+        )->format('Y-m-d H:i:s');
+        $values['date_final_cell_culture_results'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(
+            \PhpOffice\PhpSpreadsheet\Shared\Date::stringToExcel($row['date_final_cell_culture_results'])
+        )->format('Y-m-d H:i:s');
         return new AFPData($values);
     }
 

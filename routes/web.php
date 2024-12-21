@@ -53,6 +53,13 @@ Route::get('/regional-distribution', [DashboardController::class, 'regionalDistr
 Route::get('/afp-province-distribution', [DashboardController::class, 'afpProvinceDistribution']);
 Route::get('/polio-virus-detection-by-year-chart', [DashboardController::class, 'getPolioVirusDetectionByYear']);
 Route::get('/afp-missing-data-chart', [DashboardController::class, 'afpMissingDataChart']);
+Route::get('/core-missing-data-chart', [DashboardController::class, 'coreMissingDataChart']);
+Route::get('/core-gps-data-chart', [DashboardController::class, 'getCoreGpsData']);
+Route::get('/core-get-case-counts', [CoreGroupDataController::class, 'getCaseCounts'])->name('core.get.case.counts');
+Route::get('/afp-get-age-group-distribution', [AFPDataController::class, 'getAgeGroupDistribution'])->name('afp.get.age.group.distribution');
+Route::get('/afp-get-case-trends', [AFPDataController::class, 'getCaseTrends'])->name('afp.get.case.trends');
+Route::get('/afp-get-histogram-data', [AFPDataController::class, 'getHistogramData'])->name('afp.get.histogram.data');
+Route::get('/afp-get-histogram-result', [AFPDataController::class, 'getHistogramDataForResultTime'])->name('afp.get.histogram.result.time');
 Route::get('/polio-virus-detection-by-year-line-chart', [DashboardController::class, 'getPolioVirusDetectionByYearLineChart']);
 Route::get('/polio-emerging-seasons-chart', [DashboardController::class, 'getTopPolioEmergingSeasons']);
 Route::get('/polio-emerging-months-chart', [DashboardController::class, 'getTopPolioEmergingMonths']);
