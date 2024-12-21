@@ -72,7 +72,8 @@
         </div>
     </div> --}}
 
-    <div style="text-align: center; padding: 30px 20px; background-color: #0056b3; color: white; border-bottom: 5px solid #003d80;">
+    <div
+        style="text-align: center; padding: 30px 20px; background-color: #0056b3; color: white; border-bottom: 5px solid #003d80;">
         <h1 style="font-size: 1.25em; margin: 0; line-height: 1.3; text-transform: capitalize;">
             Insights from Ethiopian Acute Flaccid Paralysis Surveillance Data
         </h1>
@@ -82,11 +83,11 @@
         <hr style="border: 0; height: 1px; background: #d0e7ff; margin: 20px 0;">
         <ul class="nav nav-tabs nav-tabs-line" style="justify-content: center; margin-top: 10px;">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">
-                    Core Group Data insights</a>
+                <a class="nav-link  active" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Data Insights</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tab_pane_ephi_data_chart">AFP Data Insights</a>
+                <a class="nav-link" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">
+                    Core Group Data insights</a>
             </li>
             {{-- <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Key Data</a>
@@ -106,22 +107,23 @@
     <!--    </li>-->
     <!--</ul>-->
     <div class="tab-content mt-5" id="myTabContent">
-        <div class="tab-pane fade show active" id="tab_pane_a_f_p_data_data_chart" role="tabpanel"
-            aria-labelledby="tab_pane_a_f_p_data_data_chart">
+        <div class="tab-pane fade  show active" id="tab_pane_ephi_data_chart" role="tabpanel"
+            aria-labelledby="tab_pane_ephi_data_chart">
             <div class="row">
                 @include('afp-data.charts.index')
             </div>
         </div>
-        <div class="tab-pane fade" id="tab_pane_ephi_data_chart" role="tabpanel" aria-labelledby="tab_pane_ephi_data_chart">
-            <div class="row">
-                @include('afp-data.charts.ephi-chart')
-            </div>
-        </div>
-        <div class="tab-pane fade" id="core_group_data_chart" role="tabpanel" aria-labelledby="core_group_data_chart">
+        <div class="tab-pane fade" id="tab_pane_a_f_p_data_data_chart" role="tabpanel"
+            aria-labelledby="tab_pane_a_f_p_data_data_chart">
             <div class="row">
                 @include('core-group-data.charts.index')
             </div>
         </div>
+        {{-- <div class="tab-pane fade" id="core_group_data_chart" role="tabpanel" aria-labelledby="core_group_data_chart">
+            <div class="row">
+                @include('core-group-data.charts.index')
+            </div>
+        </div> --}}
     </div>
 @endsection
 @push('js')
