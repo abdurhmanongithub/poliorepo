@@ -243,12 +243,18 @@ class AFPDataController extends Controller
             ];
         }
         $result = Constants::sendGeezBulkSms($contacts, $content->content);
-
-        if (!$result['error']) {
-            foreach ($broadcasts as $broadcast) {
-                $broadcast->update(['status' => Constants::BROADCAST_STATUS_SENT]);
+        if(!isset($result['error']) || !$result['error']){
+            if (!$result['error']) {
+                foreach ($broadcasts as $broadcast) {
+                    $broadcast->update(['status' => Constants::BROADCAST_STATUS_SENT]);
+                }
             }
         }
+        // if (!$result['error']) {
+        //     foreach ($broadcasts as $broadcast) {
+        //         $broadcast->update(['status' => Constants::BROADCAST_STATUS_SENT]);
+        //     }
+        // }
         return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 
