@@ -242,7 +242,7 @@ class AFPDataController extends Controller
                 'phone_number' => $broadcast->phone,     // Required: Phone number
             ];
         }
-        Constants::sendGeezSms($contacts, $content->content,);
+        $result = Constants::sendGeezBulkSms($contacts, $content->content);
         return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 

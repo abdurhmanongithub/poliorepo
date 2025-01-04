@@ -74,7 +74,7 @@ class Constants
     static function sendGeezBulkSms($contacts, $message, $shortcode_id = null, $callback_url = null)
     {
         $apiToken = env('GEEZSMS_API_TOKEN');
-        $endpoint = 'https://api.geezsms.com/api/v1/sms/send';
+        $endpoint = 'https://api.geezsms.com/api/v1/sms/send/bulk';
 
         // Prepare the form-data body
         $data = [
@@ -92,10 +92,32 @@ class Constants
         if ($callback_url) {
             $data['callback'] = $callback_url;
         }
-
+        // dd($contacts);
         // Send the POST request using Laravel's HTTP client
-        $response = Http::asForm()->post($endpoint, $data);
 
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json', // Specify JSON content type
+            ])->post($endpoint, $data);
+            // Check for a valid response
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            // Log errors if the response is unsuccessful
+            \Log::error('GeezSMS API Error:', $response->json());
+            return [
+                'status' => 'error',
+                'message' => $response->json()['msg'] ?? 'Failed to send bulk SMS'
+            ];
+        } catch (\Exception $e) {
+            // Handle exceptions
+            \Log::error('GeezSMS Exception:', ['error' => $e->getMessage()]);
+            return [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+        }
         // Return the response
         return $response->json();
     }
