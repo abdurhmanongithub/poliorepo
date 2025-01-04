@@ -234,10 +234,15 @@ class AFPDataController extends Controller
                 }
                 break;
         }
+        $contacts = [];
         foreach ($broadcasts as $broadcast) {
-            Constants::sendGeezSms('+251941667729', $content->content,);
+            $contacts[] = [
+                // 'fname' => $broadcast->first_name ?? '', // Optional: Replace with actual column name
+                // 'lname' => $broadcast->last_name ?? '',  // Optional: Replace with actual column name
+                'phone_number' => $broadcast->phone,     // Required: Phone number
+            ];
         }
-        // dd('asd');
+        Constants::sendGeezSms($contacts, $content->content,);
         return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 

@@ -71,6 +71,34 @@ class Constants
         // Return the response
         return $response->json();
     }
+    static function sendGeezBulkSms($contacts, $message, $shortcode_id = null, $callback_url = null)
+    {
+        $apiToken = env('GEEZSMS_API_TOKEN');
+        $endpoint = 'https://api.geezsms.com/api/v1/sms/send';
+
+        // Prepare the form-data body
+        $data = [
+            'token' => $apiToken,
+            'contacts' => $contacts,
+            'msg' => $message,
+            'callback' => url('/sms-callback'),
+        ];
+        // dump($data);
+
+        // Add optional parameters if provided
+        if ($shortcode_id) {
+            $data['shortcode_id'] = $shortcode_id;
+        }
+        if ($callback_url) {
+            $data['callback'] = $callback_url;
+        }
+
+        // Send the POST request using Laravel's HTTP client
+        $response = Http::asForm()->post($endpoint, $data);
+
+        // Return the response
+        return $response->json();
+    }
     static function sendSms($phone, $msg)
     {
         return true;
