@@ -26,7 +26,7 @@ class SmsCallbackController extends Controller
             'phone' => $phone,
             'message' => $message,
             'status' => $status,
-            'api_log_id' => $logId,
+            // 'api_log_id' => $logId,
             'created_at' => now(),
         ]);
 
