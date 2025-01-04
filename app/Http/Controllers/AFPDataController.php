@@ -235,8 +235,9 @@ class AFPDataController extends Controller
                 break;
         }
         foreach ($broadcasts as $broadcast) {
-            // SmsHelper::sendSms($broadcast->phone, $content->content);
+            Constants::sendGeezSms('+251941667729', $content->content,);
         }
+        // dd('asd');
         return redirect()->back()->with('success', 'Broadcast send successfully');
     }
 

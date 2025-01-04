@@ -18,7 +18,7 @@ require_once $GLOBALS['SMPP_ROOT'] . '/transport/tsocket.class.php';
 
 class SmsHelper
 {
-
+    
     static function sendSms($phone, $message)
     {
 

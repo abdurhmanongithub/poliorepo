@@ -3,6 +3,7 @@
 namespace App;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class Constants
 {
@@ -42,7 +43,34 @@ class Constants
     const SUPER_ADMIN = 'super-admin';
     const INFORMATION = 1;
     const MESSAGE = 2;
+    static function sendGeezSms($phone, $message, $shortcode_id = null, $callback_url = null)
+    {
+        $apiToken = env('GEEZSMS_API_TOKEN');
+        $endpoint = 'https://api.geezsms.com/api/v1/sms/send';
 
+        // Prepare the form-data body
+        $data = [
+            'token' => $apiToken,
+            'phone' => $phone,
+            'msg' => $message,
+            'callback' => url('/sms-callback'),
+        ];
+        // dump($data);
+
+        // Add optional parameters if provided
+        if ($shortcode_id) {
+            $data['shortcode_id'] = $shortcode_id;
+        }
+        if ($callback_url) {
+            $data['callback'] = $callback_url;
+        }
+
+        // Send the POST request using Laravel's HTTP client
+        $response = Http::asForm()->post($endpoint, $data);
+
+        // Return the response
+        return $response->json();
+    }
     static function sendSms($phone, $msg)
     {
         return true;

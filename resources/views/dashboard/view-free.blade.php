@@ -89,6 +89,16 @@
                 <a class="nav-link" data-toggle="tab" href="#tab_pane_polio_lab_data_chart">
                     Core Group Data insights</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#polio_antenna_app_data_insights">
+                    POLIO ANTENNA APP DATA INSIGHTS</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#engaging_communities">
+                    Engaging Communities</a>
+            </li>
             {{-- <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#core_group_data_chart" tabindex="-1" aria-disabled="true">Other Key Data</a>
             </li> --}}
@@ -117,6 +127,20 @@
             aria-labelledby="tab_pane_polio_lab_data_chart">
             <div class="row">
                 @include('core-group-data.charts.index')
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="polio_antenna_app_data_insights" role="tabpanel"
+            aria-labelledby="tab_pane_polio_lab_data_chart">
+            <div class="row">
+                @include('polio-charts.index')
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab_pane_polio_lab_data_chart" role="tabpanel"
+            aria-labelledby="engaging_communities">
+            <div class="row">
+                @include('engaging-charts.index')
             </div>
         </div>
         {{-- <div class="tab-pane fade" id="core_group_data_chart" role="tabpanel" aria-labelledby="core_group_data_chart">

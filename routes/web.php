@@ -22,6 +22,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PolioDataPullerController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SmsCallbackController;
 use App\Http\Controllers\SmsHistoryController;
 use App\Http\Controllers\WeatherDataController;
 use App\Http\Controllers\WoredaController;
@@ -48,6 +49,7 @@ Route::get('/live-dashboard', [UtilController::class, 'liveDashboard'])->name('l
 Route::get('/login', [LoginController::class, 'loginView'])->name('login');
 Route::post('/login/store', [LoginController::class, 'store'])->name('login.store');
 Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
+Route::post('/sms-callback', [SmsCallbackController::class, 'handleCallback'])->name('sms.callback');
 
 Route::get('/regional-distribution', [DashboardController::class, 'regionalDistribution']);
 Route::get('/afp-province-distribution', [DashboardController::class, 'afpProvinceDistribution']);
