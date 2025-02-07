@@ -73,6 +73,7 @@ Route::get('/get-timeliness-of-reporting', [DashboardController::class, 'getTime
 Route::get('/afp-polio-virus-detection-by-year-chart', [DashboardController::class, 'getAFPPolioVirusDataDetectionByYear']);
 Route::get('/core-group-map-chart',[DashboardController::class,'getGroupedLocations']);
 Route::middleware(['auth'])->group(function () {
+    Route::get('/polio', [PolioDataPullerController::class, 'allIndex'])->name('polio-db.index');
     Route::get('/polio-data', [PolioDataPullerController::class, 'index'])->name('polio-table.index');
     Route::get('/polio-data/{table}', [PolioDataPullerController::class, 'show'])->name('polio-table.show');
     Route::get('/', function () {
