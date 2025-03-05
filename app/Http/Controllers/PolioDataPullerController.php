@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -289,5 +290,109 @@ class PolioDataPullerController extends Controller
         // dd($rows->get());
         $rows = $rows->paginate(10, ['*'], 'page', $page);
         return view('polio.detail', compact('table', 'regions', 'genders', 'zones', 'woredas', 'rows', 'fields', 'columns'));
+    }
+
+
+    public function aggregatedData(Request $request)
+    {
+        // Fetch table names from PostgreSQL
+        $tableNames = DB::connection('pgsql')->getDoctrineSchemaManager()->listTableNames();
+        $tableNames = array_slice($tableNames, 0, 11); // Limit to first 11 tables
+
+        $mergedData = [];
+        $fields = ['epid_number']; // Default column to always include
+        $regions = $zones = $woredas = $genders = []; // To store unique values for filtering
+
+        // Fetch and merge data from each table
+        foreach ($tableNames as $table) {
+            $rows = DB::connection('pgsql')->table($table)->select('*')->get()->toArray();
+            foreach ($rows as $row) {
+                $row = (array) $row; // Convert object to array
+                $epidNumber = $row['epid_number'] ?? null;
+
+                if ($epidNumber) {
+                    if (!isset($mergedData[$epidNumber])) {
+                        $mergedData[$epidNumber] = ['epid_number' => $epidNumber];
+                    }
+                    $mergedData[$epidNumber] = array_merge($mergedData[$epidNumber], $row);
+                }
+
+                // Collect all column names dynamically
+                foreach (array_keys($row) as $col) {
+                    if (!in_array($col, $fields)) {
+                        $fields[] = $col;
+                    }
+                }
+
+                // Collect unique filter values
+                if (!empty($row['region']) && !in_array($row['region'], $regions)) {
+                    $regions[] = $row['region'];
+                }
+                if (!empty($row['zone']) && !in_array($row['zone'], $zones)) {
+                    $zones[] = $row['zone'];
+                }
+                if (!empty($row['woreda']) && !in_array($row['woreda'], $woredas)) {
+                    $woredas[] = $row['woreda'];
+                }
+                if (!empty($row['gender']) && !in_array($row['gender'], $genders)) {
+                    $genders[] = $row['gender'];
+                }
+            }
+        }
+
+        // Convert associative array to indexed array
+        $mergedData = array_values($mergedData);
+
+        // Apply filters
+        if ($request->filled('fieldEpidNumber')) {
+            $mergedData = array_filter($mergedData, function ($item) use ($request) {
+                return $item['epid_number'] == $request->fieldEpidNumber;
+            });
+        }
+
+        if ($request->filled('regionFilter')) {
+            $mergedData = array_filter($mergedData, function ($item) use ($request) {
+                return isset($item['region']) && $item['region'] == $request->regionFilter;
+            });
+        }
+
+        if ($request->filled('zoneFilter')) {
+            $mergedData = array_filter($mergedData, function ($item) use ($request) {
+                return isset($item['zone']) && $item['zone'] == $request->zoneFilter;
+            });
+        }
+
+        if ($request->filled('woredaFilter')) {
+            $mergedData = array_filter($mergedData, function ($item) use ($request) {
+                return isset($item['woreda']) && $item['woreda'] == $request->woredaFilter;
+            });
+        }
+
+        if ($request->filled('genderFilter')) {
+            $mergedData = array_filter($mergedData, function ($item) use ($request) {
+                return isset($item['gender']) && $item['gender'] == $request->genderFilter;
+            });
+        }
+
+        // Convert filtered results back to indexed array
+        $mergedData = array_values($mergedData);
+
+        // Manual Pagination
+        $perPage = 10;
+        $currentPage = $request->query('page', 1);
+        $currentItems = array_slice($mergedData, ($currentPage - 1) * $perPage, $perPage);
+        $paginatedData = new LengthAwarePaginator($currentItems, count($mergedData), $perPage, $currentPage, [
+            'path' => $request->url(),
+            'query' => $request->query(),
+        ]);
+
+        return view('polio.aggregated', [
+            'fields' => $fields,
+            'mergedData' => $paginatedData, // Paginated filtered results
+            'regions' => $regions,
+            'zones' => $zones,
+            'woredas' => $woredas,
+            'genders' => $genders
+        ]);
     }
 }
