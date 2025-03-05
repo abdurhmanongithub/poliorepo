@@ -336,9 +336,9 @@
                                     </li>
                                 @endcanany
                                 @can('manage.polio-data')
-                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'data_schema') === 0 ? 'menu-item-active' : '' }}"
+                                    <li class="menu-item {{ strpos(Route::currentRouteName(), 'aggregated.data') === 0 ? 'menu-item-active' : '' }}"
                                         aria-haspopup="true">
-                                        <a href="{{ route('polio-table.index', []) }}" class="menu-link">
+                                        <a href="{{ route('aggregated.data', []) }}" class="menu-link">
                                             <i class="menu-icon flaticon-table"></i>
                                             <span class="menu-text">
                                                 Polio Data
